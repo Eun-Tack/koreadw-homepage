@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>특수 설문 유형 | 코리아데이터월드</title>
+<meta name="description" content="CE · AHP · CVM · Delphi 등 전문 연구방법론 설문 구현">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="../assets/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="../assets/favicon-180.png">
+<meta name="theme-color" content="#24589C">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="(주)코리아데이터월드">
+<meta property="og:title" content="특수 설문 유형 | 코리아데이터월드">
+<meta property="og:description" content="CE · AHP · CVM · Delphi 등 전문 연구방법론 설문 구현">
+<meta property="og:image" content="../assets/favicon-512.png">
+<meta property="og:locale" content="ko_KR">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+
+<a class="skip" href="#main">본문 바로가기</a>
+<header class="hdr">
+  <div class="wrap hdr-in">
+    <a class="brand" href="../index.html">
+      <span class="brand-logo" role="img" aria-label="코리아데이터월드"></span>
+    </a>
+    <nav class="nav" id="gnb">
+<div class="nav-item">
+<a class="nav-top" href="../company/history.html">회사소개</a>
+<div class="nav-sub"><div class="nav-sub-in">
+<a href="../company/history.html">연혁</a>
+<a href="../company/greeting.html">대표이사 인사말</a>
+<a href="../company/organization.html">조직도</a>
+<a href="../company/welfare.html">복리후생</a>
+<a href="../company/location.html">오시는 길</a>
+</div></div></div>
+<div class="nav-item">
+<a class="nav-top is-active" href="../business/fields.html">사업소개</a>
+<div class="nav-sub"><div class="nav-sub-in">
+<a href="../business/fields.html">조사분야</a>
+<a href="../business/special.html" class="is-active">특수 설문 유형</a>
+<a href="../business/platform.html">설문 플랫폼</a>
+<a href="../business/process.html">진행 절차</a>
+</div></div></div>
+<div class="nav-item">
+<a class="nav-top" href="../support/notice.html">고객지원</a>
+<div class="nav-sub"><div class="nav-sub-in">
+<a href="../support/notice.html">공지사항</a>
+<a href="../support/contact.html">견적문의</a>
+</div></div></div>
+</nav>
+    <a class="btn btn-primary hdr-cta" href="../support/contact.html">견적 문의</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="gnb" aria-label="메뉴 열기">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="phead">
+  <div class="wrap">
+    <p class="ph-crumb">홈 <i>/</i> 사업소개 <i>/</i> 특수 설문 유형</p>
+    <h1>특수 설문 유형</h1>
+    <p class="ph-sub">연구 방법론이 요구하는 화면과 출력 형식을 그대로 구현합니다.</p>
+  </div>
+</section>
+<div class="lnb"><div class="wrap lnb-in">
+<a href="../business/fields.html">조사분야</a>
+<a href="../business/special.html" class="is-active">특수 설문 유형</a>
+<a href="../business/platform.html">설문 플랫폼</a>
+<a href="../business/process.html">진행 절차</a>
+</div></div><section class="sec"><div class="wrap">
+<p class="deck-intro">
+  방법론마다 <b>응답자가 보는 화면</b>과 <b>분석에 넘겨야 할 데이터 형식</b>이 다릅니다.
+  CE는 더미변수 Long Format, AHP는 응답 중 실시간 CR 확인, CVM은 응답자별 제시금액 배분이 필요합니다.
+  저희는 이 네 가지를 자체 플랫폼에 직접 구현했고, 목록에 없는 유형도 설계서만 있으면 만듭니다.
+</p>
+
+<div class="chips" role="tablist" aria-label="특수 설문 유형 선택">
+  <button class="chip" role="tab" data-target="ce" aria-selected="false">CE 선택실험법</button>
+  <button class="chip" role="tab" data-target="ahp" aria-selected="false">AHP 쌍대비교</button>
+  <button class="chip" role="tab" data-target="cvm" aria-selected="false">CVM 조건부가치측정</button>
+  <button class="chip" role="tab" data-target="delphi" aria-selected="false">Delphi 전문가 합의</button>
+  <button class="chip" role="tab" data-target="custom" aria-selected="true">그 외 모든 유형</button>
+</div>
+
+<div class="deck">
+
+  <button class="dcard" type="button" data-key="ce" style="--i:0">
+    <div class="dcard-top"><span class="dcard-code">CE</span><span class="dcard-step">선택 세트 3 / 8</span></div>
+    <h3>선택실험법</h3>
+    <p class="dcard-sub">속성·수준 조합으로 만든 대안 중 하나를 고르게 해 지불의사와 속성별 중요도를 추정합니다.</p>
+    <div class="dcard-screen">
+      <p class="mq">다음 두 대안 중 어느 쪽을 선택하시겠습니까?</p>
+      <div class="mrow">
+        <div class="mopt sel"><b>대안 A</b><u>연회비 30,000원</u><u>대기 15분</u><u>대면 상담</u></div>
+        <div class="mopt"><b>대안 B</b><u>연회비 12,000원</u><u>대기 40분</u><u>비대면 상담</u></div>
+      </div>
+      <div class="mopt">둘 다 선택하지 않겠습니다</div>
+    </div>
+    <p class="dcard-foot">출력 · 더미변수 Long Format</p>
+  </button>
+
+  <button class="dcard" type="button" data-key="ahp" style="--i:1">
+    <div class="dcard-top"><span class="dcard-code">AHP</span><span class="dcard-step">쌍대비교 6 / 15</span></div>
+    <h3>쌍대비교법</h3>
+    <p class="dcard-sub">두 항목을 9점 척도로 비교해 가중치를 산출하고, 응답 도중 일관성 비율을 바로 확인합니다.</p>
+    <div class="dcard-screen">
+      <p class="mq">두 평가기준 중 어느 쪽이, 얼마나 더 중요합니까?</p>
+      <div class="mline"><span>접근성</span><span>전문성</span></div>
+      <div class="mslider"><i></i></div>
+      <div class="mticks"><span>9</span><span>5</span><span>1</span><span>5</span><span>9</span></div>
+      <span class="mpill">CR 0.043 · 일관성 확보</span>
+    </div>
+    <p class="dcard-foot">산출 · 기준별 가중치 &amp; 우선순위</p>
+  </button>
+
+  <button class="dcard" type="button" data-key="cvm" style="--i:2">
+    <div class="dcard-top"><span class="dcard-code">CVM</span><span class="dcard-step">DBDC 1차 제시</span></div>
+    <h3>조건부가치측정법</h3>
+    <p class="dcard-sub">제시금액을 응답자별로 균등 배분하고, 응답에 따라 2차 금액으로 분기합니다.</p>
+    <div class="dcard-screen">
+      <p class="mq">이 사업의 시행을 위해 가구당 연간 15,000원을 추가 부담할 의향이 있습니까?</p>
+      <div class="mrow">
+        <div class="mopt sel"><u>예, 부담하겠다</u></div>
+        <div class="mopt"><u>아니오</u></div>
+      </div>
+      <div class="mline"><span>예 → 2차 제시</span><span>30,000원</span></div>
+      <div class="mline"><span>아니오 → 2차 제시</span><span>7,500원</span></div>
+    </div>
+    <p class="dcard-foot">출력 · 이중양분선택형 Long Format</p>
+  </button>
+
+  <button class="dcard" type="button" data-key="delphi" style="--i:3">
+    <div class="dcard-top"><span class="dcard-code">DELPHI</span><span class="dcard-step">2라운드 진행 중</span></div>
+    <h3>전문가 합의법</h3>
+    <p class="dcard-sub">라운드별 통계 요약을 응답 화면에 자동으로 띄워, 전문가가 의견을 수정할 근거를 제공합니다.</p>
+    <div class="dcard-screen">
+      <p class="mq">1라운드 결과입니다. 귀하의 응답을 유지하시겠습니까?</p>
+      <dl class="mstat">
+        <div><dt>평균</dt><dd>4.2</dd></div>
+        <div><dt>IQR</dt><dd>0.8</dd></div>
+        <div><dt>내 응답</dt><dd>3.0</dd></div>
+      </dl>
+      <span class="mpill warn">사분위 범위 밖 · 사유 기입 필요</span>
+    </div>
+    <p class="dcard-foot">추적 · 라운드별 의견 변화 이력</p>
+  </button>
+
+  <button class="dcard custom is-active" type="button" data-key="custom" style="--i:4">
+    <div class="dcard-top"><span class="dcard-code">CUSTOM</span><span class="dcard-step">설계서 → 화면</span></div>
+    <h3>그리고, 그 밖의 모든 유형</h3>
+    <p class="dcard-sub">목록에 없는 방법론이라도 문항 구조와 출력 형식이 정의되어 있다면 구현 대상입니다.</p>
+    <div class="dcard-screen">
+      <p class="custom-kicker">연구계획서에 있는 그 문항,<br>화면으로 만들어 드립니다.</p>
+      <ul class="custom-list">
+        <li>컨조인트 · BWS · 순위형 배분</li>
+        <li>조건부 분기가 겹친 스크리너</li>
+        <li>실험 처치군 무작위 배정 설계</li>
+        <li>기관 고유 양식의 응답 화면</li>
+      </ul>
+    </div>
+    <p class="dcard-foot">먼저 · 방법론 자문부터 함께</p>
+  </button>
+
+</div>
+
+<div class="spec-table-wrap">
+  <table class="spec-table">
+    <caption>방법론별 구현 범위</caption>
+    <thead>
+      <tr><th>방법론</th><th>응답 화면</th><th>실시간 처리</th><th>분석 출력</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><b>CE</b> 선택실험법</td><td>속성-수준 프로파일 선택 세트</td><td>세트 순서 무작위화</td><td>더미변수 Long Format</td></tr>
+      <tr><td><b>AHP</b> 쌍대비교법</td><td>9점 척도 쌍대비교</td><td>응답 중 CR 피드백</td><td>기준별 가중치 · 우선순위</td></tr>
+      <tr><td><b>CVM</b> 조건부가치측정</td><td>제시금액 수락 여부</td><td>응답자별 금액 균등 배분</td><td>DBDC 분기 Long Format</td></tr>
+      <tr><td><b>Delphi</b> 전문가 합의</td><td>라운드별 재응답 화면</td><td>통계 요약 자동 표시</td><td>라운드별 의견 수렴 추적</td></tr>
+      <tr><td><b>Custom</b> 그 외</td><td colspan="3">설계서 기준으로 협의 후 구현 — 컨조인트, BWS, 순위형 배분, 실험 처치군 무작위 배정, 기관 고유 양식 등</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="callout">
+  <h3>연구계획서 단계에서 먼저 상의해 주세요</h3>
+  <p>
+    문항 설계가 끝난 뒤보다, 방법론을 정하는 단계에서 함께 검토할 때 표본 수와 설계 효율이 크게 달라집니다.
+    설계서 초안만 있어도 구현 가능 여부와 필요한 표본 규모를 회신드립니다.
+  </p>
+  <a class="btn btn-primary" href="../support/contact.html">방법론 자문 요청</a>
+</div>
+</div></section>
+</main>
+
+<footer class="ftr">
+  <div class="wrap">
+    <div class="ftr-top">
+      <div class="ftr-brand">
+        <a class="brand" href="../index.html">
+          <span class="brand-logo" role="img" aria-label="코리아데이터월드"></span>
+        </a>
+        <p class="ftr-addr"><b>서울 본사</b> 서울특별시 영등포구 국회대로72길 11, 908호<br><b>대구 지점</b> 대구시 달서구 달서대로 54, 203호</p>
+      </div>
+      <div class="ftr-cols"><div class="ftr-col"><b>회사소개</b><a href="../company/history.html">연혁</a><a href="../company/greeting.html">대표이사 인사말</a><a href="../company/organization.html">조직도</a><a href="../company/welfare.html">복리후생</a><a href="../company/location.html">오시는 길</a></div><div class="ftr-col"><b>사업소개</b><a href="../business/fields.html">조사분야</a><a href="../business/special.html">특수 설문 유형</a><a href="../business/platform.html">설문 플랫폼</a><a href="../business/process.html">진행 절차</a></div><div class="ftr-col"><b>고객지원</b><a href="../support/notice.html">공지사항</a><a href="../support/contact.html">견적문의</a></div></div>
+    </div>
+    <div class="ftr-bottom">
+      <p class="ftr-info">
+        <b>(주)코리아데이터월드</b> &nbsp;|&nbsp; 대표이사 김근지 &nbsp;|&nbsp; 사업자등록번호 296-81-00459<br>
+        전화 070-8861-2273 &nbsp;|&nbsp; 팩스 070-8800-2273 &nbsp;|&nbsp; 메일 <a href="mailto:hyejin9508@koreadw.co.kr">hyejin9508@koreadw.co.kr</a>
+      </p>
+      <p class="ftr-copy">Copyright &copy; KOREA DATA WORLD Co., Ltd. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="../assets/site.js"></script>
+</body>
+</html>
