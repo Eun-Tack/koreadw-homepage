@@ -191,7 +191,6 @@ OFFICES = """
       <dt>주소</dt><dd>{addr_seoul}</dd>
       <dt>전화</dt><dd>{tel}</dd>
       <dt>팩스</dt><dd>{fax}</dd>
-      <dt>교통</dt><dd>여의도역 · 국회의사당역 인근</dd>
     </dl>
   </div>
   <div class="office">
@@ -200,7 +199,6 @@ OFFICES = """
       <dt>주소</dt><dd>{addr_daegu}</dd>
       <dt>전화</dt><dd>{tel_daegu}</dd>
       <dt>팩스</dt><dd>{fax}</dd>
-      <dt>교통</dt><dd>달서구 달서대로변</dd>
     </dl>
   </div>
 </div>
@@ -432,7 +430,7 @@ CTA = """
     <div><dt>전화</dt><dd><b>{tel}</b></dd></div>
     <div><dt>팩스</dt><dd><b>{fax}</b></dd></div>
     <div><dt>이메일</dt><dd><b>{email}</b></dd></div>
-    <div><dt>운영시간</dt><dd><b>평일 09:00 – 18:00</b></dd></div>
+    <div><dt>운영시간</dt><dd><b>평일 10:00 – 18:00</b></dd></div>
   </dl>
 </div>
 """
