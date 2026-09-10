@@ -29,6 +29,7 @@ SITE = {
     "addr_seoul": "서울특별시 영등포구 국회대로72길 11, 908호",
     "addr_daegu": "대구시 달서구 달서대로 54, 203호",
     "tel_daegu": "053-636-2273",
+    "site_url": "https://eun-tack.github.io/koreadw-homepage/",
 }
 
 # ─────────────────────────────────────────────────────────────
@@ -806,7 +807,8 @@ HTML_SHELL = """<!doctype html>
 <meta property="og:site_name" content="(주)코리아데이터월드">
 <meta property="og:title" content="{TITLE}">
 <meta property="og:description" content="{DESC}">
-<meta property="og:image" content="{ROOT}assets/favicon-512.png">
+<meta property="og:image" content="https://eun-tack.github.io/koreadw-homepage/assets/favicon-512.png">
+<meta property="og:url" content="{PAGEURL}">
 <meta property="og:locale" content="ko_KR">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -875,6 +877,7 @@ def build_site():
                          else p["title"] + " | 코리아데이터월드")
                 .replace("{DESC}", p["desc"])
                 .replace("{ROOT}", root)
+                .replace("{PAGEURL}", SITE["site_url"] + ("" if p["key"] == "home" else p["path"]))
                 .replace("{BODYCLASS}", ' class="is-home"' if p["key"] == "home" else "")
                 .replace("{HEADER}", header)
                 .replace("{FOOTER}", footer)
