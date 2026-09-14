@@ -31,10 +31,10 @@
     </a>
     <nav class="nav" id="gnb">
 <div class="nav-item">
-<a class="nav-top" href="../company/history.html">회사소개</a>
+<a class="nav-top" href="../company/greeting.html">회사소개</a>
 <div class="nav-sub"><div class="nav-sub-in">
-<a href="../company/history.html">연혁</a>
 <a href="../company/greeting.html">대표이사 인사말</a>
+<a href="../company/history.html">연혁</a>
 <a href="../company/organization.html">조직도</a>
 <a href="../company/welfare.html">복리후생</a>
 <a href="../company/location.html">오시는 길</a>
@@ -79,23 +79,23 @@
 <p class="deck-intro">
   방법론마다 <b>응답자가 보는 화면</b>과 <b>분석에 넘겨야 할 데이터 형식</b>이 다릅니다.
   CE는 더미변수 Long Format, AHP는 응답 중 실시간 CR 확인, CVM은 응답자별 제시금액 배분이 필요합니다.
-  저희는 이 네 가지를 자체 플랫폼에 직접 구현했고, 목록에 없는 유형도 설계서만 있으면 만듭니다.
+  저희는 이 네 가지를 자체 플랫폼에 직접 구현해 두었으며, 목록에 없는 유형도 설계서만 주시면 구현해 드립니다.
 </p>
 
-<div class="chips" role="tablist" aria-label="특수 설문 유형 선택">
-  <button class="chip" role="tab" data-target="ce" aria-selected="false">CE 선택실험법</button>
-  <button class="chip" role="tab" data-target="ahp" aria-selected="false">AHP 쌍대비교</button>
-  <button class="chip" role="tab" data-target="cvm" aria-selected="false">CVM 조건부가치측정</button>
-  <button class="chip" role="tab" data-target="delphi" aria-selected="false">Delphi 전문가 합의</button>
-  <button class="chip" role="tab" data-target="custom" aria-selected="true">그 외 모든 유형</button>
+<div class="chips" role="group" aria-label="특수 설문 유형 선택">
+  <button class="chip" type="button" data-target="ce" aria-pressed="false">CE 선택실험법</button>
+  <button class="chip" type="button" data-target="ahp" aria-pressed="false">AHP 쌍대비교</button>
+  <button class="chip" type="button" data-target="cvm" aria-pressed="false">CVM 조건부가치측정</button>
+  <button class="chip" type="button" data-target="delphi" aria-pressed="false">Delphi 전문가 합의</button>
+  <button class="chip" type="button" data-target="custom" aria-pressed="true">그 외 모든 유형</button>
 </div>
 
 <div class="deck">
 
-  <button class="dcard" type="button" data-key="ce" style="--i:0">
+  <div class="dcard" role="button" tabindex="0" data-key="ce" style="--i:0">
     <div class="dcard-top"><span class="dcard-code">CE</span><span class="dcard-step">선택 세트 3 / 8</span></div>
     <h3>선택실험법</h3>
-    <p class="dcard-sub">속성·수준 조합으로 만든 대안 중 하나를 고르게 해 지불의사와 속성별 중요도를 추정합니다.</p>
+    <p class="dcard-sub">속성과 수준을 조합한 대안 중 하나를 고르게 하여, 지불의사와 속성별 중요도를 추정합니다.</p>
     <div class="dcard-screen">
       <p class="mq">다음 두 대안 중 어느 쪽을 선택하시겠습니까?</p>
       <div class="mrow">
@@ -105,9 +105,9 @@
       <div class="mopt">둘 다 선택하지 않겠습니다</div>
     </div>
     <p class="dcard-foot">출력 · 더미변수 Long Format</p>
-  </button>
+  </div>
 
-  <button class="dcard" type="button" data-key="ahp" style="--i:1">
+  <div class="dcard" role="button" tabindex="0" data-key="ahp" style="--i:1">
     <div class="dcard-top"><span class="dcard-code">AHP</span><span class="dcard-step">쌍대비교 6 / 15</span></div>
     <h3>쌍대비교법</h3>
     <p class="dcard-sub">두 항목을 9점 척도로 비교해 가중치를 산출하고, 응답 도중 일관성 비율을 바로 확인합니다.</p>
@@ -119,9 +119,9 @@
       <span class="mpill">CR 0.043 · 일관성 확보</span>
     </div>
     <p class="dcard-foot">산출 · 기준별 가중치 &amp; 우선순위</p>
-  </button>
+  </div>
 
-  <button class="dcard" type="button" data-key="cvm" style="--i:2">
+  <div class="dcard" role="button" tabindex="0" data-key="cvm" style="--i:2">
     <div class="dcard-top"><span class="dcard-code">CVM</span><span class="dcard-step">DBDC 1차 제시</span></div>
     <h3>조건부가치측정법</h3>
     <p class="dcard-sub">제시금액을 응답자별로 균등 배분하고, 응답에 따라 2차 금액으로 분기합니다.</p>
@@ -135,12 +135,12 @@
       <div class="mline"><span>아니오 → 2차 제시</span><span>7,500원</span></div>
     </div>
     <p class="dcard-foot">출력 · 이중양분선택형 Long Format</p>
-  </button>
+  </div>
 
-  <button class="dcard" type="button" data-key="delphi" style="--i:3">
+  <div class="dcard" role="button" tabindex="0" data-key="delphi" style="--i:3">
     <div class="dcard-top"><span class="dcard-code">DELPHI</span><span class="dcard-step">2라운드 진행 중</span></div>
     <h3>전문가 합의법</h3>
-    <p class="dcard-sub">라운드별 통계 요약을 응답 화면에 자동으로 띄워, 전문가가 의견을 수정할 근거를 제공합니다.</p>
+    <p class="dcard-sub">라운드별 통계 요약을 응답 화면에 함께 보여 주어, 전문가가 의견을 조정할 근거를 제공합니다.</p>
     <div class="dcard-screen">
       <p class="mq">1라운드 결과입니다. 귀하의 응답을 유지하시겠습니까?</p>
       <dl class="mstat">
@@ -151,23 +151,23 @@
       <span class="mpill warn">사분위 범위 밖 · 사유 기입 필요</span>
     </div>
     <p class="dcard-foot">추적 · 라운드별 의견 변화 이력</p>
-  </button>
+  </div>
 
-  <button class="dcard custom is-active" type="button" data-key="custom" style="--i:4">
+  <div class="dcard custom is-active" role="button" tabindex="0" data-key="custom" style="--i:4">
     <div class="dcard-top"><span class="dcard-code">CUSTOM</span><span class="dcard-step">설계서 → 화면</span></div>
-    <h3>그리고, 그 밖의 모든 유형</h3>
-    <p class="dcard-sub">목록에 없는 방법론이라도 문항 구조와 출력 형식이 정의되어 있다면 구현 대상입니다.</p>
+    <h3>그 밖의 모든 유형</h3>
+    <p class="dcard-sub">목록에 없는 방법론이라도 문항 구조와 출력 형식만 정해져 있다면 구현할 수 있습니다.</p>
     <div class="dcard-screen">
       <p class="custom-kicker">연구계획서에 있는 그 문항,<br>화면으로 만들어 드립니다.</p>
       <ul class="custom-list">
         <li>컨조인트 · BWS · 순위형 배분</li>
-        <li>조건부 분기가 겹친 스크리너</li>
+        <li>조건부 분기가 여러 겹인 스크리너</li>
         <li>실험 처치군 무작위 배정 설계</li>
         <li>기관 고유 양식의 응답 화면</li>
       </ul>
     </div>
-    <p class="dcard-foot">먼저 · 방법론 자문부터 함께</p>
-  </button>
+    <p class="dcard-foot">자문 · 방법론 검토부터 함께</p>
+  </div>
 
 </div>
 
@@ -190,8 +190,8 @@
 <div class="callout">
   <h3>연구계획서 단계에서 먼저 상의해 주세요</h3>
   <p>
-    문항 설계가 끝난 뒤보다, 방법론을 정하는 단계에서 함께 검토할 때 표본 수와 설계 효율이 크게 달라집니다.
-    설계서 초안만 있어도 구현 가능 여부와 필요한 표본 규모를 회신드립니다.
+    문항 설계를 마친 뒤보다 방법론을 정하는 단계에서 함께 검토할 때, 필요한 표본 수와 설계 효율이 크게 달라집니다.
+    설계서 초안만 보내주셔도 구현 가능 여부와 적정 표본 규모를 정리해 회신드립니다.
   </p>
   <a class="btn btn-primary" href="../support/contact.html">방법론 자문 요청</a>
 </div>
@@ -205,14 +205,14 @@
         <a class="brand" href="../index.html">
           <span class="brand-logo" role="img" aria-label="코리아데이터월드"></span>
         </a>
-        <p class="ftr-addr"><b>서울 본사</b> 서울특별시 영등포구 국회대로72길 11, 908호<br><b>대구 지점</b> 대구시 달서구 달서대로 54, 203호</p>
+        <p class="ftr-addr"><b>서울 본사</b> 서울특별시 영등포구 국회대로72길 11, 309호<br><b>대구 지점</b> 대구광역시 달서구 달서대로 54, 503호</p>
       </div>
-      <div class="ftr-cols"><div class="ftr-col"><b>회사소개</b><a href="../company/history.html">연혁</a><a href="../company/greeting.html">대표이사 인사말</a><a href="../company/organization.html">조직도</a><a href="../company/welfare.html">복리후생</a><a href="../company/location.html">오시는 길</a></div><div class="ftr-col"><b>사업소개</b><a href="../business/fields.html">조사분야</a><a href="../business/special.html">특수 설문 유형</a><a href="../business/platform.html">설문 플랫폼</a><a href="../business/process.html">진행 절차</a></div><div class="ftr-col"><b>고객지원</b><a href="../support/notice.html">공지사항</a><a href="../support/contact.html">견적문의</a></div></div>
+      <div class="ftr-cols"><div class="ftr-col"><b>회사소개</b><a href="../company/greeting.html">대표이사 인사말</a><a href="../company/history.html">연혁</a><a href="../company/organization.html">조직도</a><a href="../company/welfare.html">복리후생</a><a href="../company/location.html">오시는 길</a></div><div class="ftr-col"><b>사업소개</b><a href="../business/fields.html">조사분야</a><a href="../business/special.html">특수 설문 유형</a><a href="../business/platform.html">설문 플랫폼</a><a href="../business/process.html">진행 절차</a></div><div class="ftr-col"><b>고객지원</b><a href="../support/notice.html">공지사항</a><a href="../support/contact.html">견적문의</a></div></div>
     </div>
     <div class="ftr-bottom">
       <p class="ftr-info">
         <b>(주)코리아데이터월드</b> &nbsp;|&nbsp; 대표이사 김근지 &nbsp;|&nbsp; 사업자등록번호 296-81-00459<br>
-        전화 070-8861-2273 &nbsp;|&nbsp; 팩스 070-8800-2273 &nbsp;|&nbsp; 메일 <a href="mailto:hyejin9508@koreadw.co.kr">hyejin9508@koreadw.co.kr</a>
+        전화 02-780-2273 &nbsp;|&nbsp; 팩스 070-8800-2273 &nbsp;|&nbsp; 메일 <a href="mailto:hyejin9508@koreadw.co.kr">hyejin9508@koreadw.co.kr</a>
       </p>
       <p class="ftr-copy">Copyright &copy; KOREA DATA WORLD Co., Ltd. All rights reserved.</p>
     </div>

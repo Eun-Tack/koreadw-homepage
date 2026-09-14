@@ -23,11 +23,11 @@ SITE = {
     "name_en": "KOREA DATA WORLD",
     "ceo": "김근지",
     "biz_no": "296-81-00459",
-    "tel": "070-8861-2273",
+    "tel": "02-780-2273",
     "fax": "070-8800-2273",
     "email": "hyejin9508@koreadw.co.kr",
-    "addr_seoul": "서울특별시 영등포구 국회대로72길 11, 908호",
-    "addr_daegu": "대구시 달서구 달서대로 54, 203호",
+    "addr_seoul": "서울특별시 영등포구 국회대로72길 11, 309호",
+    "addr_daegu": "대구광역시 달서구 달서대로 54, 503호",
     "tel_daegu": "053-636-2273",
     "site_url": "https://eun-tack.github.io/koreadw-homepage/",
 }
@@ -37,8 +37,8 @@ SITE = {
 # ─────────────────────────────────────────────────────────────
 MENU = [
     ("회사소개", "company", [
-        ("history", "연혁"),
         ("greeting", "대표이사 인사말"),
+        ("history", "연혁"),
         ("organization", "조직도"),
         ("welfare", "복리후생"),
         ("location", "오시는 길"),
@@ -60,20 +60,20 @@ MENU = [
 # 공통 컴포넌트
 # ─────────────────────────────────────────────────────────────
 DECK = """
-<div class="chips" role="tablist" aria-label="특수 설문 유형 선택">
-  <button class="chip" role="tab" data-target="ce" aria-selected="false">CE 선택실험법</button>
-  <button class="chip" role="tab" data-target="ahp" aria-selected="false">AHP 쌍대비교</button>
-  <button class="chip" role="tab" data-target="cvm" aria-selected="false">CVM 조건부가치측정</button>
-  <button class="chip" role="tab" data-target="delphi" aria-selected="false">Delphi 전문가 합의</button>
-  <button class="chip" role="tab" data-target="custom" aria-selected="true">그 외 모든 유형</button>
+<div class="chips" role="group" aria-label="특수 설문 유형 선택">
+  <button class="chip" type="button" data-target="ce" aria-pressed="false">CE 선택실험법</button>
+  <button class="chip" type="button" data-target="ahp" aria-pressed="false">AHP 쌍대비교</button>
+  <button class="chip" type="button" data-target="cvm" aria-pressed="false">CVM 조건부가치측정</button>
+  <button class="chip" type="button" data-target="delphi" aria-pressed="false">Delphi 전문가 합의</button>
+  <button class="chip" type="button" data-target="custom" aria-pressed="true">그 외 모든 유형</button>
 </div>
 
 <div class="deck">
 
-  <button class="dcard" type="button" data-key="ce" style="--i:0">
+  <div class="dcard" role="button" tabindex="0" data-key="ce" style="--i:0">
     <div class="dcard-top"><span class="dcard-code">CE</span><span class="dcard-step">선택 세트 3 / 8</span></div>
     <h3>선택실험법</h3>
-    <p class="dcard-sub">속성·수준 조합으로 만든 대안 중 하나를 고르게 해 지불의사와 속성별 중요도를 추정합니다.</p>
+    <p class="dcard-sub">속성과 수준을 조합한 대안 중 하나를 고르게 하여, 지불의사와 속성별 중요도를 추정합니다.</p>
     <div class="dcard-screen">
       <p class="mq">다음 두 대안 중 어느 쪽을 선택하시겠습니까?</p>
       <div class="mrow">
@@ -83,9 +83,9 @@ DECK = """
       <div class="mopt">둘 다 선택하지 않겠습니다</div>
     </div>
     <p class="dcard-foot">출력 · 더미변수 Long Format</p>
-  </button>
+  </div>
 
-  <button class="dcard" type="button" data-key="ahp" style="--i:1">
+  <div class="dcard" role="button" tabindex="0" data-key="ahp" style="--i:1">
     <div class="dcard-top"><span class="dcard-code">AHP</span><span class="dcard-step">쌍대비교 6 / 15</span></div>
     <h3>쌍대비교법</h3>
     <p class="dcard-sub">두 항목을 9점 척도로 비교해 가중치를 산출하고, 응답 도중 일관성 비율을 바로 확인합니다.</p>
@@ -97,9 +97,9 @@ DECK = """
       <span class="mpill">CR 0.043 · 일관성 확보</span>
     </div>
     <p class="dcard-foot">산출 · 기준별 가중치 &amp; 우선순위</p>
-  </button>
+  </div>
 
-  <button class="dcard" type="button" data-key="cvm" style="--i:2">
+  <div class="dcard" role="button" tabindex="0" data-key="cvm" style="--i:2">
     <div class="dcard-top"><span class="dcard-code">CVM</span><span class="dcard-step">DBDC 1차 제시</span></div>
     <h3>조건부가치측정법</h3>
     <p class="dcard-sub">제시금액을 응답자별로 균등 배분하고, 응답에 따라 2차 금액으로 분기합니다.</p>
@@ -113,12 +113,12 @@ DECK = """
       <div class="mline"><span>아니오 → 2차 제시</span><span>7,500원</span></div>
     </div>
     <p class="dcard-foot">출력 · 이중양분선택형 Long Format</p>
-  </button>
+  </div>
 
-  <button class="dcard" type="button" data-key="delphi" style="--i:3">
+  <div class="dcard" role="button" tabindex="0" data-key="delphi" style="--i:3">
     <div class="dcard-top"><span class="dcard-code">DELPHI</span><span class="dcard-step">2라운드 진행 중</span></div>
     <h3>전문가 합의법</h3>
-    <p class="dcard-sub">라운드별 통계 요약을 응답 화면에 자동으로 띄워, 전문가가 의견을 수정할 근거를 제공합니다.</p>
+    <p class="dcard-sub">라운드별 통계 요약을 응답 화면에 함께 보여 주어, 전문가가 의견을 조정할 근거를 제공합니다.</p>
     <div class="dcard-screen">
       <p class="mq">1라운드 결과입니다. 귀하의 응답을 유지하시겠습니까?</p>
       <dl class="mstat">
@@ -129,23 +129,23 @@ DECK = """
       <span class="mpill warn">사분위 범위 밖 · 사유 기입 필요</span>
     </div>
     <p class="dcard-foot">추적 · 라운드별 의견 변화 이력</p>
-  </button>
+  </div>
 
-  <button class="dcard custom is-active" type="button" data-key="custom" style="--i:4">
+  <div class="dcard custom is-active" role="button" tabindex="0" data-key="custom" style="--i:4">
     <div class="dcard-top"><span class="dcard-code">CUSTOM</span><span class="dcard-step">설계서 → 화면</span></div>
-    <h3>그리고, 그 밖의 모든 유형</h3>
-    <p class="dcard-sub">목록에 없는 방법론이라도 문항 구조와 출력 형식이 정의되어 있다면 구현 대상입니다.</p>
+    <h3>그 밖의 모든 유형</h3>
+    <p class="dcard-sub">목록에 없는 방법론이라도 문항 구조와 출력 형식만 정해져 있다면 구현할 수 있습니다.</p>
     <div class="dcard-screen">
       <p class="custom-kicker">연구계획서에 있는 그 문항,<br>화면으로 만들어 드립니다.</p>
       <ul class="custom-list">
         <li>컨조인트 · BWS · 순위형 배분</li>
-        <li>조건부 분기가 겹친 스크리너</li>
+        <li>조건부 분기가 여러 겹인 스크리너</li>
         <li>실험 처치군 무작위 배정 설계</li>
         <li>기관 고유 양식의 응답 화면</li>
       </ul>
     </div>
-    <p class="dcard-foot">먼저 · 방법론 자문부터 함께</p>
-  </button>
+    <p class="dcard-foot">자문 · 방법론 검토부터 함께</p>
+  </div>
 
 </div>
 """
@@ -153,10 +153,10 @@ DECK = """
 NOTICES = [
     # koreadw.co.kr 공지사항 게시판 실제 게시물 (2026-09 기준)
     ("소식", "방유진 전임연구원, 지역사회 후배들을 위한 장학금 기탁", "2026-08-18"),
-    ("소식", "대표이사, 제 81주년 광복절 경축식 및 청와대 영빈관 초청 오찬 참석", "2026-08-18"),
+    ("소식", "대표이사, 제81주년 광복절 경축식 및 청와대 영빈관 초청 오찬 참석", "2026-08-18"),
     ("공지", "(주)코리아데이터월드, 중소벤처기업부 &lsquo;스마트서비스 지원사업&rsquo; 선정", "2026-08-13"),
-    ("공지", "메가박스 코엑스 부티크 스위트 (Boutique Suite)에서 임직원 &lsquo;문화의 날&rsquo; 진행", "2026-08-05"),
-    ("안내", "대표이사 한국로봇산업진흥원 경영전략 자문 위원회 위원 위촉", "2026-06-17"),
+    ("공지", "메가박스 코엑스 부티크 스위트(Boutique Suite)에서 임직원 &lsquo;문화의 날&rsquo; 진행", "2026-08-05"),
+    ("안내", "대표이사, 한국로봇산업진흥원 경영전략 자문위원회 위원 위촉", "2026-06-17"),
     ("공지", "매월 마지막 주 금요일 단축 근무(오후 4시 퇴근) 안내", "2026-05-29"),
     ("공지", "2026년 5월 연휴기간 안내 (5월 4일 휴무)", "2026-05-04"),
     (None, "(주)코리아데이터월드 임직원 워크샵 안내", "2026-04-24"),
@@ -226,7 +226,7 @@ MAIN = """
       <h1>데이터의 확보와 분석으로<br><span class="hl">고객의 현안을 해결합니다.</span></h1>
       <p class="lede">
         (주)코리아데이터월드는 만족도·정책수요·실태·학술연구 조사를 수행하는 리서치 전문기업입니다.
-        문제를 구성하는 단계부터 함께 설계하고, 최종적으로 산출해야 하는 정보의 형태와 의미까지 같이 고민합니다.
+        문제를 정의하는 첫 단계부터 함께 설계하고, 끝내 손에 쥐어야 할 정보의 형태와 의미까지 같이 고민합니다.
       </p>
       <div class="hero-cta">
         <a class="btn btn-primary btn-lg" href="{root}support/contact.html">조사 의뢰 &middot; 견적 문의</a>
@@ -261,9 +261,9 @@ MAIN = """
   <div class="wrap">
     <dl class="facts">
       <div class="fact"><dt>창립</dt><dd>2016<small>년</small></dd></div>
-      <div class="fact"><dt>거점</dt><dd>2<small>개소 · 서울·대구</small></dd></div>
+      <div class="fact"><dt>거점</dt><dd>2<small>개소 · 서울, 대구</small></dd></div>
       <div class="fact"><dt>조사분야</dt><dd>4<small>개 영역</small></dd></div>
-      <div class="fact"><dt>전문 조사기법</dt><dd>CE<small>·AHP·CVM·Delphi</small></dd></div>
+      <div class="fact"><dt>전문 조사기법</dt><dd>4<small>종 · CE·AHP·CVM·Delphi</small></dd></div>
     </dl>
   </div>
 </section>
@@ -285,7 +285,7 @@ MAIN = """
     <div class="band-head">
       <div>
         <span class="eyebrow">특수 설문 유형</span>
-        <h2>일반 설문 도구로는 못 만드는 문항이<br>연구를 가로막지 않도록.</h2>
+        <h2>일반 설문 도구로는 만들 수 없는 문항이<br>연구를 가로막지 않도록.</h2>
         <p class="lede">
           선택실험(CE), 쌍대비교(AHP), 조건부가치측정(CVM), 전문가 합의(Delphi).
           연구 방법론이 요구하는 화면과 출력 형식을 그대로 구현합니다.
@@ -293,8 +293,8 @@ MAIN = """
       </div>
       <p class="band-note">
         방법론마다 <b>응답자가 보는 화면</b>과 <b>분석에 넘겨야 할 데이터 형식</b>이 다릅니다.
-        CE는 더미변수 Long Format, AHP는 응답 중 실시간 CR 확인, CVM은 응답자별 제시금액 배분이 필요합니다.
-        저희는 이 네 가지를 자체 플랫폼에 직접 구현했고, 목록에 없는 유형도 설계서만 있으면 만듭니다.
+        일반 설문 도구가 감당하지 못하는 지점이 바로 여기입니다.
+        저희는 네 가지 방법론을 자체 플랫폼에 직접 구현해 두었습니다.
       </p>
     </div>
     {DECK}
@@ -350,7 +350,7 @@ FIELDS_GRID = """
     <h3>만족도 조사</h3>
     <ul>
       <li>공공기관, 대학교 만족도 조사</li>
-      <li>내부/외부 고객이 서비스 등의 조사 항목에 대해 얼마나 만족하는지를 파악하여, 그에 맞는 개선 방안을 마련하기 위한 조사</li>
+      <li>내부·외부 고객이 서비스에 얼마나 만족하고 있는지 파악해, 개선이 필요한 지점을 찾아내는 조사입니다.</li>
     </ul>
   </article>
   <article class="field">
@@ -358,7 +358,7 @@ FIELDS_GRID = """
     <h3>정책 수요 조사</h3>
     <ul>
       <li>공공기관, 국책연구기관 정책 수요 조사</li>
-      <li>정책의 수립·개발과 결정을 위해 조사 대상자들의 현안 인식 확인 및 의견 수렴을 위한 자료로 활용</li>
+      <li>정책을 수립하고 결정하는 단계에서 대상자의 현안 인식을 확인하고 의견을 수렴해, 근거 자료로 활용합니다.</li>
     </ul>
   </article>
   <article class="field">
@@ -366,15 +366,15 @@ FIELDS_GRID = """
     <h3>실태 조사</h3>
     <ul>
       <li>공공기관 및 지자체 실태조사</li>
-      <li>연구대상자들의 현상황이나 문제점 등을 파악하기 위해 실시하는 조사로서, 이를 통해 개선방안을 도출</li>
+      <li>대상 집단이 처한 현재 상황과 문제점을 확인하고, 이를 근거로 개선 방안을 도출하는 조사입니다.</li>
     </ul>
   </article>
   <article class="field">
     <span class="field-k">04 &nbsp;ACADEMIC</span>
     <h3>학술 연구 조사</h3>
     <ul>
-      <li>교수, 대학생/학부생 학술 연구 조사</li>
-      <li>연구원·대학 등에서 개인 연구과제나 논문 작성을 위해 자료 수집·분석을 통해 직접적인 증거로 활용</li>
+      <li>교수, 대학원생·학부생 학술 연구 조사</li>
+      <li>연구기관·대학의 개인 연구과제나 논문 작성에 필요한 자료를 수집·분석해, 연구의 실증 근거로 활용합니다.</li>
     </ul>
   </article>
 </div>
@@ -385,42 +385,42 @@ PLATFORM_GRID = """
   <article class="plat-item">
     <span class="plat-n">01</span>
     <h3>문항 유형 13종</h3>
-    <p>단일·복수선택, 척도, Likert, 매트릭스, 순위, 숫자, 단답, 서술, 휴대전화, 섹션까지 조사 현장에서 실제로 쓰는 유형을 모두 지원합니다.</p>
+    <p>단일·복수선택, 척도, 리커트, 매트릭스, 순위, 숫자, 단답, 서술, 휴대전화 인증, 섹션 구분까지 조사 현장에서 실제로 쓰는 유형을 모두 지원합니다.</p>
   </article>
   <article class="plat-item">
     <span class="plat-n">02</span>
     <h3>분기 로직 · 스크리너</h3>
-    <p>이전 응답에 따라 문항을 건너뛰거나 이동시키고, 조사 대상 조건을 만족하지 않으면 조기 종료합니다.</p>
+    <p>앞선 응답에 따라 뒤 문항을 건너뛰거나 다른 문항으로 이동시키고, 조사 대상 조건에 맞지 않으면 그 자리에서 응답을 종료합니다.</p>
   </article>
   <article class="plat-item">
     <span class="plat-n">03</span>
     <h3>쿼터 관리</h3>
-    <p>성별·연령·지역 등 집단별 목표 응답 수를 설정하면 실시간으로 카운팅하고, 초과 집단은 자동으로 차단합니다.</p>
+    <p>성별·연령·지역 등 집단별 목표 응답 수를 정해 두면 실시간으로 집계하고, 목표를 채운 집단은 자동으로 마감합니다.</p>
   </article>
   <article class="plat-item">
     <span class="plat-n">04</span>
     <h3>개인 링크 · QR 발급</h3>
-    <p>응답자별 고유 URL과 QR코드를 발급합니다. 중간에 창을 닫아도 이어서 응답할 수 있습니다.</p>
+    <p>응답자마다 고유 URL과 QR코드를 발급합니다. 응답 도중 창을 닫아도 이어서 작성할 수 있습니다.</p>
   </article>
   <article class="plat-item">
     <span class="plat-n">05</span>
     <h3>AI 문서 변환</h3>
-    <p>HWPX·PDF 설문지를 올리면 AI가 문항을 자동으로 읽어 유형별로 분류하고, 초안 설문을 만들어 둡니다. 검토만 하면 됩니다.</p>
+    <p>HWPX·PDF 설문지를 올리면 AI가 문항을 읽어 유형별로 분류하고 초안을 만들어 둡니다. 담당자는 검토와 수정만 하면 됩니다.</p>
   </article>
   <article class="plat-item">
     <span class="plat-n">06</span>
     <h3>모니터링 · 데이터 납품</h3>
-    <p>응답 수와 완료율을 실시간으로 확인하고, 원시데이터를 XLSX·CSV로 내려받습니다. 분석용 코딩북도 함께 정리해 드립니다.</p>
+    <p>응답 수와 완료율을 실시간으로 확인하고, 원시데이터를 XLSX·CSV로 내려받을 수 있습니다. 분석에 쓰실 코딩북도 함께 정리해 드립니다.</p>
   </article>
 </div>
 """
 
-CTA = """
+CTA_TPL = """
 <div class="cta">
   <div>
-    <span class="eyebrow">견적 문의</span>
-    <h2>조사 목적만 알려주시면,<br>설계부터 같이 시작합니다.</h2>
-    <p class="lede sm">문항이 확정되지 않아도 괜찮습니다. 무엇을 알고 싶은지, 결과를 어디에 쓰실지부터 이야기해 주세요.</p>
+    <span class="eyebrow">{EYEBROW}</span>
+    <h2>{HEAD}</h2>
+    <p class="lede sm">{LEAD}</p>
     <div class="hero-cta">
       <a class="btn btn-primary" href="mailto:{email}">메일로 문의하기</a>
       <a class="btn btn-ghost" href="tel:{tel}">{tel}</a>
@@ -435,6 +435,23 @@ CTA = """
 </div>
 """
 
+
+def cta(eyebrow, head, lead):
+    return (CTA_TPL.replace("{EYEBROW}", eyebrow)
+                   .replace("{HEAD}", head)
+                   .replace("{LEAD}", lead))
+
+
+# 메인 하단: 아직 결정을 안 한 방문자를 움직이는 문구
+CTA = cta("견적 문의",
+          "조사 목적만 알려주시면,<br>설계부터 같이 시작합니다.",
+          "문항이 아직 확정되지 않아도 괜찮습니다. 무엇을 알고 싶으신지, 그 결과를 어디에 쓰실지부터 말씀해 주세요.")
+
+# 견적문의 페이지: 이미 같은 말이 페이지 제목에 있으므로 '연락 수단' 안내로 역할을 나눈다
+CTA_CONTACT = cta("연락처",
+                  "편하신 방법으로<br>연락 주세요.",
+                  "메일로 보내주시면 문의 내용을 정리해 담당 연구원이 회신드립니다. 급하신 건은 전화로 말씀해 주세요.")
+
 page("home", "index.html", None, "홈", "코리아데이터월드",
      "(주)코리아데이터월드 — 만족도·정책수요·실태·학술연구 조사와 CE·AHP·CVM·Delphi 특수 설문을 직접 구현하는 리서치 전문기업",
      MAIN)
@@ -446,20 +463,20 @@ page("greeting", "company/greeting.html", "company", "대표이사 인사말",
 <div class="prose">
   <p class="prose-lead">안녕하십니까?</p>
   <p>
-    (주)코리아데이터월드는 각종 데이터의 확보와 분석을 통해 고객의 현안 문제를 해결하는 데에 도움을 드리고,
-    나아가서는 고객의 목표를 달성하는 데에 기여하기 위해 노력하고 있습니다.
+    (주)코리아데이터월드는 데이터를 확보하고 분석하는 일로 고객의 현안을 해결하는 데 힘을 보태고,
+    나아가 고객이 목표를 이루는 데 기여하고자 노력하고 있습니다.
   </p>
   <p>
-    현대 사회는 넘쳐나는 정보와 데이터들로 인해 자칫 목표 지향을 잃어버리고 표류하기 쉽습니다.
-    이에 저희 코리아데이터월드에서는 고객이 문제를 구성하는 단계부터 함께 설계하고,
-    최종적으로 산출해야 하는 정보의 형태와 의미도 같이 고민하겠습니다.
+    오늘날은 정보와 데이터가 넘쳐나는 만큼, 정작 무엇을 위한 자료였는지 방향을 잃기 쉬운 시대이기도 합니다.
+    그래서 저희 코리아데이터월드는 문제를 정의하는 첫 단계부터 함께 설계하고,
+    끝내 손에 쥐어야 할 정보가 어떤 형태와 의미를 가져야 하는지까지 같이 고민하겠습니다.
   </p>
-  <p>이를 위해 저희는 서베이 및 컨설팅 분야의 최고 전문 인력을 보유하고 있습니다.</p>
+  <p>그 고민에 답하기 위해, 저희는 서베이와 컨설팅 분야의 전문 인력을 갖추고 있습니다.</p>
   <blockquote>
-    (주)코리아데이터월드가 제공하는 신뢰할 수 있는 데이터와 통찰력 있는 분석 결과는<br>
-    고객의 매출과 정책 평가와 연구 성과에 기여할 것입니다.
+    (주)코리아데이터월드가 드리는 신뢰할 수 있는 데이터와 통찰력 있는 분석은<br>
+    고객의 성과로, 정책의 근거로, 연구의 결실로 이어질 것입니다.
   </blockquote>
-  <p>항상 고객의 입장에서 최상의 결과를 드리고자 노력하는 저희를 언제든 찾아주시기 바랍니다. 감사합니다.</p>
+  <p>늘 고객의 자리에서 생각하며 최선의 결과를 드리겠습니다. 언제든 편하게 찾아주시기 바랍니다. 감사합니다.</p>
   <p class="sign">(주)코리아데이터월드 대표이사 <b>김근지</b></p>
 </div>
 """)
@@ -476,9 +493,9 @@ page("history", "company/history.html", "company", "연혁",
     <b>2018</b>
     <ul>
       <li><span>04.01</span>연구팀 / 실사팀 / 분석팀 / 제작팀 운영</li>
-      <li><span>04.01</span>서울 본사 · 대구 지점 통합 시스템 운영</li>
+      <li><span>04.01</span>서울 본사 · 대구 지점 통합 운영 체계 구축</li>
       <li><span>03.05</span>대구 지점 신설</li>
-      <li><span>03.05</span>서울 여의도 본사 이전</li>
+      <li><span>03.05</span>서울 여의도로 본사 이전</li>
     </ul>
   </div>
   <div class="hist-year">
@@ -488,7 +505,7 @@ page("history", "company/history.html", "company", "연혁",
   <div class="hist-year">
     <b>2016</b>
     <ul>
-      <li><span>12.01</span>여성창업보육센터 본사 이전</li>
+      <li><span>12.01</span>여성창업보육센터로 본사 이전</li>
       <li><span>10.31</span>(주)코리아데이터월드 창립</li>
     </ul>
   </div>
@@ -540,8 +557,12 @@ page("welfare", "company/welfare.html", "company", "복리후생",
      """
 <div class="wel">
   <article class="wel-item">
+    <span class="wel-k">유연근무제</span>
+    <p>육아기 단축근무제 · 탄력근무제 · 주 1~2일 재택근무제 시행</p>
+  </article>
+  <article class="wel-item">
     <span class="wel-k">식사 제공</span>
-    <p>아침 / 점심 간식 제공</p>
+    <p>아침·점심 간식 제공</p>
   </article>
   <article class="wel-item">
     <span class="wel-k">자기계발비</span>
@@ -549,11 +570,7 @@ page("welfare", "company/welfare.html", "company", "복리후생",
   </article>
   <article class="wel-item">
     <span class="wel-k">인센티브</span>
-    <p>연말 인센티브 지급, 우수 사원 해외 연수</p>
-  </article>
-  <article class="wel-item">
-    <span class="wel-k">유연근무제</span>
-    <p>육아기 단축근무제, 탄력근무제, 주 1~2일 재택근무제 시행</p>
+    <p>연말 인센티브 지급 · 우수 사원 해외 연수</p>
   </article>
   <article class="wel-item">
     <span class="wel-k">창립기념일</span>
@@ -561,17 +578,17 @@ page("welfare", "company/welfare.html", "company", "복리후생",
   </article>
   <article class="wel-item">
     <span class="wel-k">생일</span>
-    <p>축하금 지급, 케이크 / 꽃 바구니 증정 <b>(20만원 상당)</b></p>
+    <p>축하금 지급 · 케이크와 꽃바구니 증정 <b>(20만원 상당)</b></p>
   </article>
 </div>
-<p class="note">※ 근무시간 : 오전 10시 – 오후 6시 (주 35시간 근무)</p>
+<p class="note">※ 근무시간 오전 10시 – 오후 6시 · 주 35시간 근무제</p>
 """)
 
 page("location", "company/location.html", "company", "오시는 길",
      "오시는 길", "코리아데이터월드 서울 본사 · 대구 지점 위치 안내",
      OFFICES + """
 <div class="prose sm">
-  <p>방문 상담을 원하시는 경우 사전에 전화 또는 메일로 일정을 조율해 주시면 담당 연구원이 준비하여 맞이하겠습니다.</p>
+  <p>방문 상담을 원하시면 전화나 메일로 미리 일정을 잡아 주세요. 담당 연구원이 자료를 준비해 두고 맞이하겠습니다.</p>
 </div>
 """)
 
@@ -582,8 +599,8 @@ page("fields", "business/fields.html", "business", "조사분야",
 <div class="callout">
   <h3>어느 영역인지 애매해도 괜찮습니다</h3>
   <p>
-    실제 과제는 만족도와 실태, 정책수요가 섞여 들어오는 경우가 대부분입니다.
-    무엇을 알고 싶은지와 결과를 어디에 쓰실지만 알려주시면, 그에 맞는 조사 형태를 저희가 정리해 제안드립니다.
+    실제 과제는 만족도와 실태, 정책수요가 섞여 있는 경우가 대부분입니다.
+    무엇을 알고 싶으신지, 그 결과를 어디에 쓰실지만 알려주시면 그에 맞는 조사 형태를 저희가 정리해 제안드립니다.
   </p>
   <a class="btn btn-primary" href="{root}support/contact.html">조사 상담 요청</a>
 </div>
@@ -596,7 +613,7 @@ page("special", "business/special.html", "business", "특수 설문 유형",
 <p class="deck-intro">
   방법론마다 <b>응답자가 보는 화면</b>과 <b>분석에 넘겨야 할 데이터 형식</b>이 다릅니다.
   CE는 더미변수 Long Format, AHP는 응답 중 실시간 CR 확인, CVM은 응답자별 제시금액 배분이 필요합니다.
-  저희는 이 네 가지를 자체 플랫폼에 직접 구현했고, 목록에 없는 유형도 설계서만 있으면 만듭니다.
+  저희는 이 네 가지를 자체 플랫폼에 직접 구현해 두었으며, 목록에 없는 유형도 설계서만 주시면 구현해 드립니다.
 </p>
 """ + DECK + """
 <div class="spec-table-wrap">
@@ -618,8 +635,8 @@ page("special", "business/special.html", "business", "특수 설문 유형",
 <div class="callout">
   <h3>연구계획서 단계에서 먼저 상의해 주세요</h3>
   <p>
-    문항 설계가 끝난 뒤보다, 방법론을 정하는 단계에서 함께 검토할 때 표본 수와 설계 효율이 크게 달라집니다.
-    설계서 초안만 있어도 구현 가능 여부와 필요한 표본 규모를 회신드립니다.
+    문항 설계를 마친 뒤보다 방법론을 정하는 단계에서 함께 검토할 때, 필요한 표본 수와 설계 효율이 크게 달라집니다.
+    설계서 초안만 보내주셔도 구현 가능 여부와 적정 표본 규모를 정리해 회신드립니다.
   </p>
   <a class="btn btn-primary" href="{root}support/contact.html">방법론 자문 요청</a>
 </div>
@@ -632,8 +649,8 @@ page("platform", "business/platform.html", "business", "설문 플랫폼",
 <div class="callout">
   <h3>필요한 기능이 없으면, 만듭니다</h3>
   <p>
-    외부 설문 도구를 빌려 쓰지 않기 때문에 과제별 요구사항을 화면에 반영할 수 있습니다.
-    기관 고유의 응답 양식, 별도 동의 절차, 특정 형식의 데이터 납품 요건 모두 협의 대상입니다.
+    외부 설문 도구를 빌려 쓰지 않기에, 과제마다 다른 요구사항을 화면에 그대로 반영할 수 있습니다.
+    기관 고유의 응답 양식, 별도의 동의 절차, 특정 형식의 데이터 납품 요건 모두 협의할 수 있습니다.
   </p>
   <a class="btn btn-primary" href="{root}business/special.html">특수 설문 유형 보기</a>
 </div>
@@ -644,21 +661,21 @@ page("process", "business/process.html", "business", "진행 절차",
      "진행 절차", "문의부터 결과 납품까지의 조사 진행 절차",
      """
 <div class="proc">
-  <article class="proc-step"><span class="n">1</span><h3>문의 · 상담</h3><p>조사 목적과 활용 계획을 확인합니다.</p></article>
-  <article class="proc-step"><span class="n">2</span><h3>설계 · 견적</h3><p>표본 설계와 문항 구조를 잡고 견적을 드립니다.</p></article>
-  <article class="proc-step"><span class="n">3</span><h3>문항 확정</h3><p>초안을 화면으로 구현해 함께 검토합니다.</p></article>
-  <article class="proc-step"><span class="n">4</span><h3>실사</h3><p>온라인·대면·전화 방식으로 응답을 수집합니다.</p></article>
-  <article class="proc-step"><span class="n">5</span><h3>검증 · 분석</h3><p>불성실 응답을 걸러내고 통계 분석을 수행합니다.</p></article>
+  <article class="proc-step"><span class="n">1</span><h3>문의 · 상담</h3><p>조사 목적과 결과 활용 계획을 함께 확인합니다.</p></article>
+  <article class="proc-step"><span class="n">2</span><h3>설계 · 견적</h3><p>표본 설계와 문항 구조를 잡아 견적을 드립니다.</p></article>
+  <article class="proc-step"><span class="n">3</span><h3>문항 확정</h3><p>문항 초안을 실제 화면으로 만들어 함께 검토합니다.</p></article>
+  <article class="proc-step"><span class="n">4</span><h3>실사</h3><p>온라인·대면·전화 등 적합한 방식으로 응답을 수집합니다.</p></article>
+  <article class="proc-step"><span class="n">5</span><h3>검증 · 분석</h3><p>불성실 응답을 걸러낸 뒤 통계 분석을 진행합니다.</p></article>
   <article class="proc-step"><span class="n">6</span><h3>보고 · 납품</h3><p>결과보고서와 원시데이터를 함께 제출합니다.</p></article>
 </div>
 <div class="prose sm">
   <p>
-    일정은 조사 규모와 방법에 따라 달라집니다. 일반적인 온라인 조사는 문항 확정 후 2~4주,
-    전문 조사기법(CE·AHP·CVM·Delphi)이 포함되면 설계 검토 기간이 추가로 필요합니다.
+    일정은 조사 규모와 방법에 따라 달라집니다. 일반적인 온라인 조사는 문항을 확정한 뒤 2~4주가 걸리며,
+    전문 조사기법(CE·AHP·CVM·Delphi)이 포함되면 설계를 검토할 기간이 더 필요합니다.
   </p>
 </div>
 """,
-     sub="문의부터 결과 납품까지")
+     sub="문의부터 결과 납품까지, 여섯 단계로 진행합니다.")
 
 # ── 고객지원 ──────────────────────────────────────────────────
 page("notice", "support/notice.html", "support", "공지사항",
@@ -668,11 +685,11 @@ page("notice", "support/notice.html", "support", "공지사항",
   {NOTICES_ALL}
 </ul>
 """,
-     sub="회사 소식과 안내를 전해드립니다.")
+     sub="회사의 소식과 안내 사항을 전해드립니다.")
 
 page("contact", "support/contact.html", "support", "견적문의",
      "견적문의", "조사 의뢰 및 견적 문의 안내",
-     CTA + """
+     CTA_CONTACT + """
 <div class="two contact-two">
   <div>
     <h3 class="minor-h">문의하실 때 알려주시면 좋은 것</h3>
@@ -683,7 +700,7 @@ page("contact", "support/contact.html", "support", "견적문의",
       <li>납품 기한과 예산 범위</li>
       <li>전문 조사기법 포함 여부 (CE · AHP · CVM · Delphi 등)</li>
     </ul>
-    <p class="note">확정되지 않은 항목은 비워두셔도 됩니다. 상담 과정에서 함께 정리합니다.</p>
+    <p class="note">아직 정해지지 않은 항목은 비워 두셔도 됩니다. 상담하면서 함께 정리해 나가겠습니다.</p>
   </div>
   <div>
     <h3 class="minor-h">오시는 길</h3>
@@ -805,7 +822,7 @@ HTML_SHELL = """<!doctype html>
 <meta property="og:site_name" content="(주)코리아데이터월드">
 <meta property="og:title" content="{TITLE}">
 <meta property="og:description" content="{DESC}">
-<meta property="og:image" content="https://eun-tack.github.io/koreadw-homepage/assets/favicon-512.png">
+<meta property="og:image" content="{OGIMAGE}">
 <meta property="og:url" content="{PAGEURL}">
 <meta property="og:locale" content="ko_KR">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -875,6 +892,7 @@ def build_site():
                          else p["title"] + " | 코리아데이터월드")
                 .replace("{DESC}", p["desc"])
                 .replace("{ROOT}", root)
+                .replace("{OGIMAGE}", SITE["site_url"] + "assets/favicon-512.png")
                 .replace("{PAGEURL}", SITE["site_url"] + ("" if p["key"] == "home" else p["path"]))
                 .replace("{BODYCLASS}", ' class="is-home"' if p["key"] == "home" else "")
                 .replace("{HEADER}", header)
@@ -931,8 +949,15 @@ def build_artifact():
 
         pid = "home" if p["key"] == "home" else p["path"].replace(".html", "")
         cls = "vpage" + (" is-home" if p["key"] == "home" else "")
-        parts.append('<div class="%s" data-page="%s" hidden>%s<main id="main">%s</main>%s</div>'
-                     % (cls, pid, header, body, footer))
+        # 한 문서에 모든 페이지가 들어가므로 id 가 중복되지 않도록 페이지별 접미사를 붙인다
+        uid = p["key"]
+        main_id = "main-" + uid
+        header = (header
+                  .replace('href="#main"', 'href="#%s"' % main_id)
+                  .replace('id="gnb"', 'id="gnb-%s"' % uid)
+                  .replace('aria-controls="gnb"', 'aria-controls="gnb-%s"' % uid))
+        parts.append('<div class="%s" data-page="%s" hidden>%s<main id="%s">%s</main>%s</div>'
+                     % (cls, pid, header, main_id, body, footer))
 
     router = """
 <script>

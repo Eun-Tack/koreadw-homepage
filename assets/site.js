@@ -17,7 +17,7 @@
           c.classList.toggle("is-active", c.dataset.key === key);
         });
         chips.forEach(function (ch) {
-          ch.setAttribute("aria-selected", String(ch.dataset.target === key));
+          ch.setAttribute("aria-pressed", String(ch.dataset.target === key));
         });
       }
 
@@ -25,6 +25,12 @@
         c.addEventListener("click", function () { activate(c.dataset.key); });
         c.addEventListener("mouseenter", function () { activate(c.dataset.key); });
         c.addEventListener("focus", function () { activate(c.dataset.key); });
+        c.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+            e.preventDefault();
+            activate(c.dataset.key);
+          }
+        });
       });
       chips.forEach(function (ch) {
         ch.addEventListener("click", function () { activate(ch.dataset.target); });
@@ -49,11 +55,27 @@
     Array.prototype.forEach.call(links, function (a) {
       if (a.dataset.bound === "1") return;
       a.dataset.bound = "1";
-      a.addEventListener("click", function () {
-        document.body.classList.remove("nav-open");
-      });
+      a.addEventListener("click", closeNav);
     });
   }
+
+  function closeNav() {
+    if (!document.body.classList.contains("nav-open")) return;
+    document.body.classList.remove("nav-open");
+    var btn = document.querySelector(".vpage:not([hidden]) .nav-toggle") ||
+              document.querySelector(".nav-toggle");
+    if (btn) {
+      btn.setAttribute("aria-expanded", "false");
+      btn.setAttribute("aria-label", "메뉴 열기");
+    }
+  }
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" || e.key === "Esc") closeNav();
+  });
+  window.addEventListener("resize", function () {
+    if (window.innerWidth > 1040) closeNav();
+  });
 
   function init(scope) {
     scope = scope || document;
