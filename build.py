@@ -25,7 +25,7 @@ SITE = {
     "biz_no": "296-81-00459",
     "tel": "02-780-2273",
     "fax": "070-8800-2273",
-    "email": "hyejin9508@koreadw.co.kr",
+    "email": "contact@koreadw.co.kr",
     "addr_seoul": "서울특별시 영등포구 국회대로72길 11, 309호",
     "addr_daegu": "대구광역시 달서구 달서대로 54, 503호",
     "tel_daegu": "053-636-2273",
