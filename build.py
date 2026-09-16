@@ -29,7 +29,7 @@ SITE = {
     "addr_seoul": "서울특별시 영등포구 국회대로72길 11, 309호",
     "addr_daegu": "대구광역시 달서구 달서대로 54, 503호",
     "tel_daegu": "053-636-2273",
-    "site_url": "https://eun-tack.github.io/koreadw-homepage/",
+    "site_url": "https://www.koreadw.co.kr/",
 }
 
 # ─────────────────────────────────────────────────────────────
