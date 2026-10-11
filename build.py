@@ -32,6 +32,101 @@ SITE = {
     "site_url": "https://www.koreadw.co.kr/",
 }
 
+
+# ─────────────────────────────────────────────────────────────
+# 콘텐츠 파일 로더
+#   content/ 폴더의 텍스트 파일만 고치면 화면이 바뀐다.
+#   빌드 스크립트를 열지 않고도 공지·연혁·연구원을 수정할 수 있게 하는 것이 목적.
+# ─────────────────────────────────────────────────────────────
+CONTENT = os.path.join(HERE, "content")
+
+
+def _lines(name):
+    """주석(#)과 빈 줄을 걷어낸 본문 줄만 돌려준다."""
+    path = os.path.join(CONTENT, name)
+    if not os.path.isfile(path):
+        return []
+    out = []
+    for raw in io.open(path, encoding="utf-8"):
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        out.append(line)
+    return out
+
+
+def _cells(line, count):
+    """'a | b | c' 를 count 개 칸으로 맞춰 쪼갠다. 모자란 칸은 빈 문자열."""
+    parts = [c.strip() for c in line.split("|")]
+    parts += [""] * (count - len(parts))
+    return parts[:count]
+
+
+def load_notices():
+    rows = []
+    for line in _lines("notices.md"):
+        date, tag, title = _cells(line, 3)
+        if not date or not title:
+            continue
+        rows.append((tag or None, esc(title), date))
+    return rows
+
+
+def load_history():
+    """([(연도, [(월일, 내용, 설명), ...]), ...], [(시점, 제목, 설명), ...])"""
+    years, story, mode = [], [], "연혁"
+    index = {}
+    for line in _lines("history.md"):
+        if line.startswith("[") and line.endswith("]"):
+            mode = line[1:-1].strip()
+            continue
+        if mode == "연혁":
+            year, when, text, note = _cells(line, 4)
+            if not year or not text:
+                continue
+            if year not in index:
+                index[year] = []
+                years.append((year, index[year]))
+            index[year].append((when, esc(text), esc(note)))
+        else:
+            when, title, desc = _cells(line, 3)
+            if not title:
+                continue
+            story.append((esc(when), esc(title), esc(desc)))
+    return years, story
+
+
+def load_people():
+    people, cur = [], {}
+    for line in _lines("people.md"):
+        if line.startswith("---"):
+            if cur:
+                people.append(cur)
+            cur = {}
+            continue
+        if ":" not in line:
+            continue
+        k, v = line.split(":", 1)
+        cur[k.strip()] = v.strip()
+    if cur:
+        people.append(cur)
+    return people
+
+
+def esc(t):
+    """콘텐츠 파일은 평문이므로 HTML 특수문자만 막아 준다."""
+    t = t.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    # 작은따옴표는 여는/닫는 모양을 번갈아 준다 ('대구일보' → &lsquo;대구일보&rsquo;)
+    out, open_q = [], True
+    for ch in t:
+        if ch == "'":
+            out.append("&lsquo;" if open_q else "&rsquo;")
+            open_q = not open_q
+        else:
+            out.append(ch)
+    return "".join(out)
+
+
 # ─────────────────────────────────────────────────────────────
 # 전역 메뉴
 # ─────────────────────────────────────────────────────────────
@@ -40,21 +135,84 @@ MENU = [
         ("greeting", "대표이사 인사말"),
         ("history", "연혁"),
         ("organization", "조직도"),
-        ("welfare", "복리후생"),
+        ("people", "연구원 프로필"),
         ("location", "오시는 길"),
     ]),
     ("사업소개", "business", [
         ("fields", "조사분야"),
+        ("methods", "조사방법"),
         ("special", "특수 설문 유형"),
         ("platform", "설문 플랫폼"),
         ("process", "진행 절차"),
     ]),
-    ("고객지원", "support", [
+    ("공지사항", "support", [
         ("notice", "공지사항"),
-        ("contact", "견적문의"),
     ]),
 ]
 
+# 페이지는 살아 있으나 상단 메뉴에는 넣지 않는다.
+# 견적문의는 헤더 우측 '견적 문의' 버튼과 겹쳐 메뉴에서 제외한다.
+NAV_HIDDEN = {"contact"}
+
+
+
+# ─────────────────────────────────────────────────────────────
+# 아이콘
+#   24x24 선 아이콘. fill 없이 stroke 만 쓰므로 CSS 의 color 를 그대로 따라간다.
+#   본문에 {ico:키} 라고 적으면 render_content 가 치환한다.
+# ─────────────────────────────────────────────────────────────
+ICONS = {
+    # 조사분야
+    "satisfaction": '<path d="M4 17a8 8 0 0 1 16 0"/><path d="M12 17l4.2-4.4"/><circle cx="12" cy="17" r="1.1"/>',
+    "policy":       '<path d="M3.5 9.5 12 4.5l8.5 5"/><path d="M6 9.8v8M10 9.8v8M14 9.8v8M18 9.8v8"/><path d="M3.5 20.5h17"/>',
+    "fact":         '<path d="M4.5 5.5h9M4.5 9.5h5.5"/><circle cx="13.5" cy="14" r="4.2"/><path d="M16.6 17.1 20.2 20.6"/>',
+    "academic":     '<path d="M2.5 9 12 5l9.5 4-9.5 4z"/><path d="M6.5 11.2v4.3c0 1.4 2.5 2.5 5.5 2.5s5.5-1.1 5.5-2.5v-4.3"/><path d="M21.5 9v5.2"/>',
+    # 설문 플랫폼
+    "qtype":        '<circle cx="5" cy="6.5" r="1.8"/><rect x="3.2" y="11.2" width="3.6" height="3.6" rx="1"/><path d="M3.2 19.5h3.6"/><path d="M10 6.5h10.5M10 13h10.5M10 19.5h7"/>',
+    "branch":       '<circle cx="5" cy="12" r="2"/><circle cx="19" cy="6.5" r="2"/><circle cx="19" cy="17.5" r="2"/><path d="M7 12h4.5V6.5H17"/><path d="M11.5 12v5.5H17"/>',
+    "quota":        '<path d="M3 20.5h18"/><path d="M6.5 20.5V13M12 20.5V7.5M17.5 20.5V11"/><path d="M3 9.5h18" stroke-dasharray="2.4 2.6"/>',
+    "qrlink":       '<rect x="3.5" y="3.5" width="6" height="6" rx="1.2"/><rect x="14.5" y="3.5" width="6" height="6" rx="1.2"/><rect x="3.5" y="14.5" width="6" height="6" rx="1.2"/><path d="M14.5 14.5h2.6M20.5 14.5v2.6M14.5 20.5h6M17.6 17.6h.01"/>',
+    "aidoc":        '<path d="M13 3.5H7A1.5 1.5 0 0 0 5.5 5v14A1.5 1.5 0 0 0 7 20.5h10a1.5 1.5 0 0 0 1.5-1.5V9z"/><path d="M13 3.5V9h5.5"/><path d="M12 11.8l.95 2.25 2.25.95-2.25.95L12 18.2l-.95-2.25-2.25-.95 2.25-.95z"/>',
+    "monitor":      '<rect x="2.5" y="4.5" width="19" height="12.5" rx="2"/><path d="M9 20.5h6M12 17v3.5"/><path d="M6.5 13.5 10 10l2.5 2.5L17 8"/>',
+    # 진행 절차
+    "consult":      '<path d="M20.5 12.3a7.3 7 0 0 1-7.3 7c-1.1 0-2.1-.2-3-.6l-5.7 1.3 1.6-4.1a7 7 0 0 1-.6-3.6 7.3 7 0 0 1 15 0z"/><path d="M9.7 12.3h.01M13.2 12.3h.01M16.7 12.3h.01"/>',
+    "design":       '<path d="M15.5 20.5H5.5A1.5 1.5 0 0 1 4 19V5a1.5 1.5 0 0 1 1.5-1.5h9A1.5 1.5 0 0 1 16 5v5.2"/><path d="M7.5 8.2h5M7.5 12.2h3.8"/><path d="M19.6 12.4a1.55 1.55 0 0 1 2.2 2.2l-4.9 4.9-2.9.7.7-2.9z"/>',
+    "confirm":      '<rect x="3.5" y="4" width="17" height="16.5" rx="2"/><path d="M7 9.6l1.6 1.6 3.4-3.3"/><path d="M14.5 10h3.3"/><path d="M7 15.8h10.8"/>',
+    "field":        '<path d="M3.5 13.5h4l1.5 3h6l1.5-3h4"/><path d="M3.5 13.5v5a2 2 0 0 0 2 2h13a2 2 0 0 0 2-2v-5"/><path d="M12 3.2v7.3M9 7.8l3 3 3-3"/>',
+    "verify":       '<path d="M3.5 4.5h17l-6.8 8v7.4l-3.4-2.2V12.5z"/>',
+    "deliver":      '<path d="M13 3.5H7A1.5 1.5 0 0 0 5.5 5v14A1.5 1.5 0 0 0 7 20.5h10a1.5 1.5 0 0 0 1.5-1.5V9z"/><path d="M13 3.5V9h5.5"/><path d="M12 11.8v5.4M9.6 14.8 12 17.2l2.4-2.4"/>',
+}
+
+
+
+# 조사방법 전용 아이콘. 생성 일러스트 도착 전까지 쓰는 선 아이콘.
+ICONS.update({
+    "f2f":  '<circle cx="7.5" cy="7" r="2.4"/><circle cx="16.5" cy="7" r="2.4"/>'
+            '<path d="M3.2 15.5a4.3 4.3 0 0 1 8.6 0"/><path d="M12.2 15.5a4.3 4.3 0 0 1 8.6 0"/>'
+            '<path d="M3.2 18.8h17.6"/>',
+    "cati": '<path d="M8 3.6a7.5 7.5 0 0 0-3.5 6.3v3.6"/><path d="M19.5 13.5V9.9A7.5 7.5 0 0 0 16 3.6"/>'
+            '<rect x="2.5" y="11.5" width="3.6" height="5.6" rx="1.5"/>'
+            '<rect x="17.9" y="11.5" width="3.6" height="5.6" rx="1.5"/>'
+            '<path d="M19.7 17.1v1.4a2 2 0 0 1-2 2h-3.4"/>',
+    "web":  '<rect x="2.5" y="4" width="12.5" height="10.5" rx="1.8"/><path d="M2.5 7.4h12.5"/>'
+            '<rect x="16.5" y="9" width="5" height="11" rx="1.6"/><path d="M18.4 17.8h1.2"/>'
+            '<path d="M5.5 11l1.4 1.4 2.8-2.8"/>',
+    "ars":  '<rect x="6" y="3.5" width="12" height="13" rx="2"/>'
+            '<path d="M9.3 7h.01M12 7h.01M14.7 7h.01M9.3 10h.01M12 10h.01M14.7 10h.01M9.3 13h.01M12 13h.01M14.7 13h.01"/>'
+            '<path d="M3 19.5v1.5M6.5 18v3M10 19v2M13.5 18v3M17 19.5v1.5M20.5 18.5v2.5"/>',
+    "idi":  '<circle cx="6.5" cy="7.5" r="2.6"/><path d="M2.5 17a4 4 0 0 1 8 0"/>'
+            '<path d="M12.5 5.5h8.5a.8.8 0 0 1 .8.8v6.2a.8.8 0 0 1-.8.8h-4.2l-3 2.4v-2.4h-1.3a.8.8 0 0 1-.8-.8V6.3a.8.8 0 0 1 .8-.8z"/>'
+            '<path d="M15.5 9.4h.01M18 9.4h.01"/>',
+    "fgi":  '<circle cx="12" cy="17" r="4.5"/>'
+            '<circle cx="12" cy="4.5" r="2"/><circle cx="4.5" cy="10.5" r="2"/>'
+            '<circle cx="19.5" cy="10.5" r="2"/>'
+            '<path d="M12 6.5v2.3M6.2 11.7l2 1.6M17.8 11.7l-2 1.6"/>',
+})
+
+
+def ico(key):
+    return ('<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">%s</svg>'
+            % ICONS.get(key, ""))
 
 # ─────────────────────────────────────────────────────────────
 # 공통 컴포넌트
@@ -150,24 +308,7 @@ DECK = """
 </div>
 """
 
-NOTICES = [
-    # koreadw.co.kr 공지사항 게시판 실제 게시물 (2026-09 기준)
-    ("소식", "방유진 전임연구원, 지역사회 후배들을 위한 장학금 기탁", "2026-08-18"),
-    ("소식", "대표이사, 제81주년 광복절 경축식 및 청와대 영빈관 초청 오찬 참석", "2026-08-18"),
-    ("공지", "(주)코리아데이터월드, 중소벤처기업부 &lsquo;스마트서비스 지원사업&rsquo; 선정", "2026-08-13"),
-    ("공지", "메가박스 코엑스 부티크 스위트(Boutique Suite)에서 임직원 &lsquo;문화의 날&rsquo; 진행", "2026-08-05"),
-    ("안내", "대표이사, 한국로봇산업진흥원 경영전략 자문위원회 위원 위촉", "2026-06-17"),
-    ("공지", "매월 마지막 주 금요일 단축 근무(오후 4시 퇴근) 안내", "2026-05-29"),
-    ("공지", "2026년 5월 연휴기간 안내 (5월 4일 휴무)", "2026-05-04"),
-    (None, "(주)코리아데이터월드 임직원 워크샵 안내", "2026-04-24"),
-    ("공지", "임직원 Refresh 호주 포상 휴가 실시 안내", "2026-04-16"),
-    ("공지", "ARS 전화 조사 시스템 도입 및 시행 안내", "2026-03-17"),
-    ("공지", "사내 서버 점검 완료 안내", "2026-03-17"),
-    (None, "[ 서버 점검에 따른 메일 서비스 이용 안내 ]", "2026-03-16"),
-    ("조사 안내", "2026년 한국환경연구원 연구주제 대국민 수요조사 실시", "2026-03-11"),
-    ("공지", "2026년 외부 고객만족도 조사 안내", "2026-01-15"),
-    (None, "(주)코리아데이터월드 2025년 종무식 및 2026년 시무식 안내", "2025-12-31"),
-]
+NOTICES = load_notices()
 
 
 def notice_rows(limit=None):
@@ -184,7 +325,7 @@ def notice_rows(limit=None):
 
 
 OFFICES = """
-<div class="offices">
+<div class="offices reveal-group">
   <div class="office">
     <h3>서울 본사<span>SEOUL</span></h3>
     <dl>
@@ -258,25 +399,20 @@ MAIN = """
     </div>
   </div>
 
-  <div class="wrap">
-    <dl class="facts">
-      <div class="fact"><dt>창립</dt><dd>2016<small>년</small></dd></div>
-      <div class="fact"><dt>거점</dt><dd>2<small>개소 · 서울, 대구</small></dd></div>
-      <div class="fact"><dt>조사분야</dt><dd>4<small>개 영역</small></dd></div>
-      <div class="fact"><dt>전문 조사기법</dt><dd>4<small>종 · CE·AHP·CVM·Delphi</small></dd></div>
-    </dl>
-  </div>
 </section>
 
 <section class="sec">
   <div class="wrap">
-    <div class="sec-head center">
+    <div class="sec-head center reveal reveal-group">
       <span class="eyebrow">조사분야</span>
       <h2>네 개 영역에서, 목적이 다른 조사를 설계합니다.</h2>
       <p class="lede">조사 목적이 다르면 표본, 문항 구조, 산출 지표가 모두 달라집니다. 영역별로 필요한 결과물의 형태부터 확인하고 시작합니다.</p>
     </div>
     {FIELDS}
-    <p class="sec-more"><a class="link-more" href="{root}business/fields.html">조사분야 자세히 보기</a></p>
+    <p class="sec-more">
+      <a class="link-more" href="{root}business/fields.html">조사분야 자세히 보기</a>
+      <a class="link-more" href="{root}business/methods.html">조사방법 보기</a>
+    </p>
   </div>
 </section>
 
@@ -304,7 +440,7 @@ MAIN = """
 
 <section class="sec">
   <div class="wrap">
-    <div class="sec-head center">
+    <div class="sec-head center reveal reveal-group">
       <span class="eyebrow">자체 설문 플랫폼</span>
       <h2>조사 설계부터 원시데이터 납품까지, 한 곳에서.</h2>
       <p class="lede">외부 설문 도구를 빌려 쓰지 않습니다. 조사 현장에서 필요한 기능을 직접 만들어 운영하기 때문에, 요구사항이 생기면 화면을 바꿉니다.</p>
@@ -344,8 +480,9 @@ MAIN = """
 """
 
 FIELDS_GRID = """
-<div class="fields">
-  <article class="field">
+<div class="fields reveal-group">
+  <article class="field reveal">
+    <span class="field-ico">{ico:satisfaction}</span>
     <span class="field-k">01 &nbsp;SATISFACTION</span>
     <h3>만족도 조사</h3>
     <ul>
@@ -353,7 +490,8 @@ FIELDS_GRID = """
       <li>내부·외부 고객이 서비스에 얼마나 만족하고 있는지 파악해, 개선이 필요한 지점을 찾아내는 조사입니다.</li>
     </ul>
   </article>
-  <article class="field">
+  <article class="field reveal">
+    <span class="field-ico">{ico:policy}</span>
     <span class="field-k">02 &nbsp;POLICY DEMAND</span>
     <h3>정책 수요 조사</h3>
     <ul>
@@ -361,7 +499,8 @@ FIELDS_GRID = """
       <li>정책을 수립하고 결정하는 단계에서 대상자의 현안 인식을 확인하고 의견을 수렴해, 근거 자료로 활용합니다.</li>
     </ul>
   </article>
-  <article class="field">
+  <article class="field reveal">
+    <span class="field-ico">{ico:fact}</span>
     <span class="field-k">03 &nbsp;FACT-FINDING</span>
     <h3>실태 조사</h3>
     <ul>
@@ -369,7 +508,8 @@ FIELDS_GRID = """
       <li>대상 집단이 처한 현재 상황과 문제점을 확인하고, 이를 근거로 개선 방안을 도출하는 조사입니다.</li>
     </ul>
   </article>
-  <article class="field">
+  <article class="field reveal">
+    <span class="field-ico">{ico:academic}</span>
     <span class="field-k">04 &nbsp;ACADEMIC</span>
     <h3>학술 연구 조사</h3>
     <ul>
@@ -381,34 +521,34 @@ FIELDS_GRID = """
 """
 
 PLATFORM_GRID = """
-<div class="plat">
-  <article class="plat-item">
-    <span class="plat-n">01</span>
+<div class="plat reveal-group">
+  <article class="plat-item reveal">
+    <span class="plat-top"><span class="plat-ico">{ico:qtype}</span><span class="plat-n">01</span></span>
     <h3>문항 유형 13종</h3>
     <p>단일·복수선택, 척도, 리커트, 매트릭스, 순위, 숫자, 단답, 서술, 휴대전화 인증, 섹션 구분까지 조사 현장에서 실제로 쓰는 유형을 모두 지원합니다.</p>
   </article>
-  <article class="plat-item">
-    <span class="plat-n">02</span>
+  <article class="plat-item reveal">
+    <span class="plat-top"><span class="plat-ico">{ico:branch}</span><span class="plat-n">02</span></span>
     <h3>분기 로직 · 스크리너</h3>
     <p>앞선 응답에 따라 뒤 문항을 건너뛰거나 다른 문항으로 이동시키고, 조사 대상 조건에 맞지 않으면 그 자리에서 응답을 종료합니다.</p>
   </article>
-  <article class="plat-item">
-    <span class="plat-n">03</span>
+  <article class="plat-item reveal">
+    <span class="plat-top"><span class="plat-ico">{ico:quota}</span><span class="plat-n">03</span></span>
     <h3>쿼터 관리</h3>
     <p>성별·연령·지역 등 집단별 목표 응답 수를 정해 두면 실시간으로 집계하고, 목표를 채운 집단은 자동으로 마감합니다.</p>
   </article>
-  <article class="plat-item">
-    <span class="plat-n">04</span>
+  <article class="plat-item reveal">
+    <span class="plat-top"><span class="plat-ico">{ico:qrlink}</span><span class="plat-n">04</span></span>
     <h3>개인 링크 · QR 발급</h3>
     <p>응답자마다 고유 URL과 QR코드를 발급합니다. 응답 도중 창을 닫아도 이어서 작성할 수 있습니다.</p>
   </article>
-  <article class="plat-item">
-    <span class="plat-n">05</span>
+  <article class="plat-item reveal">
+    <span class="plat-top"><span class="plat-ico">{ico:aidoc}</span><span class="plat-n">05</span></span>
     <h3>AI 문서 변환</h3>
     <p>HWPX·PDF 설문지를 올리면 AI가 문항을 읽어 유형별로 분류하고 초안을 만들어 둡니다. 담당자는 검토와 수정만 하면 됩니다.</p>
   </article>
-  <article class="plat-item">
-    <span class="plat-n">06</span>
+  <article class="plat-item reveal">
+    <span class="plat-top"><span class="plat-ico">{ico:monitor}</span><span class="plat-n">06</span></span>
     <h3>모니터링 · 데이터 납품</h3>
     <p>응답 수와 완료율을 실시간으로 확인하고, 원시데이터를 XLSX·CSV로 내려받을 수 있습니다. 분석에 쓰실 코딩북도 함께 정리해 드립니다.</p>
   </article>
@@ -460,129 +600,134 @@ page("home", "index.html", None, "홈", "코리아데이터월드",
 page("greeting", "company/greeting.html", "company", "대표이사 인사말",
      "대표이사 인사말", "코리아데이터월드 대표이사 인사말",
      """
-<div class="prose">
-  <p class="prose-lead">안녕하십니까?</p>
-  <p>
-    (주)코리아데이터월드는 데이터를 확보하고 분석하는 일로 고객의 현안을 해결하는 데 힘을 보태고,
-    나아가 고객이 목표를 이루는 데 기여하고자 노력하고 있습니다.
-  </p>
-  <p>
-    오늘날은 정보와 데이터가 넘쳐나는 만큼, 정작 무엇을 위한 자료였는지 방향을 잃기 쉬운 시대이기도 합니다.
-    그래서 저희 코리아데이터월드는 문제를 정의하는 첫 단계부터 함께 설계하고,
-    끝내 손에 쥐어야 할 정보가 어떤 형태와 의미를 가져야 하는지까지 같이 고민하겠습니다.
-  </p>
-  <p>그 고민에 답하기 위해, 저희는 서베이와 컨설팅 분야의 전문 인력을 갖추고 있습니다.</p>
-  <blockquote>
-    (주)코리아데이터월드가 드리는 신뢰할 수 있는 데이터와 통찰력 있는 분석은<br>
-    고객의 성과로, 정책의 근거로, 연구의 결실로 이어질 것입니다.
-  </blockquote>
-  <p>늘 고객의 자리에서 생각하며 최선의 결과를 드리겠습니다. 언제든 편하게 찾아주시기 바랍니다. 감사합니다.</p>
-  <p class="sign">(주)코리아데이터월드 대표이사 <b>김근지</b></p>
+<div class="greet">
+  <figure class="greet-photo">
+    <img src="{root}assets/people/ceo-greeting.jpg" alt="(주)코리아데이터월드 대표이사 김근지" width="480" height="640">
+    <figcaption>대표이사 <b>김근지</b></figcaption>
+  </figure>
+  <div class="prose">
+    <p class="prose-lead">안녕하십니까?</p>
+    <p>
+      오늘날 우리는 데이터가 넘쳐나는 시대를 살고 있습니다. 하지만 데이터가 많다고 해서 좋은 판단이
+      저절로 따라오는 것은 아닙니다. 정작 필요한 순간, &ldquo;이 숫자가 무엇을 말해주는지&rdquo; 답할 수 있는
+      데이터는 생각보다 많지 않습니다.
+    </p>
+    <p>
+      코리아데이터월드는 바로 그 지점에서 출발합니다. 저희는 설문지를 받아 응답을 취합하는 것으로
+      일을 시작하지 않습니다. &ldquo;무엇을 물어야 하는지&rdquo;, &ldquo;그 답이 어떤 형태로 쓰여야 하는지&rdquo;를
+      고객과 함께 정의하는 것에서부터 조사를 시작합니다.
+    </p>
+    <p>
+      만족도, 정책수요, 실태, 학술연구 &mdash; 성격이 다른 조사마다 질문을 설계하는 방식도 달라야 한다는 것을
+      10년간의 경험을 통해 체득해 왔습니다.
+    </p>
+    <p>
+      클라이언트가 원하는 결과물을 드리기 위해, 일반 설문으로는 답할 수 없는 질문에 답하는 특수 조사기법을
+      자체 플랫폼으로 직접 구현하며 맞춤형 조사를 진행해 왔습니다. 클라이언트의 고민을 함께 짊어지고
+      끝내 결과물을 만들어내는 뚝심, 그것이 코리아데이터월드가 가진 실질적인 경쟁력입니다.
+    </p>
+    <blockquote>
+      숫자 하나에 많은 이의 시간과 생각이 담겨 있다는 것을 저희는 잊지 않습니다.<br>
+      그 무게를 아는 만큼, 저희가 드리는 데이터와 분석이 고객의 성과로, 정책의 근거로,<br>
+      연구의 결실로 이어지도록 끝까지 책임지겠습니다.
+    </blockquote>
+    <p class="sign">(주)코리아데이터월드 대표이사 <b>김근지</b></p>
+  </div>
 </div>
 """)
+
+def history_html():
+    years, story = load_history()
+    out = ['<div class="hist reveal-group">']
+    for year, items in years:
+        out.append('<div class="hist-year reveal"><b>%s</b><ul>' % year)
+        for when, text, note in items:
+            em = ' <em>(%s)</em>' % note if note else ''
+            out.append('<li><span>%s</span>%s%s</li>' % (when, text, em))
+        out.append('</ul></div>')
+    out.append('</div>')
+    if story:
+        out.append('<h3 class="minor-h story-h">성장 스토리</h3>')
+        out.append('<div class="story reveal-group">')
+        for when, title, desc in story:
+            out.append(
+                '<article class="story-item reveal">'
+                '<span class="story-when">%s</span><h4>%s</h4><p>%s</p></article>'
+                % (when, title, desc))
+        out.append('</div>')
+    return chr(10).join(out)
+
 
 page("history", "company/history.html", "company", "연혁",
-     "연혁", "코리아데이터월드 연혁",
-     """
-<div class="hist">
-  <div class="hist-year">
-    <b>2023</b>
-    <ul><li><span>06.01</span>신사업팀 신설</li></ul>
-  </div>
-  <div class="hist-year">
-    <b>2018</b>
-    <ul>
-      <li><span>04.01</span>연구팀 / 실사팀 / 분석팀 / 제작팀 운영</li>
-      <li><span>04.01</span>서울 본사 · 대구 지점 통합 운영 체계 구축</li>
-      <li><span>03.05</span>대구 지점 신설</li>
-      <li><span>03.05</span>서울 여의도로 본사 이전</li>
-    </ul>
-  </div>
-  <div class="hist-year">
-    <b>2017</b>
-    <ul><li><span>10.31</span>(주)코리아데이터월드 창립 1주년</li></ul>
-  </div>
-  <div class="hist-year">
-    <b>2016</b>
-    <ul>
-      <li><span>12.01</span>여성창업보육센터로 본사 이전</li>
-      <li><span>10.31</span>(주)코리아데이터월드 창립</li>
-    </ul>
-  </div>
-</div>
-""")
+     "연혁", "코리아데이터월드 연혁 및 주요 활동",
+     '<h3 class="minor-h">기업 주요 연혁</h3>' + history_html(),
+     sub="2016년 창립 이후 걸어온 길입니다.")
 
 page("organization", "company/organization.html", "company", "조직도",
-     "조직도", "코리아데이터월드 조직도 — 서울 본사 및 대구 지점",
+     "조직도", "코리아데이터월드 조직도",
      """
-<div class="org-block">
-  <h3 class="org-title">서울 본사<span>SEOUL HEAD OFFICE</span></h3>
-  <div class="org">
-    <div class="org-head">
-      <span class="org-node lead">대표이사</span>
-      <span class="org-advisor">분야별 자문위원</span>
+<div class="org">
+  <div class="org-head">
+    <span class="org-advisor">분야별 자문위원</span>
+    <span class="org-node lead">대표이사</span>
+    <span class="org-advisor">경영지원팀</span>
+  </div>
+  <div class="org-row">
+    <div class="org-col">
+      <span class="org-node">연구팀</span>
+      <div class="org-leaf"><span>공공분야</span><span>마케팅분야</span></div>
     </div>
-    <div class="org-row">
-      <div class="org-col">
-        <span class="org-node">연구팀</span>
-        <div class="org-leaf"><span>공공분야</span><span>마케팅분야</span></div>
-      </div>
-      <div class="org-col"><span class="org-node">분석팀</span></div>
-      <div class="org-col"><span class="org-node">실사팀</span></div>
-      <div class="org-col"><span class="org-node">제작팀</span></div>
-      <div class="org-col"><span class="org-node">신사업팀</span></div>
-      <div class="org-col"><span class="org-node">경영지원팀</span></div>
+    <div class="org-col">
+      <span class="org-node">분석팀</span>
+      <div class="org-leaf"><span>QC팀</span><span>통계분석</span></div>
+    </div>
+    <div class="org-col">
+      <span class="org-node">실사팀</span>
+      <div class="org-leaf"><span>서울 본사</span><span>대구 지점</span></div>
+    </div>
+    <div class="org-col">
+      <span class="org-node">부설연구소</span>
     </div>
   </div>
 </div>
-
-<div class="org-block">
-  <h3 class="org-title">대구 지점<span>DAEGU BRANCH</span></h3>
-  <div class="org">
-    <div class="org-head"><span class="org-node lead">본부장</span></div>
-    <div class="org-row">
-      <div class="org-col">
-        <span class="org-node">연구팀</span>
-        <div class="org-leaf"><span>공공분야</span><span>마케팅분야</span></div>
-      </div>
-      <div class="org-col"><span class="org-node">분석팀</span></div>
-      <div class="org-col"><span class="org-node">실사팀</span></div>
-    </div>
-  </div>
-</div>
+<p class="note">※ 분야별 자문위원 명단은 추후 업데이트 예정입니다.</p>
 """)
 
-page("welfare", "company/welfare.html", "company", "복리후생",
-     "복리후생", "코리아데이터월드 복리후생 제도",
+def people_html():
+    out = ['<div class="people reveal-group">']
+    for i, pr in enumerate(load_people()):
+        cls = "person reveal" + (" lead-person" if i == 0 else "")
+        out.append('<article class="%s">' % cls)
+        if pr.get("구분"):
+            out.append('<span class="person-role">%s</span>' % esc(pr["구분"]))
+        if pr.get("사진"):
+            out.append(
+                '<img class="person-photo" src="{root}assets/people/%s" '
+                'alt="%s %s" width="480" height="640" loading="lazy">'
+                % (pr["사진"], esc(pr.get("이름", "")), esc(pr.get("직책", ""))))
+        out.append('<h3>%s<small>%s</small></h3>'
+                   % (esc(pr.get("이름", "")), esc(pr.get("직책", ""))))
+        out.append('<dl class="person-meta">')
+        for label in ("경력", "이력", "학력"):
+            if pr.get(label):
+                val = "<br>".join(x.strip() for x in esc(pr[label]).split(" / "))
+                out.append('<div><dt>%s</dt><dd>%s</dd></div>' % (label, val))
+        out.append('</dl>')
+        if pr.get("자격"):
+            out.append('<span class="person-cert">%s</span>' % esc(pr["자격"]))
+        out.append('</article>')
+    out.append('</div>')
+    return chr(10).join(out)
+
+
+page("people", "company/people.html", "company", "연구원 프로필",
+     "연구원 프로필", "코리아데이터월드 연구 인력 소개",
      """
-<div class="wel">
-  <article class="wel-item">
-    <span class="wel-k">유연근무제</span>
-    <p>육아기 단축근무제 · 탄력근무제 · 주 1~2일 재택근무제 시행</p>
-  </article>
-  <article class="wel-item">
-    <span class="wel-k">식사 제공</span>
-    <p>아침·점심 간식 제공</p>
-  </article>
-  <article class="wel-item">
-    <span class="wel-k">자기계발비</span>
-    <p>발레, 미술, 검도, 골프, 필라테스, 피부관리 중 선택 <b>(200만원 상당)</b></p>
-  </article>
-  <article class="wel-item">
-    <span class="wel-k">인센티브</span>
-    <p>연말 인센티브 지급 · 우수 사원 해외 연수</p>
-  </article>
-  <article class="wel-item">
-    <span class="wel-k">창립기념일</span>
-    <p>기쁨 선물 박스 증정 <b>(50~100만원 상당)</b></p>
-  </article>
-  <article class="wel-item">
-    <span class="wel-k">생일</span>
-    <p>축하금 지급 · 케이크와 꽃바구니 증정 <b>(20만원 상당)</b></p>
-  </article>
-</div>
-<p class="note">※ 근무시간 오전 10시 – 오후 6시 · 주 35시간 근무제</p>
-""")
+<p class="deck-intro">
+  과업에 <b>실제로 투입되는 인력</b>입니다. 투입 인력 전원이 사회조사분석사 자격을 보유하고 있습니다.
+</p>
+""" + people_html(),
+     sub="과업에 실제로 투입되는 연구 인력입니다.")
 
 page("location", "company/location.html", "company", "오시는 길",
      "오시는 길", "코리아데이터월드 서울 본사 · 대구 지점 위치 안내",
@@ -596,7 +741,7 @@ page("location", "company/location.html", "company", "오시는 길",
 page("fields", "business/fields.html", "business", "조사분야",
      "조사분야", "만족도 · 정책수요 · 실태 · 학술연구 조사",
      FIELDS_GRID + """
-<div class="callout">
+<div class="callout reveal">
   <h3>어느 영역인지 애매해도 괜찮습니다</h3>
   <p>
     실제 과제는 만족도와 실태, 정책수요가 섞여 있는 경우가 대부분입니다.
@@ -607,6 +752,69 @@ page("fields", "business/fields.html", "business", "조사분야",
 """,
      sub="조사 목적이 다르면 표본, 문항 구조, 산출 지표가 모두 달라집니다.")
 
+page("methods", "business/methods.html", "business", "조사방법",
+     "조사방법", "면접 · 전화 · 온라인 · ARS 정량조사와 IDI · FGI 정성조사",
+     """
+<p class="deck-intro">
+  조사 목적과 대상, 일정과 예산에 따라 적합한 방법이 달라집니다.
+  <b>코리아데이터월드가 직접 수행하는 조사방법</b>은 다음과 같습니다.
+</p>
+
+<h3 class="minor-h">정량조사</h3>
+<div class="meth reveal-group">
+  <article class="meth-item reveal">
+    <img class="meth-illust" src="{root}assets/illust/method-f2f.png" alt="" width="800" height="800" loading="lazy" decoding="async">
+    <span class="meth-top"><span class="meth-k">F2F</span></span>
+    <h4>면접조사<small>Face-to-Face Interview</small></h4>
+    <p>조사원이 응답자를 직접 만나 설문을 진행하는 대면 조사입니다. 복잡한 질문이나 시각자료 제시가 필요한 조사, 응답 신뢰도가 특히 중요한 조사에 적합합니다.</p>
+  </article>
+  <article class="meth-item reveal">
+    <img class="meth-illust" src="{root}assets/illust/method-cati.png" alt="" width="800" height="800" loading="lazy" decoding="async">
+    <span class="meth-top"><span class="meth-k">CATI</span></span>
+    <h4>전화조사<small>Telephone Interview</small></h4>
+    <p>조사원이 전화로 응답자에게 직접 질문하는 방식입니다. 빠른 시일 내 다수의 응답을 확보해야 하거나, 전국 단위로 넓은 지역을 조사할 때 효율적입니다.</p>
+  </article>
+  <article class="meth-item reveal">
+    <img class="meth-illust" src="{root}assets/illust/method-web.png" alt="" width="800" height="800" loading="lazy" decoding="async">
+    <span class="meth-top"><span class="meth-k">WEB</span></span>
+    <h4>온라인 조사<small>Web &middot; Mobile</small></h4>
+    <p>웹이나 모바일 화면을 통해 응답자가 직접 응답하는 방식입니다. 비용과 시간 효율이 높고, 이미지&middot;동영상 등 다양한 자료를 활용한 설문 설계가 가능합니다.</p>
+  </article>
+  <article class="meth-item reveal">
+    <img class="meth-illust" src="{root}assets/illust/method-ars.png" alt="" width="800" height="800" loading="lazy" decoding="async">
+    <span class="meth-top"><span class="meth-k">ARS</span></span>
+    <h4>ARS 조사<small>Automatic Response System</small></h4>
+    <p>자동응답시스템을 통해 응답자가 전화기 버튼으로 답변하는 방식입니다. 짧고 간단한 문항을 대규모로, 빠르게 조사해야 할 때 효과적입니다.</p>
+  </article>
+</div>
+
+<h3 class="minor-h story-h">정성조사</h3>
+<div class="meth reveal-group">
+  <article class="meth-item reveal">
+    <img class="meth-illust" src="{root}assets/illust/method-idi.png" alt="" width="800" height="800" loading="lazy" decoding="async">
+    <span class="meth-top"><span class="meth-k">IDI</span></span>
+    <h4>심층면접<small>In-depth Interview</small></h4>
+    <p>전문 면접원이 응답자 한 명과 깊이 있는 대화를 나누며 생각과 경험을 자세히 파악하는 방식입니다. 숫자로 드러나지 않는 배경과 맥락을 이해해야 할 때 활용합니다.</p>
+  </article>
+  <article class="meth-item reveal">
+    <img class="meth-illust" src="{root}assets/illust/method-fgi.png" alt="" width="800" height="800" loading="lazy" decoding="async">
+    <span class="meth-top"><span class="meth-k">FGI</span></span>
+    <h4>집단심층토의<small>Focus Group Interview</small></h4>
+    <p>소수의 참여자가 한자리에 모여 특정 주제를 자유롭게 토의하는 방식입니다. 참여자 간 의견 교환 속에서 새로운 아이디어나 다양한 관점을 발굴할 때 적합합니다.</p>
+  </article>
+</div>
+
+<div class="callout reveal">
+  <h3>어떤 방법이 맞을지 모르겠다면</h3>
+  <p>
+    조사 목적과 대상, 일정과 예산을 알려주시면 적합한 방법과 예상 표본 규모를 정리해 제안드립니다.
+    여러 방법을 섞어 설계하는 경우도 많습니다.
+  </p>
+  <a class="btn btn-primary" href="{root}support/contact.html">조사 상담 요청</a>
+</div>
+""",
+     sub="조사 목적과 대상에 따라 적합한 방법을 설계합니다.")
+
 page("special", "business/special.html", "business", "특수 설문 유형",
      "특수 설문 유형", "CE · AHP · CVM · Delphi 등 전문 연구방법론 설문 구현",
      """
@@ -616,6 +824,127 @@ page("special", "business/special.html", "business", "특수 설문 유형",
   저희는 이 네 가지를 자체 플랫폼에 직접 구현해 두었으며, 목록에 없는 유형도 설계서만 주시면 구현해 드립니다.
 </p>
 """ + DECK + """
+
+<div class="specs reveal-group">
+  <article class="spec reveal">
+    <div class="spec-head">
+      <span class="spec-code">CE</span>
+      <div>
+        <h3>선택실험법<small>Choice Experiment</small></h3>
+        <p>여러 대안 세트 중 하나를 고르게 해, 사람들의 실제 선호를 읽어내는 방법</p>
+      </div>
+    </div>
+    <div class="spec-body">
+      <div>
+        <h4>언제 &middot; 왜 쓰나</h4>
+        <ul>
+          <li>신제품&middot;신규 서비스의 속성 조합을 설계할 때</li>
+          <li>가격을 바꾸면 선택이 얼마나 달라지는지 알아야 할 때</li>
+          <li>정책&middot;제도의 여러 대안 중 선호를 비교할 때</li>
+        </ul>
+      </div>
+      <div>
+        <h4>무엇이 나오나</h4>
+        <ul>
+          <li>속성별 중요도 (효용 가중치)</li>
+          <li>가장 선호되는 최적 조합</li>
+          <li>조합별 선택확률 시뮬레이션</li>
+          <li>가격 민감도 구간</li>
+        </ul>
+      </div>
+    </div>
+    <p class="spec-tags"><span>신제품 컨셉테스트</span><span>요금제 설계</span><span>정책 대안 비교</span></p>
+  </article>
+
+  <article class="spec reveal">
+    <div class="spec-head">
+      <span class="spec-code">AHP</span>
+      <div>
+        <h3>쌍대비교법<small>Analytic Hierarchy Process</small></h3>
+        <p>두 개씩 짝지어 비교해, 복잡한 의사결정의 우선순위를 정리하는 방법</p>
+      </div>
+    </div>
+    <div class="spec-body">
+      <div>
+        <h4>언제 &middot; 왜 쓰나</h4>
+        <ul>
+          <li>여러 사업&middot;정책 대안의 우선순위를 정해야 할 때</li>
+          <li>성격이 다른 평가 기준을 함께 비교해야 할 때</li>
+          <li>이해관계자들의 판단을 정량적 근거로 남기고 싶을 때</li>
+        </ul>
+      </div>
+      <div>
+        <h4>무엇이 나오나</h4>
+        <ul>
+          <li>기준별 상대적 중요도 (가중치)</li>
+          <li>대안별 최종 우선순위표</li>
+          <li>응답 일관성 지표(CR)로 신뢰도 확인</li>
+        </ul>
+      </div>
+    </div>
+    <p class="spec-tags"><span>투자&middot;사업 우선순위</span><span>평가지표 설계</span><span>입지 선정</span></p>
+  </article>
+
+  <article class="spec reveal">
+    <div class="spec-head">
+      <span class="spec-code">CVM</span>
+      <div>
+        <h3>조건부가치측정법<small>Contingent Valuation Method</small></h3>
+        <p>시장가격이 없는 것의 가치를, 지불의사금액을 물어 돈으로 환산하는 방법</p>
+      </div>
+    </div>
+    <div class="spec-body">
+      <div>
+        <h4>언제 &middot; 왜 쓰나</h4>
+        <ul>
+          <li>환경&middot;문화재 등 무형가치를 화폐가치로 보여줘야 할 때</li>
+          <li>공공사업의 경제적 타당성 근거가 필요할 때</li>
+          <li>요금 인상에 대한 이용자 지불의사를 확인할 때</li>
+        </ul>
+      </div>
+      <div>
+        <h4>무엇이 나오나</h4>
+        <ul>
+          <li>평균 지불의사금액 (WTP)</li>
+          <li>총 사회적 가치 (WTP &times; 대상인구)</li>
+          <li>지불의사에 영향을 주는 요인 분석</li>
+        </ul>
+      </div>
+    </div>
+    <p class="spec-tags"><span>예비타당성조사</span><span>환경가치 평가</span><span>공공요금 타당성</span></p>
+  </article>
+
+  <article class="spec reveal">
+    <div class="spec-head">
+      <span class="spec-code">Delphi</span>
+      <div>
+        <h3>전문가 합의법<small>Delphi Method</small></h3>
+        <p>전문가에게 같은 질문을 여러 라운드 반복해, 의견을 합의점으로 모으는 방법</p>
+      </div>
+    </div>
+    <div class="spec-body">
+      <div>
+        <h4>언제 &middot; 왜 쓰나</h4>
+        <ul>
+          <li>데이터가 부족한 미래 예측 주제를 다룰 때</li>
+          <li>그 분야를 잘 아는 전문가의 판단이 꼭 필요할 때</li>
+          <li>소수 의견에 좌우되지 않는 결론이 필요할 때</li>
+        </ul>
+      </div>
+      <div>
+        <h4>무엇이 나오나</h4>
+        <ul>
+          <li>최종 합의된 전망&middot;판단치</li>
+          <li>전문가 간 의견 일치도</li>
+          <li>라운드별 의견 변화와 근거</li>
+        </ul>
+      </div>
+    </div>
+    <p class="spec-tags"><span>기술&middot;산업 전망</span><span>정책 방향 설정</span><span>리스크 우선순위</span></p>
+  </article>
+</div>
+
+<h3 class="minor-h story-h">구현 범위 한눈에 보기</h3>
 <div class="spec-table-wrap">
   <table class="spec-table">
     <caption>방법론별 구현 범위</caption>
@@ -632,7 +961,7 @@ page("special", "business/special.html", "business", "특수 설문 유형",
   </table>
 </div>
 
-<div class="callout">
+<div class="callout reveal">
   <h3>연구계획서 단계에서 먼저 상의해 주세요</h3>
   <p>
     문항 설계를 마친 뒤보다 방법론을 정하는 단계에서 함께 검토할 때, 필요한 표본 수와 설계 효율이 크게 달라집니다.
@@ -646,7 +975,7 @@ page("special", "business/special.html", "business", "특수 설문 유형",
 page("platform", "business/platform.html", "business", "설문 플랫폼",
      "설문 플랫폼", "코리아데이터월드 자체 설문 플랫폼 기능 안내",
      PLATFORM_GRID + """
-<div class="callout">
+<div class="callout reveal">
   <h3>필요한 기능이 없으면, 만듭니다</h3>
   <p>
     외부 설문 도구를 빌려 쓰지 않기에, 과제마다 다른 요구사항을 화면에 그대로 반영할 수 있습니다.
@@ -660,13 +989,13 @@ page("platform", "business/platform.html", "business", "설문 플랫폼",
 page("process", "business/process.html", "business", "진행 절차",
      "진행 절차", "문의부터 결과 납품까지의 조사 진행 절차",
      """
-<div class="proc">
-  <article class="proc-step"><span class="n">1</span><h3>문의 · 상담</h3><p>조사 목적과 결과 활용 계획을 함께 확인합니다.</p></article>
-  <article class="proc-step"><span class="n">2</span><h3>설계 · 견적</h3><p>표본 설계와 문항 구조를 잡아 견적을 드립니다.</p></article>
-  <article class="proc-step"><span class="n">3</span><h3>문항 확정</h3><p>문항 초안을 실제 화면으로 만들어 함께 검토합니다.</p></article>
-  <article class="proc-step"><span class="n">4</span><h3>실사</h3><p>온라인·대면·전화 등 적합한 방식으로 응답을 수집합니다.</p></article>
-  <article class="proc-step"><span class="n">5</span><h3>검증 · 분석</h3><p>불성실 응답을 걸러낸 뒤 통계 분석을 진행합니다.</p></article>
-  <article class="proc-step"><span class="n">6</span><h3>보고 · 납품</h3><p>결과보고서와 원시데이터를 함께 제출합니다.</p></article>
+<div class="proc reveal-group">
+  <article class="proc-step reveal"><span class="proc-top"><span class="proc-ico">{ico:consult}</span><span class="n">1</span></span><h3>문의 · 상담</h3><p>조사 목적과 결과 활용 계획을 함께 확인합니다.</p></article>
+  <article class="proc-step reveal"><span class="proc-top"><span class="proc-ico">{ico:design}</span><span class="n">2</span></span><h3>설계 · 견적</h3><p>표본 설계와 문항 구조를 잡아 견적을 드립니다.</p></article>
+  <article class="proc-step reveal"><span class="proc-top"><span class="proc-ico">{ico:confirm}</span><span class="n">3</span></span><h3>문항 확정</h3><p>문항 초안을 실제 화면으로 만들어 함께 검토합니다.</p></article>
+  <article class="proc-step reveal"><span class="proc-top"><span class="proc-ico">{ico:field}</span><span class="n">4</span></span><h3>실사</h3><p>온라인·대면·전화 등 적합한 방식으로 응답을 수집합니다.</p></article>
+  <article class="proc-step reveal"><span class="proc-top"><span class="proc-ico">{ico:verify}</span><span class="n">5</span></span><h3>검증 · 분석</h3><p>불성실 응답을 걸러낸 뒤 통계 분석을 진행합니다.</p></article>
+  <article class="proc-step reveal"><span class="proc-top"><span class="proc-ico">{ico:deliver}</span><span class="n">6</span></span><h3>보고 · 납품</h3><p>결과보고서와 원시데이터를 함께 제출합니다.</p></article>
 </div>
 <div class="prose sm">
   <p>
@@ -717,15 +1046,20 @@ page("contact", "support/contact.html", "support", "견적문의",
 def build_nav(root, active_group, active_key, href):
     parts = ['<nav class="nav" id="gnb">']
     for label, gid, items in MENU:
-        first = href(gid + "/" + items[0][0])
+        shown = [(k, t) for k, t in items if k not in NAV_HIDDEN]
+        if not shown:
+            continue
+        first = href(gid + "/" + shown[0][0])
         cls = "nav-top is-active" if gid == active_group else "nav-top"
         parts.append('<div class="nav-item">')
         parts.append('<a class="%s" href="%s">%s</a>' % (cls, first, label))
-        parts.append('<div class="nav-sub"><div class="nav-sub-in">')
-        for k, t in items:
-            sc = ' class="is-active"' if k == active_key else ""
-            parts.append('<a href="%s"%s>%s</a>' % (href(gid + "/" + k), sc, t))
-        parts.append('</div></div></div>')
+        if len(shown) > 1:
+            parts.append('<div class="nav-sub"><div class="nav-sub-in">')
+            for k, t in shown:
+                sc = ' class="is-active"' if k == active_key else ""
+                parts.append('<a href="%s"%s>%s</a>' % (href(gid + "/" + k), sc, t))
+            parts.append('</div></div>')
+        parts.append('</div>')
     parts.append("</nav>")
     return "\n".join(parts)
 
@@ -734,8 +1068,11 @@ def build_lnb(group, active_key, href):
     for label, gid, items in MENU:
         if gid != group:
             continue
+        shown = [(k, t) for k, t in items if k not in NAV_HIDDEN]
+        if len(shown) < 2:
+            return ""
         out = ['<div class="lnb"><div class="wrap lnb-in">']
-        for k, t in items:
+        for k, t in shown:
             cls = ' class="is-active"' if k == active_key else ""
             out.append('<a href="%s"%s>%s</a>' % (href(gid + "/" + k), cls, t))
         out.append("</div></div>")
@@ -748,7 +1085,8 @@ def build_footer(href):
     for label, gid, items in MENU:
         links.append('<div class="ftr-col"><b>%s</b>%s</div>' % (
             label,
-            "".join('<a href="%s">%s</a>' % (href(gid + "/" + k), t) for k, t in items)
+            "".join('<a href="%s">%s</a>' % (href(gid + "/" + k), t)
+                    for k, t in items if k not in NAV_HIDDEN)
         ))
     return """
 <footer class="ftr">
@@ -776,9 +1114,12 @@ def build_footer(href):
 
 def page_head_block(p, href):
     crumb = "홈"
-    for label, gid, items in MENU:
-        if gid == p["group"]:
-            crumb = '홈 <i>/</i> %s <i>/</i> %s' % (label, p["nav_title"])
+    if p["key"] in NAV_HIDDEN:
+        crumb = '홈 <i>/</i> %s' % p["nav_title"]
+    else:
+        for label, gid, items in MENU:
+            if gid == p["group"]:
+                crumb = '홈 <i>/</i> %s <i>/</i> %s' % (label, p["nav_title"])
     sub = ('<p class="ph-sub">%s</p>' % p["sub"]) if p["sub"] else ""
     return """
 <section class="phead">
@@ -801,6 +1142,7 @@ def render_content(p, href, root):
     c = c.replace("{NOTICES5}", notice_rows(5))
     c = c.replace("{NOTICES_ALL}", notice_rows())
     c = c.replace("{href}", href("support/notice"))
+    c = re.sub(r"\{ico:(\w+)\}", lambda m: ico(m.group(1)), c)
     c = c.replace("{root}", root)
     for k, v in SITE.items():
         c = c.replace("{%s}" % k, v)
@@ -823,6 +1165,9 @@ HTML_SHELL = """<!doctype html>
 <meta property="og:title" content="{TITLE}">
 <meta property="og:description" content="{DESC}">
 <meta property="og:image" content="{OGIMAGE}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="코리아데이터월드 — 조사 설계부터 데이터 분석까지">
 <meta property="og:url" content="{PAGEURL}">
 <meta property="og:locale" content="ko_KR">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -892,7 +1237,7 @@ def build_site():
                          else p["title"] + " | 코리아데이터월드")
                 .replace("{DESC}", p["desc"])
                 .replace("{ROOT}", root)
-                .replace("{OGIMAGE}", SITE["site_url"] + "assets/favicon-512.png")
+                .replace("{OGIMAGE}", SITE["site_url"] + "assets/og/og-image.png")
                 .replace("{PAGEURL}", SITE["site_url"] + ("" if p["key"] == "home" else p["path"]))
                 .replace("{BODYCLASS}", ' class="is-home"' if p["key"] == "home" else "")
                 .replace("{HEADER}", header)
@@ -946,6 +1291,13 @@ def build_artifact():
         # 단일 파일에서는 파일 경로 링크를 해시 링크로 치환
         body = re.sub(r'href="((?:company|business|support)/[a-z]+)\.html"', r'href="#/\1"', body)
         body = body.replace('href="index.html"', 'href="#/home"')
+        # 조사방법 이미지도 단일 파일 미리보기에 포함한다.
+        def embed_illustration(match):
+            with open(os.path.join(HERE, match.group(1)), "rb") as asset:
+                uri = "data:image/png;base64," + base64.b64encode(asset.read()).decode("ascii")
+            return 'src="' + uri + '"'
+        body = re.sub(r'src="(assets/illust/method-[a-z0-9]+\.png)"',
+                      embed_illustration, body)
 
         pid = "home" if p["key"] == "home" else p["path"].replace(".html", "")
         cls = "vpage" + (" is-home" if p["key"] == "home" else "")

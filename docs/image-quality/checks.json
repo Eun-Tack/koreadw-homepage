@@ -1,0 +1,216 @@
+{
+  "assets": [
+    {
+      "file": "assets\\illust\\method-ars.png",
+      "size": [
+        800,
+        800
+      ],
+      "bytes": 180654,
+      "alpha_bbox": [
+        50,
+        98,
+        739,
+        721
+      ]
+    },
+    {
+      "file": "assets\\illust\\method-cati.png",
+      "size": [
+        800,
+        800
+      ],
+      "bytes": 232801,
+      "alpha_bbox": [
+        50,
+        112,
+        719,
+        721
+      ]
+    },
+    {
+      "file": "assets\\illust\\method-f2f.png",
+      "size": [
+        800,
+        800
+      ],
+      "bytes": 282624,
+      "alpha_bbox": [
+        69,
+        63,
+        738,
+        714
+      ]
+    },
+    {
+      "file": "assets\\illust\\method-fgi.png",
+      "size": [
+        800,
+        800
+      ],
+      "bytes": 319012,
+      "alpha_bbox": [
+        50,
+        83,
+        719,
+        731
+      ]
+    },
+    {
+      "file": "assets\\illust\\method-idi.png",
+      "size": [
+        800,
+        800
+      ],
+      "bytes": 289655,
+      "alpha_bbox": [
+        59,
+        99,
+        740,
+        730
+      ]
+    },
+    {
+      "file": "assets\\illust\\method-web.png",
+      "size": [
+        800,
+        800
+      ],
+      "bytes": 272754,
+      "alpha_bbox": [
+        107,
+        93,
+        696,
+        745
+      ]
+    },
+    {
+      "file": "assets/og/og-bg.png",
+      "size": [
+        1200,
+        630
+      ],
+      "bytes": 471654
+    },
+    {
+      "file": "assets/og/og-image.png",
+      "size": [
+        1200,
+        630
+      ],
+      "bytes": 462343
+    }
+  ],
+  "pages": [
+    {
+      "width": 1440,
+      "images": [
+        {
+          "loaded": true,
+          "width": 180,
+          "height": 180
+        },
+        {
+          "loaded": true,
+          "width": 180,
+          "height": 180
+        },
+        {
+          "loaded": true,
+          "width": 180,
+          "height": 180
+        },
+        {
+          "loaded": true,
+          "width": 180,
+          "height": 180
+        },
+        {
+          "loaded": true,
+          "width": 180,
+          "height": 180
+        },
+        {
+          "loaded": true,
+          "width": 180,
+          "height": 180
+        }
+      ],
+      "horizontal_overflow": false
+    },
+    {
+      "width": 390,
+      "images": [
+        {
+          "loaded": true,
+          "width": 180,
+          "height": 180
+        },
+        {
+          "loaded": true,
+          "width": 180,
+          "height": 180
+        },
+        {
+          "loaded": true,
+          "width": 180,
+          "height": 180
+        },
+        {
+          "loaded": true,
+          "width": 180,
+          "height": 180
+        },
+        {
+          "loaded": true,
+          "width": 180,
+          "height": 180
+        },
+        {
+          "loaded": true,
+          "width": 180,
+          "height": 180
+        }
+      ],
+      "horizontal_overflow": false
+    },
+    {
+      "width": 320,
+      "images": [
+        {
+          "loaded": true,
+          "width": 180,
+          "height": 180
+        },
+        {
+          "loaded": true,
+          "width": 180,
+          "height": 180
+        },
+        {
+          "loaded": true,
+          "width": 180,
+          "height": 180
+        },
+        {
+          "loaded": true,
+          "width": 180,
+          "height": 180
+        },
+        {
+          "loaded": true,
+          "width": 180,
+          "height": 180
+        },
+        {
+          "loaded": true,
+          "width": 180,
+          "height": 180
+        }
+      ],
+      "horizontal_overflow": false
+    }
+  ],
+  "artifact_embedded_images": 6,
+  "og_metadata": "All generated pages point to 1200x630 og-image.png"
+}
