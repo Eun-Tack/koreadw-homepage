@@ -14,8 +14,18 @@
 import io
 import os
 import re
+import shutil
+import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+
+# 배포 대상별 기준 주소.
+#   og:url, og:image 처럼 절대 주소가 필요한 곳에만 쓰인다.
+#   페이지끼리의 링크는 모두 상대 경로라 어디에 올려도 그대로 동작한다.
+BASES = {
+    "demo": "https://eun-tack.github.io/koreadw-homepage/",   # 기본값 · 시연용
+    "prod": "https://www.koreadw.co.kr/",                     # 실제 납품용
+}
 
 SITE = {
     "name": "(주)코리아데이터월드",
@@ -29,7 +39,7 @@ SITE = {
     "addr_seoul": "서울특별시 영등포구 국회대로72길 11, 309호",
     "addr_daegu": "대구광역시 달서구 달서대로 54, 503호",
     "tel_daegu": "053-636-2273",
-    "site_url": "https://www.koreadw.co.kr/",
+    "site_url": "",   # 빌드할 때 BASES 에서 채운다
 }
 
 
@@ -1350,9 +1360,43 @@ def build_artifact():
     print("  -> _artifact.html (%d KB)" % (len(out) // 1024))
 
 
+def make_bundle():
+    """후이즈 등 일반 웹호스팅에 그대로 올릴 파일만 dist/ 에 모은다."""
+    dist = os.path.join(HERE, "dist")
+    if os.path.isdir(dist):
+        shutil.rmtree(dist)
+    os.makedirs(dist)
+    for p in PAGES:
+        src = os.path.join(HERE, p["path"])
+        dst = os.path.join(dist, p["path"])
+        d = os.path.dirname(dst)
+        if d and not os.path.isdir(d):
+            os.makedirs(d)
+        shutil.copy2(src, dst)
+    shutil.copytree(os.path.join(HERE, "assets"), os.path.join(dist, "assets"))
+    total = sum(os.path.getsize(os.path.join(r, f))
+                for r, _, fs in os.walk(dist) for f in fs)
+    count = sum(len(fs) for _, _, fs in os.walk(dist))
+    print("  -> dist/  (%d개 파일, %.1f MB)" % (count, total / 1048576.0))
+    print("     이 폴더의 내용을 웹호스팅 루트에 그대로 올리면 됩니다.")
+
+
 if __name__ == "__main__":
-    print("building pages...")
+    args = sys.argv[1:]
+    target = "prod" if "--prod" in args else "demo"
+    base = BASES[target]
+    for a in args:
+        if a.startswith("--base="):
+            base, target = a.split("=", 1)[1], "custom"
+    if not base.endswith("/"):
+        base += "/"
+    SITE["site_url"] = base
+
+    print("building pages...  [%s] %s" % (target, base))
     build_site()
     print("building single-file preview...")
     build_artifact()
+    if "--bundle" in args:
+        print("packing deploy bundle...")
+        make_bundle()
     print("done.")
