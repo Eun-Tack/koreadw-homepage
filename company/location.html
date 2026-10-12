@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/site.css?v=a69d2c6855a2">
 </head>
 <body>
 
@@ -56,6 +56,7 @@
 <div class="nav-item">
 <a class="nav-top" href="../support/notice.html">공지사항</a>
 </div>
+<a class="nav-contact btn btn-primary" href="../support/contact.html">견적 문의</a>
 </nav>
     <a class="btn btn-primary hdr-cta" href="../support/contact.html">견적 문의</a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="gnb" aria-label="메뉴 열기">
@@ -70,35 +71,42 @@
   <div class="wrap">
     <p class="ph-crumb">홈 <i>/</i> 회사소개 <i>/</i> 오시는 길</p>
     <h1>오시는 길</h1>
-    
+    <p class="ph-sub">서울 본사와 대구 지점의 위치 및 방문 경로를 안내합니다.</p>
   </div>
 </section>
-<div class="lnb"><div class="wrap lnb-in">
+<nav class="lnb" aria-label="회사소개 하위 메뉴"><div class="wrap lnb-shell">
+<button class="lnb-scroll" type="button" data-direction="-1" aria-label="이전 메뉴 보기">&#8249;</button>
+<div class="lnb-in">
 <a href="../company/greeting.html">대표이사 인사말</a>
 <a href="../company/history.html">연혁</a>
 <a href="../company/organization.html">조직도</a>
 <a href="../company/people.html">연구원 프로필</a>
-<a href="../company/location.html" class="is-active">오시는 길</a>
-</div></div><section class="sec"><div class="wrap">
-<div class="offices reveal-group">
-  <div class="office">
-    <h3>서울 본사<span>SEOUL</span></h3>
-    <dl>
-      <dt>주소</dt><dd>서울특별시 영등포구 국회대로72길 11, 309호</dd>
-      <dt>전화</dt><dd>02-780-2273</dd>
-      <dt>팩스</dt><dd>070-8800-2273</dd>
-    </dl>
+<a href="../company/location.html" class="is-active" aria-current="page">오시는 길</a>
+</div><button class="lnb-scroll" type="button" data-direction="1" aria-label="다음 메뉴 보기">&#8250;</button></div></nav><section class="sec"><div class="wrap"><div class="office-maps">
+<article class="office-map">
+  <div class="office-map-info">
+    <h2>서울 본사</h2>
+    <p class="office-map-address">서울특별시 영등포구 국회대로72길 11, 309호</p>
+    <a class="office-map-phone" href="tel:02-780-2273">02-780-2273</a>
+    <div class="map-actions">
+      <a class="btn btn-primary" href="https://map.naver.com/p/search/%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C%20%EC%98%81%EB%93%B1%ED%8F%AC%EA%B5%AC%20%EA%B5%AD%ED%9A%8C%EB%8C%80%EB%A1%9C72%EA%B8%B8%2011" target="_blank" rel="noopener noreferrer">네이버 지도<span class="sr-only"> (새 창)</span></a>
+      <a class="btn btn-ghost" href="https://www.google.com/maps/dir/?api=1&amp;destination=%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C%20%EC%98%81%EB%93%B1%ED%8F%AC%EA%B5%AC%20%EA%B5%AD%ED%9A%8C%EB%8C%80%EB%A1%9C72%EA%B8%B8%2011" target="_blank" rel="noopener noreferrer">길찾기<span class="sr-only"> (새 창)</span></a>
+    </div>
   </div>
-  <div class="office">
-    <h3>대구 지점<span>DAEGU</span></h3>
-    <dl>
-      <dt>주소</dt><dd>대구광역시 달서구 달서대로 54, 503호</dd>
-      <dt>전화</dt><dd>053-636-2273</dd>
-      <dt>팩스</dt><dd>070-8800-2273</dd>
-    </dl>
+  <iframe class="office-map-frame" title="서울 본사 위치 지도" src="https://www.google.com/maps?q=%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C%20%EC%98%81%EB%93%B1%ED%8F%AC%EA%B5%AC%20%EA%B5%AD%ED%9A%8C%EB%8C%80%EB%A1%9C72%EA%B8%B8%2011&amp;z=16&amp;output=embed&amp;hl=ko" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+</article>
+<article class="office-map">
+  <div class="office-map-info">
+    <h2>대구 지점</h2>
+    <p class="office-map-address">대구광역시 달서구 달서대로 54, 503호</p>
+    <a class="office-map-phone" href="tel:053-636-2273">053-636-2273</a>
+    <div class="map-actions">
+      <a class="btn btn-primary" href="https://map.naver.com/p/search/%EB%8C%80%EA%B5%AC%EA%B4%91%EC%97%AD%EC%8B%9C%20%EB%8B%AC%EC%84%9C%EA%B5%AC%20%EB%8B%AC%EC%84%9C%EB%8C%80%EB%A1%9C%2054" target="_blank" rel="noopener noreferrer">네이버 지도<span class="sr-only"> (새 창)</span></a>
+      <a class="btn btn-ghost" href="https://www.google.com/maps/dir/?api=1&amp;destination=%EB%8C%80%EA%B5%AC%EA%B4%91%EC%97%AD%EC%8B%9C%20%EB%8B%AC%EC%84%9C%EA%B5%AC%20%EB%8B%AC%EC%84%9C%EB%8C%80%EB%A1%9C%2054" target="_blank" rel="noopener noreferrer">길찾기<span class="sr-only"> (새 창)</span></a>
+    </div>
   </div>
-</div>
-
+  <iframe class="office-map-frame" title="대구 지점 위치 지도" src="https://www.google.com/maps?q=%EB%8C%80%EA%B5%AC%EA%B4%91%EC%97%AD%EC%8B%9C%20%EB%8B%AC%EC%84%9C%EA%B5%AC%20%EB%8B%AC%EC%84%9C%EB%8C%80%EB%A1%9C%2054&amp;z=16&amp;output=embed&amp;hl=ko" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+</article></div>
 <div class="prose sm">
   <p>방문 상담을 원하시면 전화나 메일로 미리 일정을 잡아 주세요. 담당 연구원이 자료를 준비해 두고 맞이하겠습니다.</p>
 </div>
@@ -114,7 +122,7 @@
         </a>
         <p class="ftr-addr"><b>서울 본사</b> 서울특별시 영등포구 국회대로72길 11, 309호<br><b>대구 지점</b> 대구광역시 달서구 달서대로 54, 503호</p>
       </div>
-      <div class="ftr-cols"><div class="ftr-col"><b>회사소개</b><a href="../company/greeting.html">대표이사 인사말</a><a href="../company/history.html">연혁</a><a href="../company/organization.html">조직도</a><a href="../company/people.html">연구원 프로필</a><a href="../company/location.html">오시는 길</a></div><div class="ftr-col"><b>사업소개</b><a href="../business/fields.html">조사분야</a><a href="../business/methods.html">조사방법</a><a href="../business/special.html">특수 설문 유형</a><a href="../business/platform.html">설문 플랫폼</a><a href="../business/process.html">진행 절차</a></div><div class="ftr-col"><b>공지사항</b><a href="../support/notice.html">공지사항</a></div></div>
+      <div class="ftr-cols"><div class="ftr-col"><b>회사소개</b><a href="../company/greeting.html">대표이사 인사말</a><a href="../company/history.html">연혁</a><a href="../company/organization.html">조직도</a><a href="../company/people.html">연구원 프로필</a><a href="../company/location.html">오시는 길</a></div><div class="ftr-col"><b>사업소개</b><a href="../business/fields.html">조사분야</a><a href="../business/methods.html">조사방법</a><a href="../business/special.html">특수 설문 유형</a><a href="../business/platform.html">설문 플랫폼</a><a href="../business/process.html">진행 절차</a></div><div class="ftr-col"><b>고객지원</b><a href="../support/notice.html">공지사항</a><a href="../support/contact.html">견적 문의</a></div></div>
     </div>
     <div class="ftr-bottom">
       <p class="ftr-info">
@@ -126,6 +134,6 @@
   </div>
 </footer>
 
-<script src="../assets/site.js"></script>
+<script src="../assets/site.js?v=a69d2c6855a2"></script>
 </body>
 </html>

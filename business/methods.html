@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/site.css?v=a69d2c6855a2">
 </head>
 <body>
 
@@ -56,6 +56,7 @@
 <div class="nav-item">
 <a class="nav-top" href="../support/notice.html">공지사항</a>
 </div>
+<a class="nav-contact btn btn-primary" href="../support/contact.html">견적 문의</a>
 </nav>
     <a class="btn btn-primary hdr-cta" href="../support/contact.html">견적 문의</a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="gnb" aria-label="메뉴 열기">
@@ -73,13 +74,15 @@
     <p class="ph-sub">조사 목적과 대상에 따라 적합한 방법을 설계합니다.</p>
   </div>
 </section>
-<div class="lnb"><div class="wrap lnb-in">
+<nav class="lnb" aria-label="사업소개 하위 메뉴"><div class="wrap lnb-shell">
+<button class="lnb-scroll" type="button" data-direction="-1" aria-label="이전 메뉴 보기">&#8249;</button>
+<div class="lnb-in">
 <a href="../business/fields.html">조사분야</a>
-<a href="../business/methods.html" class="is-active">조사방법</a>
+<a href="../business/methods.html" class="is-active" aria-current="page">조사방법</a>
 <a href="../business/special.html">특수 설문 유형</a>
 <a href="../business/platform.html">설문 플랫폼</a>
 <a href="../business/process.html">진행 절차</a>
-</div></div><section class="sec"><div class="wrap">
+</div><button class="lnb-scroll" type="button" data-direction="1" aria-label="다음 메뉴 보기">&#8250;</button></div></nav><section class="sec"><div class="wrap">
 <p class="deck-intro">
   조사 목적과 대상, 일정과 예산에 따라 적합한 방법이 달라집니다.
   <b>코리아데이터월드가 직접 수행하는 조사방법</b>은 다음과 같습니다.
@@ -88,25 +91,25 @@
 <h3 class="minor-h">정량조사</h3>
 <div class="meth reveal-group">
   <article class="meth-item reveal">
-    <img class="meth-illust" src="../assets/illust/method-f2f.png" alt="" width="800" height="800" loading="lazy" decoding="async">
+    <img class="meth-illust method-f2f" src="../assets/illust/method-f2f.png" alt="" width="800" height="800" loading="lazy" decoding="async">
     <span class="meth-top"><span class="meth-k">F2F</span></span>
     <h4>면접조사<small>Face-to-Face Interview</small></h4>
     <p>조사원이 응답자를 직접 만나 설문을 진행하는 대면 조사입니다. 복잡한 질문이나 시각자료 제시가 필요한 조사, 응답 신뢰도가 특히 중요한 조사에 적합합니다.</p>
   </article>
   <article class="meth-item reveal">
-    <img class="meth-illust" src="../assets/illust/method-cati.png" alt="" width="800" height="800" loading="lazy" decoding="async">
+    <img class="meth-illust method-cati" src="../assets/illust/method-cati.png" alt="" width="800" height="800" loading="lazy" decoding="async">
     <span class="meth-top"><span class="meth-k">CATI</span></span>
     <h4>전화조사<small>Telephone Interview</small></h4>
     <p>조사원이 전화로 응답자에게 직접 질문하는 방식입니다. 빠른 시일 내 다수의 응답을 확보해야 하거나, 전국 단위로 넓은 지역을 조사할 때 효율적입니다.</p>
   </article>
   <article class="meth-item reveal">
-    <img class="meth-illust" src="../assets/illust/method-web.png" alt="" width="800" height="800" loading="lazy" decoding="async">
+    <img class="meth-illust method-web" src="../assets/illust/method-web.png" alt="" width="800" height="800" loading="lazy" decoding="async">
     <span class="meth-top"><span class="meth-k">WEB</span></span>
     <h4>온라인 조사<small>Web &middot; Mobile</small></h4>
     <p>웹이나 모바일 화면을 통해 응답자가 직접 응답하는 방식입니다. 비용과 시간 효율이 높고, 이미지&middot;동영상 등 다양한 자료를 활용한 설문 설계가 가능합니다.</p>
   </article>
   <article class="meth-item reveal">
-    <img class="meth-illust" src="../assets/illust/method-ars.png" alt="" width="800" height="800" loading="lazy" decoding="async">
+    <img class="meth-illust method-ars" src="../assets/illust/method-ars.png" alt="" width="800" height="800" loading="lazy" decoding="async">
     <span class="meth-top"><span class="meth-k">ARS</span></span>
     <h4>ARS 조사<small>Automatic Response System</small></h4>
     <p>자동응답시스템을 통해 응답자가 전화기 버튼으로 답변하는 방식입니다. 짧고 간단한 문항을 대규모로, 빠르게 조사해야 할 때 효과적입니다.</p>
@@ -116,13 +119,13 @@
 <h3 class="minor-h story-h">정성조사</h3>
 <div class="meth reveal-group">
   <article class="meth-item reveal">
-    <img class="meth-illust" src="../assets/illust/method-idi.png" alt="" width="800" height="800" loading="lazy" decoding="async">
+    <img class="meth-illust method-idi" src="../assets/illust/method-idi.png" alt="" width="800" height="800" loading="lazy" decoding="async">
     <span class="meth-top"><span class="meth-k">IDI</span></span>
     <h4>심층면접<small>In-depth Interview</small></h4>
     <p>전문 면접원이 응답자 한 명과 깊이 있는 대화를 나누며 생각과 경험을 자세히 파악하는 방식입니다. 숫자로 드러나지 않는 배경과 맥락을 이해해야 할 때 활용합니다.</p>
   </article>
   <article class="meth-item reveal">
-    <img class="meth-illust" src="../assets/illust/method-fgi.png" alt="" width="800" height="800" loading="lazy" decoding="async">
+    <img class="meth-illust method-fgi" src="../assets/illust/method-fgi.png" alt="" width="800" height="800" loading="lazy" decoding="async">
     <span class="meth-top"><span class="meth-k">FGI</span></span>
     <h4>집단심층토의<small>Focus Group Interview</small></h4>
     <p>소수의 참여자가 한자리에 모여 특정 주제를 자유롭게 토의하는 방식입니다. 참여자 간 의견 교환 속에서 새로운 아이디어나 다양한 관점을 발굴할 때 적합합니다.</p>
@@ -149,7 +152,7 @@
         </a>
         <p class="ftr-addr"><b>서울 본사</b> 서울특별시 영등포구 국회대로72길 11, 309호<br><b>대구 지점</b> 대구광역시 달서구 달서대로 54, 503호</p>
       </div>
-      <div class="ftr-cols"><div class="ftr-col"><b>회사소개</b><a href="../company/greeting.html">대표이사 인사말</a><a href="../company/history.html">연혁</a><a href="../company/organization.html">조직도</a><a href="../company/people.html">연구원 프로필</a><a href="../company/location.html">오시는 길</a></div><div class="ftr-col"><b>사업소개</b><a href="../business/fields.html">조사분야</a><a href="../business/methods.html">조사방법</a><a href="../business/special.html">특수 설문 유형</a><a href="../business/platform.html">설문 플랫폼</a><a href="../business/process.html">진행 절차</a></div><div class="ftr-col"><b>공지사항</b><a href="../support/notice.html">공지사항</a></div></div>
+      <div class="ftr-cols"><div class="ftr-col"><b>회사소개</b><a href="../company/greeting.html">대표이사 인사말</a><a href="../company/history.html">연혁</a><a href="../company/organization.html">조직도</a><a href="../company/people.html">연구원 프로필</a><a href="../company/location.html">오시는 길</a></div><div class="ftr-col"><b>사업소개</b><a href="../business/fields.html">조사분야</a><a href="../business/methods.html">조사방법</a><a href="../business/special.html">특수 설문 유형</a><a href="../business/platform.html">설문 플랫폼</a><a href="../business/process.html">진행 절차</a></div><div class="ftr-col"><b>고객지원</b><a href="../support/notice.html">공지사항</a><a href="../support/contact.html">견적 문의</a></div></div>
     </div>
     <div class="ftr-bottom">
       <p class="ftr-info">
@@ -161,6 +164,6 @@
   </div>
 </footer>
 
-<script src="../assets/site.js"></script>
+<script src="../assets/site.js?v=a69d2c6855a2"></script>
 </body>
 </html>

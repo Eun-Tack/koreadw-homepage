@@ -12,10 +12,12 @@
 콘텐츠는 아래 PAGES 리스트만 고치면 됩니다.
 """
 import io
+import hashlib
 import os
 import re
 import shutil
 import sys
+from urllib.parse import quote
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -229,16 +231,16 @@ def ico(key):
 # ─────────────────────────────────────────────────────────────
 DECK = """
 <div class="chips" role="group" aria-label="특수 설문 유형 선택">
-  <button class="chip" type="button" data-target="ce" aria-pressed="false">CE 선택실험법</button>
+  <button class="chip" type="button" data-target="ce" aria-pressed="true">CE 선택실험법</button>
   <button class="chip" type="button" data-target="ahp" aria-pressed="false">AHP 쌍대비교</button>
   <button class="chip" type="button" data-target="cvm" aria-pressed="false">CVM 조건부가치측정</button>
   <button class="chip" type="button" data-target="delphi" aria-pressed="false">Delphi 전문가 합의</button>
-  <button class="chip" type="button" data-target="custom" aria-pressed="true">그 외 모든 유형</button>
+  <button class="chip" type="button" data-target="custom" aria-pressed="false">맞춤형 설문</button>
 </div>
 
 <div class="deck">
 
-  <div class="dcard" role="button" tabindex="0" data-key="ce" style="--i:0">
+  <div class="dcard is-active" data-key="ce">
     <div class="dcard-top"><span class="dcard-code">CE</span><span class="dcard-step">선택 세트 3 / 8</span></div>
     <h3>선택실험법</h3>
     <p class="dcard-sub">속성과 수준을 조합한 대안 중 하나를 고르게 하여, 지불의사와 속성별 중요도를 추정합니다.</p>
@@ -253,7 +255,7 @@ DECK = """
     <p class="dcard-foot">출력 · 더미변수 Long Format</p>
   </div>
 
-  <div class="dcard" role="button" tabindex="0" data-key="ahp" style="--i:1">
+  <div class="dcard" data-key="ahp">
     <div class="dcard-top"><span class="dcard-code">AHP</span><span class="dcard-step">쌍대비교 6 / 15</span></div>
     <h3>쌍대비교법</h3>
     <p class="dcard-sub">두 항목을 9점 척도로 비교해 가중치를 산출하고, 응답 도중 일관성 비율을 바로 확인합니다.</p>
@@ -267,7 +269,7 @@ DECK = """
     <p class="dcard-foot">산출 · 기준별 가중치 &amp; 우선순위</p>
   </div>
 
-  <div class="dcard" role="button" tabindex="0" data-key="cvm" style="--i:2">
+  <div class="dcard" data-key="cvm">
     <div class="dcard-top"><span class="dcard-code">CVM</span><span class="dcard-step">DBDC 1차 제시</span></div>
     <h3>조건부가치측정법</h3>
     <p class="dcard-sub">제시금액을 응답자별로 균등 배분하고, 응답에 따라 2차 금액으로 분기합니다.</p>
@@ -283,7 +285,7 @@ DECK = """
     <p class="dcard-foot">출력 · 이중양분선택형 Long Format</p>
   </div>
 
-  <div class="dcard" role="button" tabindex="0" data-key="delphi" style="--i:3">
+  <div class="dcard" data-key="delphi">
     <div class="dcard-top"><span class="dcard-code">DELPHI</span><span class="dcard-step">2라운드 진행 중</span></div>
     <h3>전문가 합의법</h3>
     <p class="dcard-sub">라운드별 통계 요약을 응답 화면에 함께 보여 주어, 전문가가 의견을 조정할 근거를 제공합니다.</p>
@@ -299,10 +301,10 @@ DECK = """
     <p class="dcard-foot">추적 · 라운드별 의견 변화 이력</p>
   </div>
 
-  <div class="dcard custom is-active" role="button" tabindex="0" data-key="custom" style="--i:4">
+  <div class="dcard custom" data-key="custom">
     <div class="dcard-top"><span class="dcard-code">CUSTOM</span><span class="dcard-step">설계서 → 화면</span></div>
-    <h3>그 밖의 모든 유형</h3>
-    <p class="dcard-sub">목록에 없는 방법론이라도 문항 구조와 출력 형식만 정해져 있다면 구현할 수 있습니다.</p>
+    <h3>맞춤형 설문</h3>
+    <p class="dcard-sub">문항 구조와 출력 형식을 검토해 과제에 맞는 구현 방법을 제안합니다.</p>
     <div class="dcard-screen">
       <p class="custom-kicker">연구계획서에 있는 그 문항,<br>화면으로 만들어 드립니다.</p>
       <ul class="custom-list">
@@ -325,12 +327,11 @@ def notice_rows(limit=None):
     rows = NOTICES[:limit] if limit else NOTICES
     out = []
     for tag, title, date in rows:
-        badge = '<span class="notice-tag">%s</span>' % tag if tag else ''
-        out.append(
-            '<li><a href="{href}">%s%s</a>'
-            '<time datetime="%s">%s</time></li>'
-            % (badge, title, date, date.replace("-", "."))
-        )
+        badge = '<span class="notice-tag">%s</span>' % (tag or "소식")
+        title_html = ('<a href="{href}">%s%s</a>' % (badge, title) if limit
+                      else '<span class="notice-title">%s%s</span>' % (badge, title))
+        out.append('<li>%s<time datetime="%s">%s</time></li>'
+                   % (title_html, date, date.replace("-", ".")))
     return "\n".join(out)
 
 
@@ -340,7 +341,7 @@ OFFICES = """
     <h3>서울 본사<span>SEOUL</span></h3>
     <dl>
       <dt>주소</dt><dd>{addr_seoul}</dd>
-      <dt>전화</dt><dd>{tel}</dd>
+      <dt>전화</dt><dd><a href="tel:{tel}">{tel}</a></dd>
       <dt>팩스</dt><dd>{fax}</dd>
     </dl>
   </div>
@@ -348,7 +349,7 @@ OFFICES = """
     <h3>대구 지점<span>DAEGU</span></h3>
     <dl>
       <dt>주소</dt><dd>{addr_daegu}</dd>
-      <dt>전화</dt><dd>{tel_daegu}</dd>
+      <dt>전화</dt><dd><a href="tel:{tel_daegu}">{tel_daegu}</a></dd>
       <dt>팩스</dt><dd>{fax}</dd>
     </dl>
   </div>
@@ -377,7 +378,7 @@ MAIN = """
       <h1>데이터의 확보와 분석으로<br><span class="hl">고객의 현안을 해결합니다.</span></h1>
       <p class="lede">
         (주)코리아데이터월드는 만족도·정책수요·실태·학술연구 조사를 수행하는 리서치 전문기업입니다.
-        문제를 정의하는 첫 단계부터 함께 설계하고, 끝내 손에 쥐어야 할 정보의 형태와 의미까지 같이 고민합니다.
+        조사 설계와 자료 수집부터 분석·보고서까지, 의사결정에 필요한 근거를 함께 만듭니다.
       </p>
       <div class="hero-cta">
         <a class="btn btn-primary btn-lg" href="{root}support/contact.html">조사 의뢰 &middot; 견적 문의</a>
@@ -386,6 +387,7 @@ MAIN = """
     </div>
 
     <div class="hero-vis" aria-hidden="true">
+      <span class="vis-caption">설문 화면 예시</span>
       <div class="vis-card vis-a">
         <span class="vis-tag">Q7 / LIKERT 5점</span>
         <p class="vis-q">제공받은 서비스에 전반적으로 얼마나 만족하십니까?</p>
@@ -415,7 +417,7 @@ MAIN = """
   <div class="wrap">
     <div class="sec-head center reveal reveal-group">
       <span class="eyebrow">조사분야</span>
-      <h2>네 개 영역에서, 목적이 다른 조사를 설계합니다.</h2>
+      <h2>조사 목적에 맞는 네 가지 전문 분야</h2>
       <p class="lede">조사 목적이 다르면 표본, 문항 구조, 산출 지표가 모두 달라집니다. 영역별로 필요한 결과물의 형태부터 확인하고 시작합니다.</p>
     </div>
     {FIELDS}
@@ -431,7 +433,7 @@ MAIN = """
     <div class="band-head">
       <div>
         <span class="eyebrow">특수 설문 유형</span>
-        <h2>일반 설문 도구로는 만들 수 없는 문항이<br>연구를 가로막지 않도록.</h2>
+        <h2>복잡한 연구 설계도<br>응답하기 쉬운 설문으로.</h2>
         <p class="lede">
           선택실험(CE), 쌍대비교(AHP), 조건부가치측정(CVM), 전문가 합의(Delphi).
           연구 방법론이 요구하는 화면과 출력 형식을 그대로 구현합니다.
@@ -439,8 +441,7 @@ MAIN = """
       </div>
       <p class="band-note">
         방법론마다 <b>응답자가 보는 화면</b>과 <b>분석에 넘겨야 할 데이터 형식</b>이 다릅니다.
-        일반 설문 도구가 감당하지 못하는 지점이 바로 여기입니다.
-        저희는 네 가지 방법론을 자체 플랫폼에 직접 구현해 두었습니다.
+        자체 플랫폼에서 문항 구조와 분석에 필요한 데이터 형식을 함께 설계합니다.
       </p>
     </div>
     {DECK}
@@ -453,7 +454,7 @@ MAIN = """
     <div class="sec-head center reveal reveal-group">
       <span class="eyebrow">자체 설문 플랫폼</span>
       <h2>조사 설계부터 원시데이터 납품까지, 한 곳에서.</h2>
-      <p class="lede">외부 설문 도구를 빌려 쓰지 않습니다. 조사 현장에서 필요한 기능을 직접 만들어 운영하기 때문에, 요구사항이 생기면 화면을 바꿉니다.</p>
+      <p class="lede">문항 구성, 응답자 관리, 실시간 모니터링을 자체 플랫폼에서 연결합니다. 과제별 요구사항에 맞춰 설문 화면과 납품 형식을 조정합니다.</p>
     </div>
     {PLATFORM}
     <p class="sec-more"><a class="link-more" href="{root}business/platform.html">플랫폼 기능 자세히 보기</a></p>
@@ -613,7 +614,6 @@ page("greeting", "company/greeting.html", "company", "대표이사 인사말",
 <div class="greet">
   <figure class="greet-photo">
     <img src="{root}assets/people/ceo-greeting.jpg" alt="(주)코리아데이터월드 대표이사 김근지" width="480" height="640">
-    <figcaption>대표이사 <b>김근지</b></figcaption>
   </figure>
   <div class="prose">
     <p class="prose-lead">안녕하십니까?</p>
@@ -637,14 +637,14 @@ page("greeting", "company/greeting.html", "company", "대표이사 인사말",
       끝내 결과물을 만들어내는 뚝심, 그것이 코리아데이터월드가 가진 실질적인 경쟁력입니다.
     </p>
     <blockquote>
-      숫자 하나에 많은 이의 시간과 생각이 담겨 있다는 것을 저희는 잊지 않습니다.<br>
-      그 무게를 아는 만큼, 저희가 드리는 데이터와 분석이 고객의 성과로, 정책의 근거로,<br>
+      숫자 하나에 많은 이의 시간과 생각이 담겨 있다는 것을 저희는 잊지 않습니다.
+      그 무게를 아는 만큼, 저희가 드리는 데이터와 분석이 고객의 성과로, 정책의 근거로,
       연구의 결실로 이어지도록 끝까지 책임지겠습니다.
     </blockquote>
     <p class="sign">(주)코리아데이터월드 대표이사 <b>김근지</b></p>
   </div>
 </div>
-""")
+""", sub="고객의 의사결정을 돕는 데이터와 분석을 제공합니다.")
 
 def history_html():
     years, story = load_history()
@@ -653,7 +653,8 @@ def history_html():
         out.append('<div class="hist-year reveal"><b>%s</b><ul>' % year)
         for when, text, note in items:
             em = ' <em>(%s)</em>' % note if note else ''
-            out.append('<li><span>%s</span>%s%s</li>' % (when, text, em))
+            out.append('<li><span class="hist-date">%s</span><div class="hist-entry">%s%s</div></li>'
+                       % (when, text, em))
         out.append('</ul></div>')
     out.append('</div>')
     if story:
@@ -678,9 +679,9 @@ page("organization", "company/organization.html", "company", "조직도",
      """
 <div class="org">
   <div class="org-head">
-    <span class="org-advisor">분야별 자문위원</span>
+    <span class="org-advisor advisor-left">분야별 자문위원</span>
     <span class="org-node lead">대표이사</span>
-    <span class="org-advisor">경영지원팀</span>
+    <span class="org-advisor advisor-right">경영지원팀</span>
   </div>
   <div class="org-row">
     <div class="org-col">
@@ -701,7 +702,7 @@ page("organization", "company/organization.html", "company", "조직도",
   </div>
 </div>
 <p class="note">※ 분야별 자문위원 명단은 추후 업데이트 예정입니다.</p>
-""")
+""", sub="연구·분석·실사 조직이 함께 과제를 수행합니다.")
 
 def people_html():
     out = ['<div class="people reveal-group">']
@@ -712,8 +713,8 @@ def people_html():
             out.append('<span class="person-role">%s</span>' % esc(pr["구분"]))
         if pr.get("사진"):
             out.append(
-                '<img class="person-photo" src="{root}assets/people/%s" '
-                'alt="%s %s" width="480" height="640" loading="lazy">'
+                '<div class="person-photo-frame"><img class="person-photo" src="{root}assets/people/%s" '
+                'alt="%s %s" width="480" height="640" loading="lazy"></div>'
                 % (pr["사진"], esc(pr.get("이름", "")), esc(pr.get("직책", ""))))
         out.append('<h3>%s<small>%s</small></h3>'
                    % (esc(pr.get("이름", "")), esc(pr.get("직책", ""))))
@@ -734,25 +735,50 @@ page("people", "company/people.html", "company", "연구원 프로필",
      "연구원 프로필", "코리아데이터월드 연구 인력 소개",
      """
 <p class="deck-intro">
-  과업에 <b>실제로 투입되는 인력</b>입니다. 투입 인력 전원이 사회조사분석사 자격을 보유하고 있습니다.
+  조사 설계부터 분석까지 함께하는 연구진입니다. <b>연구진 전원이 사회조사분석사 자격을 보유</b>하고 있습니다.
 </p>
 """ + people_html(),
-     sub="과업에 실제로 투입되는 연구 인력입니다.")
+     sub="조사와 분석을 수행하는 연구진을 소개합니다.")
+
+def office_maps():
+    offices = (
+        ("서울 본사", SITE["addr_seoul"], SITE["tel"]),
+        ("대구 지점", SITE["addr_daegu"], SITE["tel_daegu"]),
+    )
+    parts = ['<div class="office-maps">']
+    for name, address, phone in offices:
+        query = quote(address.split(",")[0])
+        parts.append("""
+<article class="office-map">
+  <div class="office-map-info">
+    <h2>%s</h2>
+    <p class="office-map-address">%s</p>
+    <a class="office-map-phone" href="tel:%s">%s</a>
+    <div class="map-actions">
+      <a class="btn btn-primary" href="https://map.naver.com/p/search/%s" target="_blank" rel="noopener noreferrer">네이버 지도<span class="sr-only"> (새 창)</span></a>
+      <a class="btn btn-ghost" href="https://www.google.com/maps/dir/?api=1&amp;destination=%s" target="_blank" rel="noopener noreferrer">길찾기<span class="sr-only"> (새 창)</span></a>
+    </div>
+  </div>
+  <iframe class="office-map-frame" title="%s 위치 지도" src="https://www.google.com/maps?q=%s&amp;z=16&amp;output=embed&amp;hl=ko" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+</article>""" % (name, address, phone, phone, query, query, name, query))
+    parts.append("</div>")
+    return "".join(parts)
+
 
 page("location", "company/location.html", "company", "오시는 길",
      "오시는 길", "코리아데이터월드 서울 본사 · 대구 지점 위치 안내",
-     OFFICES + """
+     office_maps() + """
 <div class="prose sm">
   <p>방문 상담을 원하시면 전화나 메일로 미리 일정을 잡아 주세요. 담당 연구원이 자료를 준비해 두고 맞이하겠습니다.</p>
 </div>
-""")
+""", sub="서울 본사와 대구 지점의 위치 및 방문 경로를 안내합니다.")
 
 # ── 사업소개 ──────────────────────────────────────────────────
 page("fields", "business/fields.html", "business", "조사분야",
      "조사분야", "만족도 · 정책수요 · 실태 · 학술연구 조사",
      FIELDS_GRID + """
 <div class="callout reveal">
-  <h3>어느 영역인지 애매해도 괜찮습니다</h3>
+  <h3>조사 목적에 맞는 방법을 함께 찾습니다</h3>
   <p>
     실제 과제는 만족도와 실태, 정책수요가 섞여 있는 경우가 대부분입니다.
     무엇을 알고 싶으신지, 그 결과를 어디에 쓰실지만 알려주시면 그에 맞는 조사 형태를 저희가 정리해 제안드립니다.
@@ -773,25 +799,25 @@ page("methods", "business/methods.html", "business", "조사방법",
 <h3 class="minor-h">정량조사</h3>
 <div class="meth reveal-group">
   <article class="meth-item reveal">
-    <img class="meth-illust" src="{root}assets/illust/method-f2f.png" alt="" width="800" height="800" loading="lazy" decoding="async">
+    <img class="meth-illust method-f2f" src="{root}assets/illust/method-f2f.png" alt="" width="800" height="800" loading="lazy" decoding="async">
     <span class="meth-top"><span class="meth-k">F2F</span></span>
     <h4>면접조사<small>Face-to-Face Interview</small></h4>
     <p>조사원이 응답자를 직접 만나 설문을 진행하는 대면 조사입니다. 복잡한 질문이나 시각자료 제시가 필요한 조사, 응답 신뢰도가 특히 중요한 조사에 적합합니다.</p>
   </article>
   <article class="meth-item reveal">
-    <img class="meth-illust" src="{root}assets/illust/method-cati.png" alt="" width="800" height="800" loading="lazy" decoding="async">
+    <img class="meth-illust method-cati" src="{root}assets/illust/method-cati.png" alt="" width="800" height="800" loading="lazy" decoding="async">
     <span class="meth-top"><span class="meth-k">CATI</span></span>
     <h4>전화조사<small>Telephone Interview</small></h4>
     <p>조사원이 전화로 응답자에게 직접 질문하는 방식입니다. 빠른 시일 내 다수의 응답을 확보해야 하거나, 전국 단위로 넓은 지역을 조사할 때 효율적입니다.</p>
   </article>
   <article class="meth-item reveal">
-    <img class="meth-illust" src="{root}assets/illust/method-web.png" alt="" width="800" height="800" loading="lazy" decoding="async">
+    <img class="meth-illust method-web" src="{root}assets/illust/method-web.png" alt="" width="800" height="800" loading="lazy" decoding="async">
     <span class="meth-top"><span class="meth-k">WEB</span></span>
     <h4>온라인 조사<small>Web &middot; Mobile</small></h4>
     <p>웹이나 모바일 화면을 통해 응답자가 직접 응답하는 방식입니다. 비용과 시간 효율이 높고, 이미지&middot;동영상 등 다양한 자료를 활용한 설문 설계가 가능합니다.</p>
   </article>
   <article class="meth-item reveal">
-    <img class="meth-illust" src="{root}assets/illust/method-ars.png" alt="" width="800" height="800" loading="lazy" decoding="async">
+    <img class="meth-illust method-ars" src="{root}assets/illust/method-ars.png" alt="" width="800" height="800" loading="lazy" decoding="async">
     <span class="meth-top"><span class="meth-k">ARS</span></span>
     <h4>ARS 조사<small>Automatic Response System</small></h4>
     <p>자동응답시스템을 통해 응답자가 전화기 버튼으로 답변하는 방식입니다. 짧고 간단한 문항을 대규모로, 빠르게 조사해야 할 때 효과적입니다.</p>
@@ -801,13 +827,13 @@ page("methods", "business/methods.html", "business", "조사방법",
 <h3 class="minor-h story-h">정성조사</h3>
 <div class="meth reveal-group">
   <article class="meth-item reveal">
-    <img class="meth-illust" src="{root}assets/illust/method-idi.png" alt="" width="800" height="800" loading="lazy" decoding="async">
+    <img class="meth-illust method-idi" src="{root}assets/illust/method-idi.png" alt="" width="800" height="800" loading="lazy" decoding="async">
     <span class="meth-top"><span class="meth-k">IDI</span></span>
     <h4>심층면접<small>In-depth Interview</small></h4>
     <p>전문 면접원이 응답자 한 명과 깊이 있는 대화를 나누며 생각과 경험을 자세히 파악하는 방식입니다. 숫자로 드러나지 않는 배경과 맥락을 이해해야 할 때 활용합니다.</p>
   </article>
   <article class="meth-item reveal">
-    <img class="meth-illust" src="{root}assets/illust/method-fgi.png" alt="" width="800" height="800" loading="lazy" decoding="async">
+    <img class="meth-illust method-fgi" src="{root}assets/illust/method-fgi.png" alt="" width="800" height="800" loading="lazy" decoding="async">
     <span class="meth-top"><span class="meth-k">FGI</span></span>
     <h4>집단심층토의<small>Focus Group Interview</small></h4>
     <p>소수의 참여자가 한자리에 모여 특정 주제를 자유롭게 토의하는 방식입니다. 참여자 간 의견 교환 속에서 새로운 아이디어나 다양한 관점을 발굴할 때 적합합니다.</p>
@@ -833,20 +859,20 @@ page("special", "business/special.html", "business", "특수 설문 유형",
   CE는 더미변수 Long Format, AHP는 응답 중 실시간 CR 확인, CVM은 응답자별 제시금액 배분이 필요합니다.
   저희는 이 네 가지를 자체 플랫폼에 직접 구현해 두었으며, 목록에 없는 유형도 설계서만 주시면 구현해 드립니다.
 </p>
-""" + DECK + """
+""" + '<h2 class="minor-h">응답 화면 예시</h2>' + DECK + """
 
+<h2 class="minor-h story-h">방법론별 활용 분야와 결과물</h2>
 <div class="specs reveal-group">
   <article class="spec reveal">
     <div class="spec-head">
       <span class="spec-code">CE</span>
       <div>
         <h3>선택실험법<small>Choice Experiment</small></h3>
-        <p>여러 대안 세트 중 하나를 고르게 해, 사람들의 실제 선호를 읽어내는 방법</p>
       </div>
     </div>
     <div class="spec-body">
       <div>
-        <h4>언제 &middot; 왜 쓰나</h4>
+        <h4>활용 분야</h4>
         <ul>
           <li>신제품&middot;신규 서비스의 속성 조합을 설계할 때</li>
           <li>가격을 바꾸면 선택이 얼마나 달라지는지 알아야 할 때</li>
@@ -854,7 +880,7 @@ page("special", "business/special.html", "business", "특수 설문 유형",
         </ul>
       </div>
       <div>
-        <h4>무엇이 나오나</h4>
+        <h4>주요 결과물</h4>
         <ul>
           <li>속성별 중요도 (효용 가중치)</li>
           <li>가장 선호되는 최적 조합</li>
@@ -871,12 +897,11 @@ page("special", "business/special.html", "business", "특수 설문 유형",
       <span class="spec-code">AHP</span>
       <div>
         <h3>쌍대비교법<small>Analytic Hierarchy Process</small></h3>
-        <p>두 개씩 짝지어 비교해, 복잡한 의사결정의 우선순위를 정리하는 방법</p>
       </div>
     </div>
     <div class="spec-body">
       <div>
-        <h4>언제 &middot; 왜 쓰나</h4>
+        <h4>활용 분야</h4>
         <ul>
           <li>여러 사업&middot;정책 대안의 우선순위를 정해야 할 때</li>
           <li>성격이 다른 평가 기준을 함께 비교해야 할 때</li>
@@ -884,7 +909,7 @@ page("special", "business/special.html", "business", "특수 설문 유형",
         </ul>
       </div>
       <div>
-        <h4>무엇이 나오나</h4>
+        <h4>주요 결과물</h4>
         <ul>
           <li>기준별 상대적 중요도 (가중치)</li>
           <li>대안별 최종 우선순위표</li>
@@ -900,12 +925,11 @@ page("special", "business/special.html", "business", "특수 설문 유형",
       <span class="spec-code">CVM</span>
       <div>
         <h3>조건부가치측정법<small>Contingent Valuation Method</small></h3>
-        <p>시장가격이 없는 것의 가치를, 지불의사금액을 물어 돈으로 환산하는 방법</p>
       </div>
     </div>
     <div class="spec-body">
       <div>
-        <h4>언제 &middot; 왜 쓰나</h4>
+        <h4>활용 분야</h4>
         <ul>
           <li>환경&middot;문화재 등 무형가치를 화폐가치로 보여줘야 할 때</li>
           <li>공공사업의 경제적 타당성 근거가 필요할 때</li>
@@ -913,7 +937,7 @@ page("special", "business/special.html", "business", "특수 설문 유형",
         </ul>
       </div>
       <div>
-        <h4>무엇이 나오나</h4>
+        <h4>주요 결과물</h4>
         <ul>
           <li>평균 지불의사금액 (WTP)</li>
           <li>총 사회적 가치 (WTP &times; 대상인구)</li>
@@ -929,12 +953,11 @@ page("special", "business/special.html", "business", "특수 설문 유형",
       <span class="spec-code">Delphi</span>
       <div>
         <h3>전문가 합의법<small>Delphi Method</small></h3>
-        <p>전문가에게 같은 질문을 여러 라운드 반복해, 의견을 합의점으로 모으는 방법</p>
       </div>
     </div>
     <div class="spec-body">
       <div>
-        <h4>언제 &middot; 왜 쓰나</h4>
+        <h4>활용 분야</h4>
         <ul>
           <li>데이터가 부족한 미래 예측 주제를 다룰 때</li>
           <li>그 분야를 잘 아는 전문가의 판단이 꼭 필요할 때</li>
@@ -942,7 +965,7 @@ page("special", "business/special.html", "business", "특수 설문 유형",
         </ul>
       </div>
       <div>
-        <h4>무엇이 나오나</h4>
+        <h4>주요 결과물</h4>
         <ul>
           <li>최종 합의된 전망&middot;판단치</li>
           <li>전문가 간 의견 일치도</li>
@@ -986,7 +1009,7 @@ page("platform", "business/platform.html", "business", "설문 플랫폼",
      "설문 플랫폼", "코리아데이터월드 자체 설문 플랫폼 기능 안내",
      PLATFORM_GRID + """
 <div class="callout reveal">
-  <h3>필요한 기능이 없으면, 만듭니다</h3>
+  <h3>과제에 필요한 기능을 함께 설계합니다</h3>
   <p>
     외부 설문 도구를 빌려 쓰지 않기에, 과제마다 다른 요구사항을 화면에 그대로 반영할 수 있습니다.
     기관 고유의 응답 양식, 별도의 동의 절차, 특정 형식의 데이터 납품 요건 모두 협의할 수 있습니다.
@@ -1013,6 +1036,11 @@ page("process", "business/process.html", "business", "진행 절차",
     전문 조사기법(CE·AHP·CVM·Delphi)이 포함되면 설계를 검토할 기간이 더 필요합니다.
   </p>
 </div>
+<div class="callout">
+  <h3>필요한 결과와 희망 일정을 알려주세요</h3>
+  <p>조사 목적과 대상, 납품 기한을 알려주시면 단계별 일정과 준비할 자료를 정리해 드립니다. 설문 초안이 없어도 상담을 시작할 수 있습니다.</p>
+  <a class="btn btn-primary" href="{root}support/contact.html">조사 일정 · 견적 상담</a>
+</div>
 """,
      sub="문의부터 결과 납품까지, 여섯 단계로 진행합니다.")
 
@@ -1026,8 +1054,8 @@ page("notice", "support/notice.html", "support", "공지사항",
 """,
      sub="회사의 소식과 안내 사항을 전해드립니다.")
 
-page("contact", "support/contact.html", "support", "견적문의",
-     "견적문의", "조사 의뢰 및 견적 문의 안내",
+page("contact", "support/contact.html", "support", "견적 문의",
+     "견적 문의", "조사 의뢰 및 견적 문의 안내",
      CTA_CONTACT + """
 <div class="two contact-two">
   <div>
@@ -1070,6 +1098,8 @@ def build_nav(root, active_group, active_key, href):
                 parts.append('<a href="%s"%s>%s</a>' % (href(gid + "/" + k), sc, t))
             parts.append('</div></div>')
         parts.append('</div>')
+    parts.append('<a class="nav-contact btn btn-primary" href="%s">견적 문의</a>'
+                 % href("support/contact"))
     parts.append("</nav>")
     return "\n".join(parts)
 
@@ -1081,11 +1111,13 @@ def build_lnb(group, active_key, href):
         shown = [(k, t) for k, t in items if k not in NAV_HIDDEN]
         if len(shown) < 2:
             return ""
-        out = ['<div class="lnb"><div class="wrap lnb-in">']
+        out = ['<nav class="lnb" aria-label="%s 하위 메뉴"><div class="wrap lnb-shell">' % label,
+               '<button class="lnb-scroll" type="button" data-direction="-1" aria-label="이전 메뉴 보기">&#8249;</button>',
+               '<div class="lnb-in">']
         for k, t in shown:
-            cls = ' class="is-active"' if k == active_key else ""
+            cls = ' class="is-active" aria-current="page"' if k == active_key else ""
             out.append('<a href="%s"%s>%s</a>' % (href(gid + "/" + k), cls, t))
-        out.append("</div></div>")
+        out.append('</div><button class="lnb-scroll" type="button" data-direction="1" aria-label="다음 메뉴 보기">&#8250;</button></div></nav>')
         return "\n".join(out)
     return ""
 
@@ -1093,6 +1125,11 @@ def build_lnb(group, active_key, href):
 def build_footer(href):
     links = []
     for label, gid, items in MENU:
+        if gid == "support":
+            links.append('<div class="ftr-col"><b>고객지원</b>'
+                         '<a href="%s">공지사항</a><a href="%s">견적 문의</a></div>'
+                         % (href("support/notice"), href("support/contact")))
+            continue
         links.append('<div class="ftr-col"><b>%s</b>%s</div>' % (
             label,
             "".join('<a href="%s">%s</a>' % (href(gid + "/" + k), t)
@@ -1129,7 +1166,8 @@ def page_head_block(p, href):
     else:
         for label, gid, items in MENU:
             if gid == p["group"]:
-                crumb = '홈 <i>/</i> %s <i>/</i> %s' % (label, p["nav_title"])
+                crumb = ('홈 <i>/</i> %s' % label if label == p["nav_title"]
+                         else '홈 <i>/</i> %s <i>/</i> %s' % (label, p["nav_title"]))
     sub = ('<p class="ph-sub">%s</p>' % p["sub"]) if p["sub"] else ""
     return """
 <section class="phead">
@@ -1183,7 +1221,7 @@ HTML_SHELL = """<!doctype html>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="{ROOT}assets/site.css">
+<link rel="stylesheet" href="{ROOT}assets/site.css?v={ASSET_VERSION}">
 </head>
 <body{BODYCLASS}>
 {HEADER}
@@ -1191,7 +1229,7 @@ HTML_SHELL = """<!doctype html>
 {BODY}
 </main>
 {FOOTER}
-<script src="{ROOT}assets/site.js"></script>
+<script src="{ROOT}assets/site.js?v={ASSET_VERSION}"></script>
 </body>
 </html>
 """
@@ -1214,6 +1252,11 @@ HEADER_TPL = """
 
 
 def build_site():
+    digest = hashlib.sha256()
+    for name in ("site.css", "site.js"):
+        with open(os.path.join(HERE, "assets", name), "rb") as asset:
+            digest.update(asset.read())
+    asset_version = digest.hexdigest()[:12]
     for p in PAGES:
         depth = p["path"].count("/")
         root = "../" * depth
@@ -1247,6 +1290,7 @@ def build_site():
                          else p["title"] + " | 코리아데이터월드")
                 .replace("{DESC}", p["desc"])
                 .replace("{ROOT}", root)
+                .replace("{ASSET_VERSION}", asset_version)
                 .replace("{OGIMAGE}", SITE["site_url"] + "assets/og/og-image.png")
                 .replace("{PAGEURL}", SITE["site_url"] + ("" if p["key"] == "home" else p["path"]))
                 .replace("{BODYCLASS}", ' class="is-home"' if p["key"] == "home" else "")

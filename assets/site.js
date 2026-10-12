@@ -5,39 +5,60 @@
   // CSS 가 "JS 가 살아 있을 때만" 요소를 숨기도록 표시해 둔다.
   document.documentElement.classList.add("js");
 
+  var deckIndex = 0;
   function initDeck(scope) {
     var decks = scope.querySelectorAll(".deck");
     Array.prototype.forEach.call(decks, function (deck) {
       if (deck.dataset.bound === "1") return;
       deck.dataset.bound = "1";
 
-      var root = deck.closest("section") || scope;
+      var root = deck.parentElement;
       var cards = Array.prototype.slice.call(deck.querySelectorAll(".dcard"));
       var chips = Array.prototype.slice.call(root.querySelectorAll(".chip"));
 
+      var prefix = "survey-example-" + (++deckIndex);
+      var chipGroup = root.querySelector(".chips");
+      chipGroup.setAttribute("role", "tablist");
+      chips.forEach(function (ch) {
+        ch.setAttribute("role", "tab");
+        ch.removeAttribute("aria-pressed");
+        ch.id = prefix + "-tab-" + ch.dataset.target;
+        ch.setAttribute("aria-controls", prefix + "-panel-" + ch.dataset.target);
+      });
+      cards.forEach(function (c) {
+        c.id = prefix + "-panel-" + c.dataset.key;
+        c.setAttribute("role", "tabpanel");
+        c.setAttribute("aria-labelledby", prefix + "-tab-" + c.dataset.key);
+        c.tabIndex = 0;
+      });
       function activate(key) {
         cards.forEach(function (c) {
-          c.classList.toggle("is-active", c.dataset.key === key);
+          var active = c.dataset.key === key;
+          c.classList.toggle("is-active", active);
+          c.hidden = !active;
         });
         chips.forEach(function (ch) {
-          ch.setAttribute("aria-pressed", String(ch.dataset.target === key));
+          var active = ch.dataset.target === key;
+          ch.setAttribute("aria-selected", String(active));
+          ch.tabIndex = active ? 0 : -1;
         });
       }
-
-      cards.forEach(function (c) {
-        c.addEventListener("click", function () { activate(c.dataset.key); });
-        c.addEventListener("mouseenter", function () { activate(c.dataset.key); });
-        c.addEventListener("focus", function () { activate(c.dataset.key); });
-        c.addEventListener("keydown", function (e) {
-          if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
-            e.preventDefault();
-            activate(c.dataset.key);
-          }
+      chips.forEach(function (ch, i) {
+        ch.addEventListener("click", function () { activate(ch.dataset.target); });
+        ch.addEventListener("keydown", function (e) {
+          var next;
+          if (e.key === "ArrowRight") next = (i + 1) % chips.length;
+          else if (e.key === "ArrowLeft") next = (i + chips.length - 1) % chips.length;
+          else if (e.key === "Home") next = 0;
+          else if (e.key === "End") next = chips.length - 1;
+          else return;
+          e.preventDefault();
+          activate(chips[next].dataset.target);
+          chips[next].focus();
         });
       });
-      chips.forEach(function (ch) {
-        ch.addEventListener("click", function () { activate(ch.dataset.target); });
-      });
+      deck.classList.add("is-ready");
+      activate("ce");
     });
   }
 
@@ -62,7 +83,7 @@
     });
   }
 
-  function closeNav() {
+  function closeNav(restoreFocus) {
     if (!document.body.classList.contains("nav-open")) return;
     document.body.classList.remove("nav-open");
     var btn = document.querySelector(".vpage:not([hidden]) .nav-toggle") ||
@@ -70,11 +91,12 @@
     if (btn) {
       btn.setAttribute("aria-expanded", "false");
       btn.setAttribute("aria-label", "메뉴 열기");
+      if (restoreFocus === true) btn.focus();
     }
   }
 
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" || e.key === "Esc") closeNav();
+    if (e.key === "Escape" || e.key === "Esc") closeNav(true);
   });
   window.addEventListener("resize", function () {
     if (window.innerWidth > 1040) closeNav();
@@ -145,6 +167,29 @@
     initDeck(scope);
     initReveal(scope);
     initHeader();
+    // Keep the current subsection visible without moving the vertical scroll.
+    Array.prototype.forEach.call(scope.querySelectorAll(".lnb-in"), function (nav) {
+      if (!nav.offsetWidth) return;
+      var current = nav.querySelector(".is-active");
+      if (current) nav.scrollLeft = current.offsetLeft - (nav.clientWidth - current.offsetWidth) / 2;
+      if (nav.dataset.bound === "1") return;
+      nav.dataset.bound = "1";
+      var controls = nav.parentElement.querySelectorAll(".lnb-scroll");
+      function updateControls() {
+        Array.prototype.forEach.call(controls, function (btn) {
+          btn.disabled = Number(btn.dataset.direction) < 0
+            ? nav.scrollLeft <= 1 : nav.scrollLeft + nav.clientWidth >= nav.scrollWidth - 1;
+        });
+      }
+      Array.prototype.forEach.call(controls, function (btn) {
+        btn.addEventListener("click", function () {
+          nav.scrollBy({left: Number(btn.dataset.direction) * nav.clientWidth * .75, behavior:"smooth"});
+        });
+      });
+      nav.addEventListener("scroll", updateControls, {passive:true});
+      if (window.ResizeObserver) new ResizeObserver(updateControls).observe(nav);
+      updateControls();
+    });
   }
 
   window.KDW = { init: init };

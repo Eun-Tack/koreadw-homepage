@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/site.css?v=a69d2c6855a2">
 </head>
 <body>
 
@@ -56,6 +56,7 @@
 <div class="nav-item">
 <a class="nav-top" href="../support/notice.html">공지사항</a>
 </div>
+<a class="nav-contact btn btn-primary" href="../support/contact.html">견적 문의</a>
 </nav>
     <a class="btn btn-primary hdr-cta" href="../support/contact.html">견적 문의</a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="gnb" aria-label="메뉴 열기">
@@ -73,30 +74,32 @@
     <p class="ph-sub">연구 방법론이 요구하는 화면과 출력 형식을 그대로 구현합니다.</p>
   </div>
 </section>
-<div class="lnb"><div class="wrap lnb-in">
+<nav class="lnb" aria-label="사업소개 하위 메뉴"><div class="wrap lnb-shell">
+<button class="lnb-scroll" type="button" data-direction="-1" aria-label="이전 메뉴 보기">&#8249;</button>
+<div class="lnb-in">
 <a href="../business/fields.html">조사분야</a>
 <a href="../business/methods.html">조사방법</a>
-<a href="../business/special.html" class="is-active">특수 설문 유형</a>
+<a href="../business/special.html" class="is-active" aria-current="page">특수 설문 유형</a>
 <a href="../business/platform.html">설문 플랫폼</a>
 <a href="../business/process.html">진행 절차</a>
-</div></div><section class="sec"><div class="wrap">
+</div><button class="lnb-scroll" type="button" data-direction="1" aria-label="다음 메뉴 보기">&#8250;</button></div></nav><section class="sec"><div class="wrap">
 <p class="deck-intro">
   방법론마다 <b>응답자가 보는 화면</b>과 <b>분석에 넘겨야 할 데이터 형식</b>이 다릅니다.
   CE는 더미변수 Long Format, AHP는 응답 중 실시간 CR 확인, CVM은 응답자별 제시금액 배분이 필요합니다.
   저희는 이 네 가지를 자체 플랫폼에 직접 구현해 두었으며, 목록에 없는 유형도 설계서만 주시면 구현해 드립니다.
 </p>
-
+<h2 class="minor-h">응답 화면 예시</h2>
 <div class="chips" role="group" aria-label="특수 설문 유형 선택">
-  <button class="chip" type="button" data-target="ce" aria-pressed="false">CE 선택실험법</button>
+  <button class="chip" type="button" data-target="ce" aria-pressed="true">CE 선택실험법</button>
   <button class="chip" type="button" data-target="ahp" aria-pressed="false">AHP 쌍대비교</button>
   <button class="chip" type="button" data-target="cvm" aria-pressed="false">CVM 조건부가치측정</button>
   <button class="chip" type="button" data-target="delphi" aria-pressed="false">Delphi 전문가 합의</button>
-  <button class="chip" type="button" data-target="custom" aria-pressed="true">그 외 모든 유형</button>
+  <button class="chip" type="button" data-target="custom" aria-pressed="false">맞춤형 설문</button>
 </div>
 
 <div class="deck">
 
-  <div class="dcard" role="button" tabindex="0" data-key="ce" style="--i:0">
+  <div class="dcard is-active" data-key="ce">
     <div class="dcard-top"><span class="dcard-code">CE</span><span class="dcard-step">선택 세트 3 / 8</span></div>
     <h3>선택실험법</h3>
     <p class="dcard-sub">속성과 수준을 조합한 대안 중 하나를 고르게 하여, 지불의사와 속성별 중요도를 추정합니다.</p>
@@ -111,7 +114,7 @@
     <p class="dcard-foot">출력 · 더미변수 Long Format</p>
   </div>
 
-  <div class="dcard" role="button" tabindex="0" data-key="ahp" style="--i:1">
+  <div class="dcard" data-key="ahp">
     <div class="dcard-top"><span class="dcard-code">AHP</span><span class="dcard-step">쌍대비교 6 / 15</span></div>
     <h3>쌍대비교법</h3>
     <p class="dcard-sub">두 항목을 9점 척도로 비교해 가중치를 산출하고, 응답 도중 일관성 비율을 바로 확인합니다.</p>
@@ -125,7 +128,7 @@
     <p class="dcard-foot">산출 · 기준별 가중치 &amp; 우선순위</p>
   </div>
 
-  <div class="dcard" role="button" tabindex="0" data-key="cvm" style="--i:2">
+  <div class="dcard" data-key="cvm">
     <div class="dcard-top"><span class="dcard-code">CVM</span><span class="dcard-step">DBDC 1차 제시</span></div>
     <h3>조건부가치측정법</h3>
     <p class="dcard-sub">제시금액을 응답자별로 균등 배분하고, 응답에 따라 2차 금액으로 분기합니다.</p>
@@ -141,7 +144,7 @@
     <p class="dcard-foot">출력 · 이중양분선택형 Long Format</p>
   </div>
 
-  <div class="dcard" role="button" tabindex="0" data-key="delphi" style="--i:3">
+  <div class="dcard" data-key="delphi">
     <div class="dcard-top"><span class="dcard-code">DELPHI</span><span class="dcard-step">2라운드 진행 중</span></div>
     <h3>전문가 합의법</h3>
     <p class="dcard-sub">라운드별 통계 요약을 응답 화면에 함께 보여 주어, 전문가가 의견을 조정할 근거를 제공합니다.</p>
@@ -157,10 +160,10 @@
     <p class="dcard-foot">추적 · 라운드별 의견 변화 이력</p>
   </div>
 
-  <div class="dcard custom is-active" role="button" tabindex="0" data-key="custom" style="--i:4">
+  <div class="dcard custom" data-key="custom">
     <div class="dcard-top"><span class="dcard-code">CUSTOM</span><span class="dcard-step">설계서 → 화면</span></div>
-    <h3>그 밖의 모든 유형</h3>
-    <p class="dcard-sub">목록에 없는 방법론이라도 문항 구조와 출력 형식만 정해져 있다면 구현할 수 있습니다.</p>
+    <h3>맞춤형 설문</h3>
+    <p class="dcard-sub">문항 구조와 출력 형식을 검토해 과제에 맞는 구현 방법을 제안합니다.</p>
     <div class="dcard-screen">
       <p class="custom-kicker">연구계획서에 있는 그 문항,<br>화면으로 만들어 드립니다.</p>
       <ul class="custom-list">
@@ -176,18 +179,18 @@
 </div>
 
 
+<h2 class="minor-h story-h">방법론별 활용 분야와 결과물</h2>
 <div class="specs reveal-group">
   <article class="spec reveal">
     <div class="spec-head">
       <span class="spec-code">CE</span>
       <div>
         <h3>선택실험법<small>Choice Experiment</small></h3>
-        <p>여러 대안 세트 중 하나를 고르게 해, 사람들의 실제 선호를 읽어내는 방법</p>
       </div>
     </div>
     <div class="spec-body">
       <div>
-        <h4>언제 &middot; 왜 쓰나</h4>
+        <h4>활용 분야</h4>
         <ul>
           <li>신제품&middot;신규 서비스의 속성 조합을 설계할 때</li>
           <li>가격을 바꾸면 선택이 얼마나 달라지는지 알아야 할 때</li>
@@ -195,7 +198,7 @@
         </ul>
       </div>
       <div>
-        <h4>무엇이 나오나</h4>
+        <h4>주요 결과물</h4>
         <ul>
           <li>속성별 중요도 (효용 가중치)</li>
           <li>가장 선호되는 최적 조합</li>
@@ -212,12 +215,11 @@
       <span class="spec-code">AHP</span>
       <div>
         <h3>쌍대비교법<small>Analytic Hierarchy Process</small></h3>
-        <p>두 개씩 짝지어 비교해, 복잡한 의사결정의 우선순위를 정리하는 방법</p>
       </div>
     </div>
     <div class="spec-body">
       <div>
-        <h4>언제 &middot; 왜 쓰나</h4>
+        <h4>활용 분야</h4>
         <ul>
           <li>여러 사업&middot;정책 대안의 우선순위를 정해야 할 때</li>
           <li>성격이 다른 평가 기준을 함께 비교해야 할 때</li>
@@ -225,7 +227,7 @@
         </ul>
       </div>
       <div>
-        <h4>무엇이 나오나</h4>
+        <h4>주요 결과물</h4>
         <ul>
           <li>기준별 상대적 중요도 (가중치)</li>
           <li>대안별 최종 우선순위표</li>
@@ -241,12 +243,11 @@
       <span class="spec-code">CVM</span>
       <div>
         <h3>조건부가치측정법<small>Contingent Valuation Method</small></h3>
-        <p>시장가격이 없는 것의 가치를, 지불의사금액을 물어 돈으로 환산하는 방법</p>
       </div>
     </div>
     <div class="spec-body">
       <div>
-        <h4>언제 &middot; 왜 쓰나</h4>
+        <h4>활용 분야</h4>
         <ul>
           <li>환경&middot;문화재 등 무형가치를 화폐가치로 보여줘야 할 때</li>
           <li>공공사업의 경제적 타당성 근거가 필요할 때</li>
@@ -254,7 +255,7 @@
         </ul>
       </div>
       <div>
-        <h4>무엇이 나오나</h4>
+        <h4>주요 결과물</h4>
         <ul>
           <li>평균 지불의사금액 (WTP)</li>
           <li>총 사회적 가치 (WTP &times; 대상인구)</li>
@@ -270,12 +271,11 @@
       <span class="spec-code">Delphi</span>
       <div>
         <h3>전문가 합의법<small>Delphi Method</small></h3>
-        <p>전문가에게 같은 질문을 여러 라운드 반복해, 의견을 합의점으로 모으는 방법</p>
       </div>
     </div>
     <div class="spec-body">
       <div>
-        <h4>언제 &middot; 왜 쓰나</h4>
+        <h4>활용 분야</h4>
         <ul>
           <li>데이터가 부족한 미래 예측 주제를 다룰 때</li>
           <li>그 분야를 잘 아는 전문가의 판단이 꼭 필요할 때</li>
@@ -283,7 +283,7 @@
         </ul>
       </div>
       <div>
-        <h4>무엇이 나오나</h4>
+        <h4>주요 결과물</h4>
         <ul>
           <li>최종 합의된 전망&middot;판단치</li>
           <li>전문가 간 의견 일치도</li>
@@ -332,7 +332,7 @@
         </a>
         <p class="ftr-addr"><b>서울 본사</b> 서울특별시 영등포구 국회대로72길 11, 309호<br><b>대구 지점</b> 대구광역시 달서구 달서대로 54, 503호</p>
       </div>
-      <div class="ftr-cols"><div class="ftr-col"><b>회사소개</b><a href="../company/greeting.html">대표이사 인사말</a><a href="../company/history.html">연혁</a><a href="../company/organization.html">조직도</a><a href="../company/people.html">연구원 프로필</a><a href="../company/location.html">오시는 길</a></div><div class="ftr-col"><b>사업소개</b><a href="../business/fields.html">조사분야</a><a href="../business/methods.html">조사방법</a><a href="../business/special.html">특수 설문 유형</a><a href="../business/platform.html">설문 플랫폼</a><a href="../business/process.html">진행 절차</a></div><div class="ftr-col"><b>공지사항</b><a href="../support/notice.html">공지사항</a></div></div>
+      <div class="ftr-cols"><div class="ftr-col"><b>회사소개</b><a href="../company/greeting.html">대표이사 인사말</a><a href="../company/history.html">연혁</a><a href="../company/organization.html">조직도</a><a href="../company/people.html">연구원 프로필</a><a href="../company/location.html">오시는 길</a></div><div class="ftr-col"><b>사업소개</b><a href="../business/fields.html">조사분야</a><a href="../business/methods.html">조사방법</a><a href="../business/special.html">특수 설문 유형</a><a href="../business/platform.html">설문 플랫폼</a><a href="../business/process.html">진행 절차</a></div><div class="ftr-col"><b>고객지원</b><a href="../support/notice.html">공지사항</a><a href="../support/contact.html">견적 문의</a></div></div>
     </div>
     <div class="ftr-bottom">
       <p class="ftr-info">
@@ -344,6 +344,6 @@
   </div>
 </footer>
 
-<script src="../assets/site.js"></script>
+<script src="../assets/site.js?v=a69d2c6855a2"></script>
 </body>
 </html>

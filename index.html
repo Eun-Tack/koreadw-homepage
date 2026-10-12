@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/site.css?v=a69d2c6855a2">
 </head>
 <body class="is-home">
 
@@ -56,6 +56,7 @@
 <div class="nav-item">
 <a class="nav-top" href="support/notice.html">공지사항</a>
 </div>
+<a class="nav-contact btn btn-primary" href="support/contact.html">견적 문의</a>
 </nav>
     <a class="btn btn-primary hdr-cta" href="support/contact.html">견적 문의</a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="gnb" aria-label="메뉴 열기">
@@ -74,7 +75,7 @@
       <h1>데이터의 확보와 분석으로<br><span class="hl">고객의 현안을 해결합니다.</span></h1>
       <p class="lede">
         (주)코리아데이터월드는 만족도·정책수요·실태·학술연구 조사를 수행하는 리서치 전문기업입니다.
-        문제를 정의하는 첫 단계부터 함께 설계하고, 끝내 손에 쥐어야 할 정보의 형태와 의미까지 같이 고민합니다.
+        조사 설계와 자료 수집부터 분석·보고서까지, 의사결정에 필요한 근거를 함께 만듭니다.
       </p>
       <div class="hero-cta">
         <a class="btn btn-primary btn-lg" href="support/contact.html">조사 의뢰 &middot; 견적 문의</a>
@@ -83,6 +84,7 @@
     </div>
 
     <div class="hero-vis" aria-hidden="true">
+      <span class="vis-caption">설문 화면 예시</span>
       <div class="vis-card vis-a">
         <span class="vis-tag">Q7 / LIKERT 5점</span>
         <p class="vis-q">제공받은 서비스에 전반적으로 얼마나 만족하십니까?</p>
@@ -112,7 +114,7 @@
   <div class="wrap">
     <div class="sec-head center reveal reveal-group">
       <span class="eyebrow">조사분야</span>
-      <h2>네 개 영역에서, 목적이 다른 조사를 설계합니다.</h2>
+      <h2>조사 목적에 맞는 네 가지 전문 분야</h2>
       <p class="lede">조사 목적이 다르면 표본, 문항 구조, 산출 지표가 모두 달라집니다. 영역별로 필요한 결과물의 형태부터 확인하고 시작합니다.</p>
     </div>
     
@@ -167,7 +169,7 @@
     <div class="band-head">
       <div>
         <span class="eyebrow">특수 설문 유형</span>
-        <h2>일반 설문 도구로는 만들 수 없는 문항이<br>연구를 가로막지 않도록.</h2>
+        <h2>복잡한 연구 설계도<br>응답하기 쉬운 설문으로.</h2>
         <p class="lede">
           선택실험(CE), 쌍대비교(AHP), 조건부가치측정(CVM), 전문가 합의(Delphi).
           연구 방법론이 요구하는 화면과 출력 형식을 그대로 구현합니다.
@@ -175,22 +177,21 @@
       </div>
       <p class="band-note">
         방법론마다 <b>응답자가 보는 화면</b>과 <b>분석에 넘겨야 할 데이터 형식</b>이 다릅니다.
-        일반 설문 도구가 감당하지 못하는 지점이 바로 여기입니다.
-        저희는 네 가지 방법론을 자체 플랫폼에 직접 구현해 두었습니다.
+        자체 플랫폼에서 문항 구조와 분석에 필요한 데이터 형식을 함께 설계합니다.
       </p>
     </div>
     
 <div class="chips" role="group" aria-label="특수 설문 유형 선택">
-  <button class="chip" type="button" data-target="ce" aria-pressed="false">CE 선택실험법</button>
+  <button class="chip" type="button" data-target="ce" aria-pressed="true">CE 선택실험법</button>
   <button class="chip" type="button" data-target="ahp" aria-pressed="false">AHP 쌍대비교</button>
   <button class="chip" type="button" data-target="cvm" aria-pressed="false">CVM 조건부가치측정</button>
   <button class="chip" type="button" data-target="delphi" aria-pressed="false">Delphi 전문가 합의</button>
-  <button class="chip" type="button" data-target="custom" aria-pressed="true">그 외 모든 유형</button>
+  <button class="chip" type="button" data-target="custom" aria-pressed="false">맞춤형 설문</button>
 </div>
 
 <div class="deck">
 
-  <div class="dcard" role="button" tabindex="0" data-key="ce" style="--i:0">
+  <div class="dcard is-active" data-key="ce">
     <div class="dcard-top"><span class="dcard-code">CE</span><span class="dcard-step">선택 세트 3 / 8</span></div>
     <h3>선택실험법</h3>
     <p class="dcard-sub">속성과 수준을 조합한 대안 중 하나를 고르게 하여, 지불의사와 속성별 중요도를 추정합니다.</p>
@@ -205,7 +206,7 @@
     <p class="dcard-foot">출력 · 더미변수 Long Format</p>
   </div>
 
-  <div class="dcard" role="button" tabindex="0" data-key="ahp" style="--i:1">
+  <div class="dcard" data-key="ahp">
     <div class="dcard-top"><span class="dcard-code">AHP</span><span class="dcard-step">쌍대비교 6 / 15</span></div>
     <h3>쌍대비교법</h3>
     <p class="dcard-sub">두 항목을 9점 척도로 비교해 가중치를 산출하고, 응답 도중 일관성 비율을 바로 확인합니다.</p>
@@ -219,7 +220,7 @@
     <p class="dcard-foot">산출 · 기준별 가중치 &amp; 우선순위</p>
   </div>
 
-  <div class="dcard" role="button" tabindex="0" data-key="cvm" style="--i:2">
+  <div class="dcard" data-key="cvm">
     <div class="dcard-top"><span class="dcard-code">CVM</span><span class="dcard-step">DBDC 1차 제시</span></div>
     <h3>조건부가치측정법</h3>
     <p class="dcard-sub">제시금액을 응답자별로 균등 배분하고, 응답에 따라 2차 금액으로 분기합니다.</p>
@@ -235,7 +236,7 @@
     <p class="dcard-foot">출력 · 이중양분선택형 Long Format</p>
   </div>
 
-  <div class="dcard" role="button" tabindex="0" data-key="delphi" style="--i:3">
+  <div class="dcard" data-key="delphi">
     <div class="dcard-top"><span class="dcard-code">DELPHI</span><span class="dcard-step">2라운드 진행 중</span></div>
     <h3>전문가 합의법</h3>
     <p class="dcard-sub">라운드별 통계 요약을 응답 화면에 함께 보여 주어, 전문가가 의견을 조정할 근거를 제공합니다.</p>
@@ -251,10 +252,10 @@
     <p class="dcard-foot">추적 · 라운드별 의견 변화 이력</p>
   </div>
 
-  <div class="dcard custom is-active" role="button" tabindex="0" data-key="custom" style="--i:4">
+  <div class="dcard custom" data-key="custom">
     <div class="dcard-top"><span class="dcard-code">CUSTOM</span><span class="dcard-step">설계서 → 화면</span></div>
-    <h3>그 밖의 모든 유형</h3>
-    <p class="dcard-sub">목록에 없는 방법론이라도 문항 구조와 출력 형식만 정해져 있다면 구현할 수 있습니다.</p>
+    <h3>맞춤형 설문</h3>
+    <p class="dcard-sub">문항 구조와 출력 형식을 검토해 과제에 맞는 구현 방법을 제안합니다.</p>
     <div class="dcard-screen">
       <p class="custom-kicker">연구계획서에 있는 그 문항,<br>화면으로 만들어 드립니다.</p>
       <ul class="custom-list">
@@ -278,7 +279,7 @@
     <div class="sec-head center reveal reveal-group">
       <span class="eyebrow">자체 설문 플랫폼</span>
       <h2>조사 설계부터 원시데이터 납품까지, 한 곳에서.</h2>
-      <p class="lede">외부 설문 도구를 빌려 쓰지 않습니다. 조사 현장에서 필요한 기능을 직접 만들어 운영하기 때문에, 요구사항이 생기면 화면을 바꿉니다.</p>
+      <p class="lede">문항 구성, 응답자 관리, 실시간 모니터링을 자체 플랫폼에서 연결합니다. 과제별 요구사항에 맞춰 설문 화면과 납품 형식을 조정합니다.</p>
     </div>
     
 <div class="plat reveal-group">
@@ -345,7 +346,7 @@
     <h3>서울 본사<span>SEOUL</span></h3>
     <dl>
       <dt>주소</dt><dd>서울특별시 영등포구 국회대로72길 11, 309호</dd>
-      <dt>전화</dt><dd>02-780-2273</dd>
+      <dt>전화</dt><dd><a href="tel:02-780-2273">02-780-2273</a></dd>
       <dt>팩스</dt><dd>070-8800-2273</dd>
     </dl>
   </div>
@@ -353,7 +354,7 @@
     <h3>대구 지점<span>DAEGU</span></h3>
     <dl>
       <dt>주소</dt><dd>대구광역시 달서구 달서대로 54, 503호</dd>
-      <dt>전화</dt><dd>053-636-2273</dd>
+      <dt>전화</dt><dd><a href="tel:053-636-2273">053-636-2273</a></dd>
       <dt>팩스</dt><dd>070-8800-2273</dd>
     </dl>
   </div>
@@ -398,7 +399,7 @@
         </a>
         <p class="ftr-addr"><b>서울 본사</b> 서울특별시 영등포구 국회대로72길 11, 309호<br><b>대구 지점</b> 대구광역시 달서구 달서대로 54, 503호</p>
       </div>
-      <div class="ftr-cols"><div class="ftr-col"><b>회사소개</b><a href="company/greeting.html">대표이사 인사말</a><a href="company/history.html">연혁</a><a href="company/organization.html">조직도</a><a href="company/people.html">연구원 프로필</a><a href="company/location.html">오시는 길</a></div><div class="ftr-col"><b>사업소개</b><a href="business/fields.html">조사분야</a><a href="business/methods.html">조사방법</a><a href="business/special.html">특수 설문 유형</a><a href="business/platform.html">설문 플랫폼</a><a href="business/process.html">진행 절차</a></div><div class="ftr-col"><b>공지사항</b><a href="support/notice.html">공지사항</a></div></div>
+      <div class="ftr-cols"><div class="ftr-col"><b>회사소개</b><a href="company/greeting.html">대표이사 인사말</a><a href="company/history.html">연혁</a><a href="company/organization.html">조직도</a><a href="company/people.html">연구원 프로필</a><a href="company/location.html">오시는 길</a></div><div class="ftr-col"><b>사업소개</b><a href="business/fields.html">조사분야</a><a href="business/methods.html">조사방법</a><a href="business/special.html">특수 설문 유형</a><a href="business/platform.html">설문 플랫폼</a><a href="business/process.html">진행 절차</a></div><div class="ftr-col"><b>고객지원</b><a href="support/notice.html">공지사항</a><a href="support/contact.html">견적 문의</a></div></div>
     </div>
     <div class="ftr-bottom">
       <p class="ftr-info">
@@ -410,6 +411,6 @@
   </div>
 </footer>
 
-<script src="assets/site.js"></script>
+<script src="assets/site.js?v=a69d2c6855a2"></script>
 </body>
 </html>

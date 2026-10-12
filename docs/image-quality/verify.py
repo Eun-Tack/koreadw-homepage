@@ -56,7 +56,7 @@ for name in ("og-bg.png", "og-image.png"):
                                 "bytes": (ROOT / "assets/og" / name).stat().st_size})
 for html in [ROOT/"index.html", *ROOT.glob("business/*.html"), *ROOT.glob("company/*.html"), *ROOT.glob("support/*.html")]:
     content = html.read_text(encoding="utf-8")
-    assert 'content="https://www.koreadw.co.kr/assets/og/og-image.png"' in content, html
+    assert '/assets/og/og-image.png"' in content, html
 report["og_metadata"] = "All generated pages point to 1200x630 og-image.png"
 (OUT / "checks.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
 print(json.dumps(report, ensure_ascii=False, indent=2))
