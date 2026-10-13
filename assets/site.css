@@ -588,7 +588,6 @@ html:not(.js) .chips{display:none}
   color:var(--sky); text-transform:uppercase;
 }
 .person.lead-person .person-role{color:var(--blue)}
-.person-photo{
   width:100%; height:auto; aspect-ratio:3/4; object-fit:cover; object-position:top center;
   border-radius:12px; background:var(--surface-2); display:block; max-width:100%;
 }
@@ -753,6 +752,7 @@ body.is-scrolled .hdr{
 .proc-ico .ico{width:26px; height:26px}
 .proc-step:hover .proc-ico{color:var(--blue-deep)}
 
+
 /* ---------- footer ---------- */
 .ftr{border-top:1px solid var(--line-soft); background:var(--paper-2); padding:52px 0 44px; margin-top:0}
 .ftr-top{display:grid; grid-template-columns:1.1fr 1.4fr; gap:44px; padding-bottom:34px}
@@ -801,7 +801,6 @@ body.is-scrolled .hdr{
 .advisor-left::before{left:100%; right:auto}
 .two .offices{grid-template-columns:1fr}
 .office a{text-underline-offset:4px}
-.person-photo{flex:none}
 .person-meta div{grid-template-columns:32px minmax(0,1fr); gap:8px}
 .greet .prose{max-width:none}
 .meth-item{display:grid; grid-template-columns:124px minmax(0,1fr); gap:12px 20px; align-content:start; padding:24px}
@@ -900,18 +899,51 @@ body.is-scrolled .hdr{
   .lnb-in a{font-size:14px; padding:14px 12px}
 }
 
-/* Profile cards: readable credentials with a compact portrait on the right. */
-.people{grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px}
-.person{display:grid; grid-template-columns:minmax(0,1fr) 120px; gap:14px 24px; padding:28px; align-content:start}
-.person-role{grid-column:1; grid-row:1}
-.person h3{grid-column:1; grid-row:2; font-size:22px; gap:8px}
-.person h3 small{display:block; width:100%; font-size:13px}
-.person-meta{grid-column:1; grid-row:3; gap:12px; margin-top:6px}
+/* 주요 연구진 프로필
+   고객 요청(2026-10-13)으로 사진을 넣지 않는다.
+   연구 책임자 1장을 위에 가로로, 실무 연구진 3장을 아래 한 줄에 둔다. */
+.people{display:grid; gap:20px}
+.people-lead{grid-template-columns:1fr}
+.people-rest{grid-template-columns:repeat(3,minmax(0,1fr))}
+.person{
+  display:flex; flex-direction:column; gap:13px; padding:28px;
+  background:var(--surface); border:1px solid var(--line-soft); border-radius:16px;
+}
+.person-role{grid-column:auto; grid-row:auto}
+.person h3{font-size:20px; display:flex; flex-wrap:wrap; align-items:baseline; gap:8px}
+.person h3 small{display:block; width:100%; margin-top:3px; font-size:13px; font-weight:500; color:var(--text-2)}
+.person-meta{gap:11px; margin:0}
 .person-meta div{grid-template-columns:36px minmax(0,1fr); gap:12px}
-.person-cert{grid-column:1/-1; grid-row:4; justify-self:start; margin-top:0; font-family:var(--f-body); font-size:12px}
-.person-photo-frame{grid-column:2; grid-row:1/4; align-self:start; width:120px; aspect-ratio:3/4; overflow:hidden; border-radius:10px; background:var(--paper-2)}
-.person-photo{display:block; width:100%; height:100%; max-width:none; margin:0; object-fit:cover; clip-path:inset(2px 0 0); border-radius:0}
-.lead-person .person-photo{transform:scale(1.22); transform-origin:50% 12%}
+.person-certs{
+  margin-top:auto; padding-top:14px; border-top:1px dashed var(--line);
+  display:block;
+}
+.person-certs > dt{
+  font-family:var(--f-mono); font-size:10.5px; font-weight:600;
+  letter-spacing:.08em; color:var(--text-3);
+}
+.person-certs > div{display:flex; flex-wrap:wrap; gap:7px; margin-top:8px}
+.person-cert{margin:0; font-family:var(--f-body); font-size:12px; white-space:nowrap}
+
+/* 책임자 카드만 2단 : 왼쪽 이름·자격, 오른쪽 상세 */
+.people-lead .person{
+  display:grid; grid-template-columns:minmax(210px,.75fr) minmax(0,1.7fr);
+  grid-template-rows:auto auto 1fr; gap:14px 44px; align-items:start;
+}
+.people-lead .person-role{grid-column:1; grid-row:1}
+.people-lead h3{grid-column:1; grid-row:2}
+.people-lead .person-meta{grid-column:2; grid-row:1 / 4}
+.people-lead .person-certs{grid-column:1; grid-row:3; margin-top:0; align-self:start}
+
+@media (max-width:1040px){ .people-rest{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:820px){
+  .people-lead .person{grid-template-columns:1fr; grid-template-rows:none}
+  .people-lead .person-role,.people-lead h3,
+  .people-lead .person-meta,.people-lead .person-certs{grid-column:1; grid-row:auto}
+  .people-lead .person-certs{margin-top:4px}
+}
+@media (max-width:620px){ .people-rest{grid-template-columns:1fr} }
+
 .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; border:0}
 .notice-title,.notice-list a{display:grid; grid-template-columns:64px minmax(0,1fr); align-items:start; gap:12px}
 .notice-tag{margin:2px 0 0; padding:2px 6px; text-align:center; line-height:1.6}
@@ -930,13 +962,13 @@ body.is-scrolled .hdr{
 .meth-illust.method-idi{transform:scale(.98)}
 @media (max-width:760px){
   .people{grid-template-columns:1fr}
-  .person{padding:24px; gap:12px 20px}
+  .person{padding:24px; gap:12px}
   .office-map{grid-template-columns:1fr}
   .office-map-info{padding:24px}
   .office-map-frame{height:300px}
 }
 @media (max-width:420px){
-  .person{grid-template-columns:minmax(0,1fr) 92px; padding:22px; gap:12px 16px}
+  .person{padding:22px; gap:12px}
   .person-photo-frame{width:92px}
   .person-photo-frame{grid-row:1/3}
   .person-meta{grid-column:1/-1}

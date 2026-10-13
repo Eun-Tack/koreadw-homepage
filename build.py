@@ -38,7 +38,7 @@ SITE = {
     "tel": "02-780-2273",
     "fax": "070-8800-2273",
     "email": "contact@koreadw.co.kr",
-    "addr_seoul": "서울특별시 영등포구 국회대로72길 11, 309호",
+    "addr_seoul": "서울특별시 영등포구 국회대로72길 11, 309/310호",
     "addr_daegu": "대구광역시 달서구 달서대로 54, 503호",
     "tel_daegu": "053-636-2273",
     "site_url": "",   # 빌드할 때 BASES 에서 채운다
@@ -147,7 +147,7 @@ MENU = [
         ("greeting", "대표이사 인사말"),
         ("history", "연혁"),
         ("organization", "조직도"),
-        ("people", "연구원 프로필"),
+        ("people", "주요 연구진 프로필"),
         ("location", "오시는 길"),
     ]),
     ("사업소개", "business", [
@@ -164,7 +164,8 @@ MENU = [
 
 # 페이지는 살아 있으나 상단 메뉴에는 넣지 않는다.
 # 견적문의는 헤더 우측 '견적 문의' 버튼과 겹쳐 메뉴에서 제외한다.
-NAV_HIDDEN = {"contact"}
+# platform : 고객 요청으로 임시 비공개 (추후 보강 후 오픈)
+NAV_HIDDEN = {"contact", "platform"}
 
 
 
@@ -457,7 +458,6 @@ MAIN = """
       <p class="lede">문항 구성, 응답자 관리, 실시간 모니터링을 자체 플랫폼에서 연결합니다. 과제별 요구사항에 맞춰 설문 화면과 납품 형식을 조정합니다.</p>
     </div>
     {PLATFORM}
-    <p class="sec-more"><a class="link-more" href="{root}business/platform.html">플랫폼 기능 자세히 보기</a></p>
   </div>
 </section>
 
@@ -701,41 +701,53 @@ page("organization", "company/organization.html", "company", "조직도",
     </div>
   </div>
 </div>
-<p class="note">※ 분야별 자문위원 명단은 추후 업데이트 예정입니다.</p>
 """, sub="연구·분석·실사 조직이 함께 과제를 수행합니다.")
 
 def people_html():
-    out = ['<div class="people reveal-group">']
-    for i, pr in enumerate(load_people()):
-        cls = "person reveal" + (" lead-person" if i == 0 else "")
-        out.append('<article class="%s">' % cls)
+    """연구 책임자를 위에 한 장, 실무 연구진을 아래 한 줄로 배치한다.
+       사진은 고객 요청(2026-10-13)으로 넣지 않는다."""
+    rows = load_people()
+    lead = [r for r in rows if r.get("구분") == "연구 책임자"]
+    rest = [r for r in rows if r.get("구분") != "연구 책임자"]
+
+    def card(pr, is_lead):
+        o = ['<article class="person%s reveal">' % (" lead-person" if is_lead else "")]
         if pr.get("구분"):
-            out.append('<span class="person-role">%s</span>' % esc(pr["구분"]))
-        if pr.get("사진"):
-            out.append(
-                '<div class="person-photo-frame"><img class="person-photo" src="{root}assets/people/%s" '
-                'alt="%s %s" width="480" height="640" loading="lazy"></div>'
-                % (pr["사진"], esc(pr.get("이름", "")), esc(pr.get("직책", ""))))
-        out.append('<h3>%s<small>%s</small></h3>'
-                   % (esc(pr.get("이름", "")), esc(pr.get("직책", ""))))
-        out.append('<dl class="person-meta">')
-        for label in ("경력", "이력", "학력"):
+            o.append('<span class="person-role">%s</span>' % esc(pr["구분"]))
+        o.append('<h3>%s<small>%s</small></h3>'
+                 % (esc(pr.get("이름", "")), esc(pr.get("직책", ""))))
+        o.append('<dl class="person-meta">')
+        for label in ("경력", "이력", "대외", "학력"):
             if pr.get(label):
                 val = "<br>".join(x.strip() for x in esc(pr[label]).split(" / "))
-                out.append('<div><dt>%s</dt><dd>%s</dd></div>' % (label, val))
-        out.append('</dl>')
+                o.append('<div><dt>%s</dt><dd>%s</dd></div>' % (label, val))
+        o.append('</dl>')
         if pr.get("자격"):
-            out.append('<span class="person-cert">%s</span>' % esc(pr["자격"]))
-        out.append('</article>')
-    out.append('</div>')
+            o.append('<div class="person-certs"><dt>보유자격증</dt><div>%s</div></div>'
+                     % "".join('<span class="person-cert">%s</span>' % esc(c.strip())
+                               for c in pr["자격"].split(" / ")))
+        o.append('</article>')
+        return chr(10).join(o)
+
+    out = []
+    if lead:
+        out.append('<div class="people people-lead reveal-group">')
+        out.append(card(lead[0], True))
+        out.append('</div>')
+    if rest:
+        out.append('<div class="people people-rest reveal-group">')
+        for pr in rest:
+            out.append(card(pr, False))
+        out.append('</div>')
     return chr(10).join(out)
 
 
-page("people", "company/people.html", "company", "연구원 프로필",
-     "연구원 프로필", "코리아데이터월드 연구 인력 소개",
+page("people", "company/people.html", "company", "주요 연구진 프로필",
+     "주요 연구진 프로필", "코리아데이터월드 주요 연구진 소개",
      """
 <p class="deck-intro">
-  조사 설계부터 분석까지 함께하는 연구진입니다. <b>연구진 전원이 사회조사분석사 자격을 보유</b>하고 있습니다.
+  조사 설계부터 분석까지 함께하는 연구진입니다.
+  <b>연구팀장 전원이 사회조사분석사 2급 자격증을 보유</b>하고 있습니다.
 </p>
 """ + people_html(),
      sub="조사와 분석을 수행하는 연구진을 소개합니다.")
@@ -1126,9 +1138,9 @@ def build_footer(href):
     links = []
     for label, gid, items in MENU:
         if gid == "support":
-            links.append('<div class="ftr-col"><b>고객지원</b>'
+            links.append('<div class="ftr-col"><b>%s</b>'
                          '<a href="%s">공지사항</a><a href="%s">견적 문의</a></div>'
-                         % (href("support/notice"), href("support/contact")))
+                         % (label, href("support/notice"), href("support/contact")))
             continue
         links.append('<div class="ftr-col"><b>%s</b>%s</div>' % (
             label,
