@@ -108,6 +108,37 @@ def load_history():
     return years, story
 
 
+def load_clients():
+    """[분류] 아래에 '번호 | 기관명' 을 적는다."""
+    groups, cur = [], None
+    for line in _lines("clients.md"):
+        if line.startswith("[") and line.endswith("]"):
+            cur = (line[1:-1].strip(), [])
+            groups.append(cur)
+            continue
+        num, name = _cells(line, 2)
+        if not num or not name or cur is None:
+            continue
+        cur[1].append((num.zfill(2), esc(name)))
+    return [g for g in groups if g[1]]
+
+
+def clients_html():
+    out = ['<div class="clients">']
+    for title, items in load_clients():
+        out.append('<div class="client-group reveal">')
+        out.append('<h3 class="client-group-title">%s<span>%d</span></h3>' % (esc(title), len(items)))
+        out.append('<ul class="client-grid">')
+        for num, name in items:
+            out.append(
+                '<li><img src="{root}assets/clients/logo-%s.png" alt="%s" '
+                'width="400" height="176" loading="lazy" decoding="async"><span>%s</span></li>'
+                % (num, name, name))
+        out.append('</ul></div>')
+    out.append('</div>')
+    return chr(10).join(out)
+
+
 def load_people():
     people, cur = [], {}
     for line in _lines("people.md"):
@@ -458,6 +489,20 @@ MAIN = """
       <p class="lede">문항 구성, 응답자 관리, 실시간 모니터링을 자체 플랫폼에서 연결합니다. 과제별 요구사항에 맞춰 설문 화면과 납품 형식을 조정합니다.</p>
     </div>
     {PLATFORM}
+  </div>
+</section>
+
+<section class="sec band">
+  <div class="wrap">
+    <div class="sec-head center reveal reveal-group">
+      <span class="eyebrow">주요 클라이언트</span>
+      <h2>공공기관과 대학이 맡겨온 조사입니다.</h2>
+      <p class="lede">국책·지자체 연구기관, 지방자치단체, 대학, 기업까지 다양한 현장에서 조사를 수행해 왔습니다.</p>
+    </div>
+    {CLIENTS}
+    <p class="client-note reveal">
+      코리아데이터월드는 <b>과업 완료 후 외부고객 만족도 조사</b>를 실시하고 있습니다.
+    </p>
   </div>
 </section>
 
@@ -1197,6 +1242,7 @@ def render_content(p, href, root):
     c = c.replace("{DECK}", DECK)
     c = c.replace("{FIELDS}", FIELDS_GRID)
     c = c.replace("{PLATFORM}", PLATFORM_GRID)
+    c = c.replace("{CLIENTS}", clients_html())
     c = c.replace("{CTA}", CTA)
     c = c.replace("{OFFICES}", OFFICES)
     c = c.replace("{NOTICES5}", notice_rows(5))

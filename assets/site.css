@@ -753,6 +753,41 @@ body.is-scrolled .hdr{
 .proc-step:hover .proc-ico{color:var(--blue-deep)}
 
 
+/* ---------- 주요 클라이언트 ---------- */
+.clients{display:grid; gap:40px; margin-top:38px}
+.client-group-title{
+  display:flex; align-items:baseline; gap:9px; font-size:15px; margin-bottom:16px;
+  padding-bottom:11px; border-bottom:1px solid var(--line);
+}
+.client-group-title span{
+  font-family:var(--f-mono); font-size:11px; font-weight:600; color:var(--blue);
+  background:var(--blue-soft); border-radius:999px; padding:3px 9px;
+}
+.client-grid{
+  list-style:none; margin:0; padding:0;
+  display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:10px;
+}
+.client-grid li{
+  background:var(--surface); border:1px solid var(--line-soft); border-radius:11px;
+  padding:12px 10px 10px; display:flex; flex-direction:column; align-items:center; gap:7px;
+  transition:border-color .18s, box-shadow .18s, transform .18s;
+}
+.client-grid li:hover{border-color:var(--line); box-shadow:var(--shadow-sm); transform:translateY(-2px)}
+.client-grid img{width:100%; height:auto; aspect-ratio:400/176; object-fit:contain; display:block}
+.client-grid span{
+  font-size:11.5px; line-height:1.4; color:var(--text-2); text-align:center;
+  word-break:keep-all;
+}
+.client-note{
+  margin-top:34px; text-align:center; font-size:14.5px; color:var(--text-2);
+  background:var(--surface); border:1px solid var(--line-soft); border-radius:12px;
+  padding:18px 20px;
+}
+.client-note b{color:var(--text); font-weight:600; font-family:var(--f-display)}
+@media (max-width:1040px){ .client-grid{grid-template-columns:repeat(4,minmax(0,1fr))} }
+@media (max-width:700px){ .client-grid{grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px} }
+@media (max-width:420px){ .client-grid{grid-template-columns:repeat(2,minmax(0,1fr))} }
+
 /* ---------- footer ---------- */
 .ftr{border-top:1px solid var(--line-soft); background:var(--paper-2); padding:52px 0 44px; margin-top:0}
 .ftr-top{display:grid; grid-template-columns:1.1fr 1.4fr; gap:44px; padding-bottom:34px}
