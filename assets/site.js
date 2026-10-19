@@ -208,10 +208,41 @@
   }
 
   function initCert(scope) {
-    Array.prototype.forEach.call(scope.querySelectorAll(".person-cert.is-link, .cred-item.is-link"), function (b) {
+    Array.prototype.forEach.call(scope.querySelectorAll(".person-cert.is-link, .tl-item.is-link"), function (b) {
       if (b.dataset.bound === "1") return;
       b.dataset.bound = "1";
       b.addEventListener("click", function () { openCert(b); });
+    });
+  }
+
+  /* ---------- 연혁 분류 필터 ----------
+     분류 버튼을 누르면 해당 항목만 남긴다. 항목이 하나도 없는 연도는 통째로 감춘다. */
+  function initTimeline(scope) {
+    Array.prototype.forEach.call(scope.querySelectorAll("[data-timeline]"), function (tl) {
+      var bar = tl.parentElement.querySelector(".tl-filter");
+      if (!bar || bar.dataset.bound === "1") return;
+      bar.dataset.bound = "1";
+      var chips = Array.prototype.slice.call(bar.querySelectorAll(".tl-chip"));
+
+      function apply(kind) {
+        chips.forEach(function (c) {
+          var on = c.dataset.kind === kind;
+          c.classList.toggle("is-on", on);
+          c.setAttribute("aria-pressed", String(on));
+        });
+        Array.prototype.forEach.call(tl.querySelectorAll(".tl-year"), function (y) {
+          var shown = 0;
+          Array.prototype.forEach.call(y.querySelectorAll("li"), function (li) {
+            var on = kind === "all" || li.dataset.kind === kind;
+            li.hidden = !on;
+            if (on) shown++;
+          });
+          y.hidden = shown === 0;
+        });
+      }
+      chips.forEach(function (c) {
+        c.addEventListener("click", function () { apply(c.dataset.kind); });
+      });
     });
   }
 
@@ -222,6 +253,7 @@
     initReveal(scope);
     initHeader();
     initCert(scope);
+    initTimeline(scope);
     // Keep the current subsection visible without moving the vertical scroll.
     Array.prototype.forEach.call(scope.querySelectorAll(".lnb-in"), function (nav) {
       if (!nav.offsetWidth) return;

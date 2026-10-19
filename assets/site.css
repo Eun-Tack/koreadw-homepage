@@ -849,39 +849,6 @@ body.certview-open{overflow:hidden}
 @media (max-width:1040px){ .advisors{columns:2} }
 @media (max-width:620px){ .advisors{columns:1} }
 
-/* ---------- 인증 · 협약 · 대외활동 ----------
-   항목 수가 묶음마다 다르므로 단(column) 으로 흘려 넣는다.
-   격자로 두면 짧은 묶음 아래에 빈 공간이 생겨 자료가 모자라 보인다. */
-.creds{columns:2; column-gap:18px}
-.cred-group{
-  break-inside:avoid; -webkit-column-break-inside:avoid; page-break-inside:avoid;
-  background:var(--surface); border:1px solid var(--line-soft); border-radius:14px;
-  padding:20px 18px 18px; margin:0 0 18px;
-}
-.cred-group ul{list-style:none; margin:0; padding:0; display:grid; gap:12px}
-.cred-group li{display:grid; grid-template-columns:62px minmax(0,1fr); gap:12px; align-items:start}
-.cred-when{
-  font-family:var(--f-mono); font-size:11.5px; color:var(--text-3); padding-top:3px;
-  font-variant-numeric:tabular-nums;
-}
-.cred-item{
-  display:block; text-align:left; font:inherit; font-family:var(--f-body);
-  background:none; border:0; padding:0; color:inherit; width:100%;
-}
-/* 자료가 있든 없든 글자 모양은 같게 둔다. 원본이 있는 항목만 화살표로 알린다. */
-.cred-title{
-  display:block; font-size:13.5px; line-height:1.55; font-weight:500;
-  color:var(--text); word-break:keep-all;
-}
-.cred-desc{display:block; margin-top:3px; font-size:12px; color:var(--text-3); word-break:keep-all}
-.cred-item.is-link{cursor:pointer}
-.cred-item.is-link .cred-title::after{
-  content:"↗"; margin-left:5px; font-size:.82em; color:var(--text-3);
-  transition:color .16s;
-}
-.cred-item.is-link:hover .cred-title{color:var(--blue)}
-.cred-item.is-link:hover .cred-title::after{color:var(--blue)}
-@media (max-width:820px){ .creds{columns:1} }
 @media (max-width:460px){
   .cred-group li{grid-template-columns:1fr; gap:3px}
   .cred-when{padding-top:0}
@@ -894,6 +861,68 @@ body.certview-open{overflow:hidden}
   .hvis{max-width:420px; margin:0 auto}
 }
 @media (max-width:560px){ .hvis{max-width:330px} }
+
+/* ---------- 연혁 타임라인 (통합) ---------- */
+.tl-filter{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:30px}
+.tl-chip{
+  font-family:var(--f-display); font-size:13px; font-weight:500; cursor:pointer;
+  color:var(--text-2); background:var(--surface); border:1px solid var(--line);
+  border-radius:999px; padding:7px 15px; transition:all .16s;
+}
+.tl-chip:hover{border-color:var(--blue); color:var(--blue)}
+.tl-chip.is-on{background:var(--blue); border-color:var(--blue); color:var(--on-blue); font-weight:600}
+
+.tl{position:relative; display:grid; gap:0; max-width:860px; padding-left:26px}
+.tl::before{
+  content:""; position:absolute; left:7px; top:12px; bottom:12px; width:2px;
+  background:linear-gradient(180deg, var(--blue) 0%, var(--sky) 55%, transparent 100%);
+  opacity:.26; border-radius:2px;
+}
+.tl-year{position:relative; padding:22px 0; border-top:1px solid var(--line-soft)}
+.tl-year:first-of-type{border-top:none; padding-top:0}
+.tl-year::after{
+  content:""; position:absolute; left:-25px; top:27px; width:12px; height:12px;
+  border-radius:50%; background:var(--paper); border:2px solid var(--blue);
+  transition:transform .4s cubic-bezier(.3,1.5,.5,1) var(--d,0ms);
+}
+.tl-year:first-of-type::after{top:5px}
+.js .reveal.tl-year::after{transform:scale(0)}
+.js .reveal.tl-year.is-in::after{transform:scale(1)}
+.tl-y{font-family:var(--f-mono); font-size:17px; color:var(--blue); margin-bottom:14px}
+.tl-y i{font-style:normal; font-family:var(--f-body); font-size:.72em; font-weight:500; color:var(--text-3); margin-left:2px}
+.tl-year ul{list-style:none; margin:0; padding:0; display:grid; gap:12px}
+.tl-year li{display:grid; grid-template-columns:52px 78px minmax(0,1fr); gap:14px; align-items:start}
+.tl-when{font-family:var(--f-mono); font-size:12px; color:var(--text-3); padding-top:3px; font-variant-numeric:tabular-nums}
+.tl-kind{
+  font-size:11px; font-weight:600; text-align:center; border-radius:6px;
+  padding:3px 0; margin-top:1px; background:var(--surface-2); color:var(--text-2);
+  white-space:nowrap;
+}
+.tl-kind.k-인증{background:#E3F1EA; color:var(--ok)}
+.tl-kind.k-협약{background:var(--blue-soft); color:var(--blue)}
+.tl-kind.k-언론{background:#FCF1DF; color:var(--warn)}
+.tl-kind.k-활동{background:#EAF2F7; color:var(--sky)}
+.tl-item{display:block; text-align:left; font:inherit; font-family:var(--f-body); background:none; border:0; padding:0; color:inherit; width:100%}
+.tl-title{display:block; font-size:14.5px; line-height:1.55; color:var(--text); word-break:keep-all}
+.tl-desc{display:block; margin-top:4px; font-size:12.5px; line-height:1.7; color:var(--text-3); word-break:keep-all}
+.tl-item.is-link{cursor:pointer}
+.tl-item.is-link .tl-title::after{content:"↗"; margin-left:5px; font-size:.82em; color:var(--text-3); transition:color .16s}
+.tl-item.is-link:hover .tl-title{color:var(--blue)}
+.tl-item.is-link:hover .tl-title::after{color:var(--blue)}
+.tl-year li[hidden]{display:none}
+.tl-year[hidden]{display:none}
+.tl-ongoing{
+  max-width:860px; margin:34px 0 0 26px; padding:18px 20px;
+  background:var(--surface); border:1px solid var(--line-soft); border-radius:12px;
+  display:grid; gap:9px;
+}
+.tl-ongoing p{font-size:13.5px; color:var(--text-2); word-break:keep-all}
+.tl-ongoing b{font-family:var(--f-display); color:var(--text); margin-right:10px}
+@media (max-width:680px){
+  .tl-year li{grid-template-columns:52px minmax(0,1fr); gap:6px 12px}
+  .tl-kind{grid-column:2; justify-self:start; padding:3px 9px; margin-bottom:2px}
+  .tl-item{grid-column:2}
+}
 
 /* ---------- footer ---------- */
 .ftr{border-top:1px solid var(--line-soft); background:var(--paper-2); padding:52px 0 44px; margin-top:0}

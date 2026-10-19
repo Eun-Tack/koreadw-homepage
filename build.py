@@ -84,30 +84,6 @@ def load_notices():
     return rows
 
 
-def load_history():
-    """([(연도, [(월일, 내용, 설명), ...]), ...], [(시점, 제목, 설명), ...])"""
-    years, story, mode = [], [], "연혁"
-    index = {}
-    for line in _lines("history.md"):
-        if line.startswith("[") and line.endswith("]"):
-            mode = line[1:-1].strip()
-            continue
-        if mode == "연혁":
-            year, when, text, note = _cells(line, 4)
-            if not year or not text:
-                continue
-            if year not in index:
-                index[year] = []
-                years.append((year, index[year]))
-            index[year].append((when, esc(text), esc(note)))
-        else:
-            when, title, desc = _cells(line, 3)
-            if not title:
-                continue
-            story.append((esc(when), esc(title), esc(desc)))
-    return years, story
-
-
 def load_clients():
     """[분류] 아래에 '번호 | 기관명' 을 적는다."""
     groups, cur = [], None
@@ -145,43 +121,78 @@ def attr(t):
              .replace("<", "&lt;").replace(">", "&gt;"))
 
 
-def load_credentials():
-    """[분류] 아래에 '시점 | 내용 | 설명 | 이미지파일' 을 적는다."""
-    groups, cur = [], None
-    for line in _lines("credentials.md"):
-        if line.startswith("[") and line.endswith("]"):
-            cur = (line[1:-1].strip(), []); groups.append(cur); continue
-        when, title, desc, img, hero = _cells(line, 5)
-        if not title or cur is None:
+KIND_LABEL = {"사내": "사내", "인증": "인증 · 선정", "협약": "협약 · 위촉",
+              "언론": "언론 보도", "활동": "대외 활동"}
+KIND_ORDER = ["인증", "협약", "언론", "활동", "사내"]
+
+
+def load_timeline():
+    """연도 | 월일 | 분류 | 내용 | 설명 | 이미지"""
+    years, index = [], {}
+    for line in _lines("timeline.md"):
+        year, when, kind, title, desc, img = _cells(line, 6)
+        if not year or not title:
             continue
-        cur[1].append((when, title, desc, img, hero))
-    return [g for g in groups if g[1]]
+        if year not in index:
+            index[year] = []
+            years.append((year, index[year]))
+        index[year].append((when, kind, title, desc, img))
+    return years
 
 
-def credentials_html():
-    groups = load_credentials()
-    total = sum(len(g[1]) for g in groups)
+def load_ongoing():
+    out = []
+    for line in _lines("ongoing.md"):
+        title, body = _cells(line, 2)
+        if title and body:
+            out.append((title, body))
+    return out
 
-    out = ['<h3 class="minor-h story-h">인증 · 협약 · 대외활동'
-           '<span class="count">%d건</span></h3>' % total,
-           '<p class="note adv-note">공공기관·지자체와의 협약과 대외 활동 기록입니다. '
-           '자료가 있는 항목은 눌러서 원본을 볼 수 있습니다.</p>',
-           '<div class="creds reveal-group">']
-    for field, items in groups:
-        out.append('<div class="cred-group reveal">')
-        out.append('<h4 class="adv-field">%s</h4><ul>' % field)
-        for when, title, desc, img, _hero in items:
-            w = '<span class="cred-when">%s</span>' % (esc(when) if when else '')
-            d = ('<span class="cred-desc">%s</span>' % esc(desc)) if desc else ''
-            body = '<span class="cred-title">%s</span>%s' % (esc(title), d)
-            if img:
-                out.append('<li>%s<button type="button" class="cred-item is-link" '
-                           'data-cert="{root}assets/credentials/%s" data-cert-label="%s">%s</button></li>'
-                           % (w, img, attr(title), body))
-            else:
-                out.append('<li>%s<span class="cred-item">%s</span></li>' % (w, body))
-        out.append('</ul></div>')
+
+def timeline_html():
+    """연혁 · 인증 · 협약 · 대외활동을 한 줄기로 보여 준다.
+       세 블록으로 나눠 두니 같은 사실이 두세 곳에 겹쳐 적히던 문제가 있었다."""
+    years = load_timeline()
+    used = []
+    for _y, items in years:
+        for it in items:
+            if it[1] and it[1] not in used:
+                used.append(it[1])
+    kinds = [k for k in KIND_ORDER if k in used]
+
+    out = ['<div class="tl-filter" role="group" aria-label="분류별 보기">',
+           '<button type="button" class="tl-chip is-on" data-kind="all" aria-pressed="true">전체</button>']
+    for k in kinds:
+        out.append('<button type="button" class="tl-chip" data-kind="%s" aria-pressed="false">%s</button>'
+                   % (k, esc(KIND_LABEL.get(k, k))))
     out.append('</div>')
+
+    out.append('<div class="tl reveal-group" data-timeline>')
+    for year, items in years:
+        out.append('<section class="tl-year reveal" data-year="%s">' % esc(year))
+        out.append('<h3 class="tl-y"><b>%s</b><i>년</i></h3>' % esc(year))
+        out.append('<ul>')
+        for when, kind, title, desc, img in items:
+            k = kind if kind in KIND_LABEL else "사내"
+            body = ('<span class="tl-title">%s</span>' % esc(title))
+            if desc:
+                body += '<span class="tl-desc">%s</span>' % esc(desc)
+            inner = ('<button type="button" class="tl-item is-link" '
+                     'data-cert="{root}assets/credentials/%s" data-cert-label="%s">%s</button>'
+                     % (img, attr(title), body)) if img else (
+                     '<span class="tl-item">%s</span>' % body)
+            out.append('<li data-kind="%s"><span class="tl-when">%s</span>'
+                       '<span class="tl-kind k-%s">%s</span>%s</li>'
+                       % (k, esc(when), k, esc(KIND_LABEL.get(k, k)), inner))
+        out.append('</ul></section>')
+    out.append('</div>')
+
+    ong = load_ongoing()
+    if ong:
+        out.append('<div class="tl-ongoing">')
+        for title, body in ong:
+            out.append('<p><b>%s</b>%s</p>' % (esc(title), esc(body)))
+        out.append('</div>')
     return chr(10).join(out)
 
 
@@ -842,33 +853,10 @@ page("greeting", "company/greeting.html", "company", "대표이사 인사말",
 """,
      sub="데이터로 고객의 현안을 푸는 일을 합니다.")
 
-def history_html():
-    years, story = load_history()
-    out = ['<div class="hist reveal-group">']
-    for year, items in years:
-        out.append('<div class="hist-year reveal"><b>%s<i>년</i></b><ul>' % year)
-        for when, text, note in items:
-            em = ' <em>(%s)</em>' % note if note else ''
-            out.append('<li><span class="hist-date">%s</span><div class="hist-entry">%s%s</div></li>'
-                       % (when, text, em))
-        out.append('</ul></div>')
-    out.append('</div>')
-    if story:
-        out.append('<h3 class="minor-h story-h">성장 스토리</h3>')
-        out.append('<div class="story reveal-group">')
-        for when, title, desc in story:
-            out.append(
-                '<article class="story-item reveal">'
-                '<span class="story-when">%s</span><h4>%s</h4><p>%s</p></article>'
-                % (when, title, desc))
-        out.append('</div>')
-    return chr(10).join(out)
-
-
 page("history", "company/history.html", "company", "연혁",
-     "연혁", "코리아데이터월드 연혁 및 주요 활동",
-     '<h3 class="minor-h">기업 주요 연혁</h3>' + history_html() + credentials_html(),
-     sub="2016년 창립 이후 걸어온 길입니다.")
+     "연혁", "코리아데이터월드 연혁 · 인증 · 협약 · 대외활동",
+     timeline_html(),
+     sub="2016년 창립 이후 걸어온 길입니다. 분류를 눌러 나눠 볼 수 있습니다.")
 
 page("organization", "company/organization.html", "company", "조직도",
      "조직도", "코리아데이터월드 조직도",
