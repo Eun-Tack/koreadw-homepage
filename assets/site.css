@@ -924,6 +924,19 @@ body.certview-open{overflow:hidden}
   .tl-item{grid-column:2}
 }
 
+/* ---------- 납품 결과물 ---------- */
+.deliver{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; margin-top:20px}
+.deliver-item{
+  background:var(--surface); border:1px solid var(--line-soft); border-radius:14px;
+  overflow:hidden; display:flex; flex-direction:column;
+  transition:transform .2s, box-shadow .2s, border-color .2s;
+}
+.deliver-item:hover{transform:translateY(-3px); box-shadow:var(--shadow-md); border-color:var(--line)}
+.deliver-item img{width:100%; height:auto; display:block; background:var(--paper-2)}
+.deliver-item h4{font-family:var(--f-display); font-size:16px; margin:20px 20px 0}
+.deliver-item p{margin:9px 20px 22px; font-size:13.5px; line-height:1.72; color:var(--text-2)}
+@media (max-width:900px){ .deliver{grid-template-columns:1fr; gap:16px} }
+
 /* ---------- footer ---------- */
 .ftr{border-top:1px solid var(--line-soft); background:var(--paper-2); padding:52px 0 44px; margin-top:0}
 .ftr-top{display:grid; grid-template-columns:1.1fr 1.4fr; gap:44px; padding-bottom:34px}
