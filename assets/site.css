@@ -831,10 +831,11 @@ body.certview-open{overflow:hidden}
   vertical-align:middle;
 }
 .adv-note{margin:6px 0 22px}
-.advisors{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:18px}
+.advisors{columns:4; column-gap:18px}
 .adv-group{
+  break-inside:avoid; -webkit-column-break-inside:avoid; page-break-inside:avoid;
   background:var(--surface); border:1px solid var(--line-soft); border-radius:14px;
-  padding:20px 18px 18px;
+  padding:20px 18px 18px; margin:0 0 18px;
 }
 .adv-field{
   font-family:var(--f-display); font-size:13px; color:var(--blue);
@@ -845,14 +846,17 @@ body.certview-open{overflow:hidden}
 .adv-group li b{font-family:var(--f-display); font-size:14.5px; color:var(--text); margin-right:6px}
 .adv-title{color:var(--text-2)}
 .adv-org{display:block; margin-top:3px; font-size:12px; color:var(--text-3); word-break:keep-all}
-@media (max-width:1040px){ .advisors{grid-template-columns:repeat(2,minmax(0,1fr))} }
-@media (max-width:620px){ .advisors{grid-template-columns:1fr} }
+@media (max-width:1040px){ .advisors{columns:2} }
+@media (max-width:620px){ .advisors{columns:1} }
 
-/* ---------- 인증 · 협약 · 대외활동 ---------- */
-.creds{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px}
+/* ---------- 인증 · 협약 · 대외활동 ----------
+   항목 수가 묶음마다 다르므로 단(column) 으로 흘려 넣는다.
+   격자로 두면 짧은 묶음 아래에 빈 공간이 생겨 자료가 모자라 보인다. */
+.creds{columns:2; column-gap:18px}
 .cred-group{
+  break-inside:avoid; -webkit-column-break-inside:avoid; page-break-inside:avoid;
   background:var(--surface); border:1px solid var(--line-soft); border-radius:14px;
-  padding:20px 18px 18px;
+  padding:20px 18px 18px; margin:0 0 18px;
 }
 .cred-group ul{list-style:none; margin:0; padding:0; display:grid; gap:12px}
 .cred-group li{display:grid; grid-template-columns:62px minmax(0,1fr); gap:12px; align-items:start}
@@ -862,16 +866,22 @@ body.certview-open{overflow:hidden}
 }
 .cred-item{
   display:block; text-align:left; font:inherit; font-family:var(--f-body);
-  background:none; border:0; padding:0; color:inherit;
+  background:none; border:0; padding:0; color:inherit; width:100%;
 }
-.cred-title{display:block; font-size:13.5px; line-height:1.55; color:var(--text-2); word-break:keep-all}
+/* 자료가 있든 없든 글자 모양은 같게 둔다. 원본이 있는 항목만 화살표로 알린다. */
+.cred-title{
+  display:block; font-size:13.5px; line-height:1.55; font-weight:500;
+  color:var(--text); word-break:keep-all;
+}
 .cred-desc{display:block; margin-top:3px; font-size:12px; color:var(--text-3); word-break:keep-all}
 .cred-item.is-link{cursor:pointer}
-.cred-item.is-link .cred-title{color:var(--text); font-weight:500}
-.cred-item.is-link .cred-title::after{content:" ↗"; font-size:.85em; color:var(--blue); opacity:.75}
+.cred-item.is-link .cred-title::after{
+  content:"↗"; margin-left:5px; font-size:.82em; color:var(--text-3);
+  transition:color .16s;
+}
 .cred-item.is-link:hover .cred-title{color:var(--blue)}
-.cred-item.is-link:hover .cred-title::after{opacity:1}
-@media (max-width:820px){ .creds{grid-template-columns:1fr} }
+.cred-item.is-link:hover .cred-title::after{color:var(--blue)}
+@media (max-width:820px){ .creds{columns:1} }
 @media (max-width:460px){
   .cred-group li{grid-template-columns:1fr; gap:3px}
   .cred-when{padding-top:0}

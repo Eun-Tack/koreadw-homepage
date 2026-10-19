@@ -161,18 +161,17 @@ def load_credentials():
 def credentials_html():
     groups = load_credentials()
     total = sum(len(g[1]) for g in groups)
-    shots = sum(1 for _, items in groups for it in items if it[3])
 
     out = ['<h3 class="minor-h story-h">인증 · 협약 · 대외활동'
            '<span class="count">%d건</span></h3>' % total,
            '<p class="note adv-note">공공기관·지자체와의 협약과 대외 활동 기록입니다. '
-           '자료가 있는 %d건은 눌러서 원본을 볼 수 있습니다.</p>' % shots,
+           '자료가 있는 항목은 눌러서 원본을 볼 수 있습니다.</p>',
            '<div class="creds reveal-group">']
     for field, items in groups:
         out.append('<div class="cred-group reveal">')
         out.append('<h4 class="adv-field">%s</h4><ul>' % field)
         for when, title, desc, img, _hero in items:
-            w = ('<span class="cred-when">%s</span>' % esc(when)) if when else '<span class="cred-when">&middot;</span>'
+            w = '<span class="cred-when">%s</span>' % (esc(when) if when else '')
             d = ('<span class="cred-desc">%s</span>' % esc(desc)) if desc else ''
             body = '<span class="cred-title">%s</span>%s' % (esc(title), d)
             if img:
