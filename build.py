@@ -139,6 +139,37 @@ def clients_html():
     return chr(10).join(out)
 
 
+def load_advisors():
+    """[분야] 아래에 '이름 | 직함 | 소속' 을 적는다."""
+    groups, cur = [], None
+    for line in _lines("advisors.md"):
+        if line.startswith("[") and line.endswith("]"):
+            cur = (line[1:-1].strip(), []); groups.append(cur); continue
+        name, title, org = _cells(line, 3)
+        if not name or cur is None:
+            continue
+        cur[1].append((esc(name), esc(title), esc(org)))
+    return [g for g in groups if g[1]]
+
+
+def advisors_html():
+    groups = load_advisors()
+    total = sum(len(g[1]) for g in groups)
+    out = ['<h3 class="minor-h story-h">분야별 자문위원<span class="count">%d명</span></h3>' % total,
+           '<p class="note adv-note">각 분야 전문가로 구성된 자문위원이 과업 설계와 결과 검토에 참여합니다.</p>',
+           '<div class="advisors reveal-group">']
+    for field, people in groups:
+        out.append('<div class="adv-group reveal">')
+        out.append('<h4 class="adv-field">%s</h4><ul>' % field)
+        for name, title, org in people:
+            t = '<span class="adv-title">%s</span>' % title if title else ''
+            o = '<span class="adv-org">%s</span>' % org if org else ''
+            out.append('<li><b>%s</b>%s%s</li>' % (name, t, o))
+        out.append('</ul></div>')
+    out.append('</div>')
+    return chr(10).join(out)
+
+
 def load_people():
     people, cur = [], {}
     for line in _lines("people.md"):
@@ -659,43 +690,41 @@ page("greeting", "company/greeting.html", "company", "대표이사 인사말",
 <div class="greet">
   <figure class="greet-photo">
     <img src="{root}assets/people/ceo-greeting.jpg" alt="(주)코리아데이터월드 대표이사 김근지" width="480" height="640">
+    <figcaption>(주)코리아데이터월드 대표이사 <b>김근지</b></figcaption>
   </figure>
   <div class="prose">
-    <p class="prose-lead">안녕하십니까?</p>
+    <p class="prose-lead">안녕하십니까?<br>(주)코리아데이터월드 대표이사 김근지입니다.</p>
     <p>
-      오늘날 우리는 데이터가 넘쳐나는 시대를 살고 있습니다. 하지만 데이터가 많다고 해서 좋은 판단이
-      저절로 따라오는 것은 아닙니다. 정작 필요한 순간, &ldquo;이 숫자가 무엇을 말해주는지&rdquo; 답할 수 있는
-      데이터는 생각보다 많지 않습니다.
+      저는 2007년 리서치 회사에서 리서치 연구원으로 시작해,
+      창업 10년을 맞은 2026년 지금까지 20년간 조사 현장에서 일해 왔습니다.
     </p>
     <p>
-      코리아데이터월드는 바로 그 지점에서 출발합니다. 저희는 설문지를 받아 응답을 취합하는 것으로
-      일을 시작하지 않습니다. &ldquo;무엇을 물어야 하는지&rdquo;, &ldquo;그 답이 어떤 형태로 쓰여야 하는지&rdquo;를
-      고객과 함께 정의하는 것에서부터 조사를 시작합니다.
+      (주)코리아데이터월드는 정부기관, 지자체, 공공기관, 연구기관, 대학, 기업 등과 함께
+      다양한 과업을 수행하고 있습니다.
     </p>
     <p>
-      만족도, 정책수요, 실태, 학술연구 &mdash; 성격이 다른 조사마다 질문을 설계하는 방식도 달라야 한다는 것을
-      10년간의 경험을 통해 체득해 왔습니다.
-    </p>
-    <p>
-      클라이언트가 원하는 결과물을 드리기 위해, 일반 설문으로는 답할 수 없는 질문에 답하는 특수 조사기법을
-      자체 플랫폼으로 직접 구현하며 맞춤형 조사를 진행해 왔습니다. 클라이언트의 고민을 함께 짊어지고
-      끝내 결과물을 만들어내는 뚝심, 그것이 코리아데이터월드가 가진 실질적인 경쟁력입니다.
+      과업마다 최적의 방법을 찾아 데이터를 확보하고 분석하여,
+      고객이 바라는 연구 성과, 정책 개발, 매출 향상에 기여하고자 합니다.
     </p>
     <blockquote>
-      숫자 하나에 많은 이의 시간과 생각이 담겨 있다는 것을 저희는 잊지 않습니다.
-      그 무게를 아는 만큼, 저희가 드리는 데이터와 분석이 고객의 성과로, 정책의 근거로,
-      연구의 결실로 이어지도록 끝까지 책임지겠습니다.
+      신뢰할 수 있는 데이터와 통찰력 있는 분석을 위해,
+      설문 설계의 완결성, 데이터 수집의 윤리성, 분석의 전문성
+      무엇 하나 놓치지 않고 철저히 지키고 있습니다.
     </blockquote>
-    <p class="sign">(주)코리아데이터월드 대표이사 <b>김근지</b></p>
+    <p>
+      항상 고객의 입장에서 생각하며,
+      다음 과업에서도 함께할 수 있는 파트너가 되겠습니다. 감사합니다.
+    </p>
   </div>
 </div>
-""", sub="고객의 의사결정을 돕는 데이터와 분석을 제공합니다.")
+""",
+     sub="데이터로 고객의 현안을 푸는 일을 합니다.")
 
 def history_html():
     years, story = load_history()
     out = ['<div class="hist reveal-group">']
     for year, items in years:
-        out.append('<div class="hist-year reveal"><b>%s</b><ul>' % year)
+        out.append('<div class="hist-year reveal"><b>%s<i>년</i></b><ul>' % year)
         for when, text, note in items:
             em = ' <em>(%s)</em>' % note if note else ''
             out.append('<li><span class="hist-date">%s</span><div class="hist-entry">%s%s</div></li>'
@@ -746,31 +775,40 @@ page("organization", "company/organization.html", "company", "조직도",
     </div>
   </div>
 </div>
-""", sub="연구·분석·실사 조직이 함께 과제를 수행합니다.")
+""" + advisors_html(), sub="연구·분석·실사 조직이 함께 과제를 수행합니다.")
 
 def people_html():
-    """연구 책임자를 위에 한 장, 실무 연구진을 아래 한 줄로 배치한다.
-       사진은 고객 요청(2026-10-13)으로 넣지 않는다."""
+    """대표 1장을 위에 가로로, 나머지를 아래 한 줄로.
+       구분 라벨(연구 책임자/실무 연구진)은 고객 요청(1015)으로 넣지 않는다."""
     rows = load_people()
-    lead = [r for r in rows if r.get("구분") == "연구 책임자"]
-    rest = [r for r in rows if r.get("구분") != "연구 책임자"]
+    lead = [r for r in rows if r.get("대표") == "예"]
+    rest = [r for r in rows if r.get("대표") != "예"]
 
     def card(pr, is_lead):
         o = ['<article class="person%s reveal">' % (" lead-person" if is_lead else "")]
-        if pr.get("구분"):
-            o.append('<span class="person-role">%s</span>' % esc(pr["구분"]))
         o.append('<h3>%s<small>%s</small></h3>'
                  % (esc(pr.get("이름", "")), esc(pr.get("직책", ""))))
         o.append('<dl class="person-meta">')
-        for label in ("경력", "이력", "대외", "학력"):
+        for label in ("리서치경력", "이력", "대외", "학력"):
             if pr.get(label):
                 val = "<br>".join(x.strip() for x in esc(pr[label]).split(" / "))
                 o.append('<div><dt>%s</dt><dd>%s</dd></div>' % (label, val))
         o.append('</dl>')
         if pr.get("자격"):
+            certs = [c.strip() for c in pr["자격"].split(" / ")]
+            files = [f.strip() for f in pr.get("자격파일", "").split(" / ") if f.strip()]
+            chips = []
+            for n, name in enumerate(certs):
+                if n < len(files):
+                    chips.append(
+                        '<button type="button" class="person-cert is-link" '
+                        'data-cert="{root}assets/certs/%s" '
+                        'data-cert-label="%s %s">%s</button>'
+                        % (files[n], esc(pr.get("이름", "")), esc(name), esc(name)))
+                else:
+                    chips.append('<span class="person-cert">%s</span>' % esc(name))
             o.append('<div class="person-certs"><dt>보유자격증</dt><div>%s</div></div>'
-                     % "".join('<span class="person-cert">%s</span>' % esc(c.strip())
-                               for c in pr["자격"].split(" / ")))
+                     % "".join(chips))
         o.append('</article>')
         return chr(10).join(o)
 
@@ -784,6 +822,8 @@ def people_html():
         for pr in rest:
             out.append(card(pr, False))
         out.append('</div>')
+    out.append('<p class="note">※ 자격증을 누르면 원본을 볼 수 있습니다. '
+               '자격번호와 생년월일은 개인정보 보호를 위해 가려 두었습니다.</p>')
     return chr(10).join(out)
 
 

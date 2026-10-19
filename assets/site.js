@@ -96,7 +96,7 @@
   }
 
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" || e.key === "Esc") closeNav(true);
+    if (e.key === "Escape" || e.key === "Esc") { closeNav(true); closeCert(); }
   });
   window.addEventListener("resize", function () {
     if (window.innerWidth > 1040) closeNav();
@@ -161,12 +161,67 @@
     onScroll();
   }
 
+  /* ---------- 자격증 보기 ----------
+     자격증 배지를 누르면 원본 이미지를 띄운다.
+     ESC 와 바깥 클릭으로 닫히고, 닫은 뒤 누른 버튼으로 초점을 돌려준다. */
+  var certLast = null;
+
+  function certBox() {
+    var box = document.getElementById("certview");
+    if (box) return box;
+    box = document.createElement("div");
+    box.id = "certview";
+    box.className = "certview";
+    box.hidden = true;
+    box.innerHTML =
+      '<div class="certview-dim" data-close="1"></div>' +
+      '<div class="certview-panel" role="dialog" aria-modal="true" aria-label="자격증">' +
+      '<p class="certview-title"></p>' +
+      '<img class="certview-img" alt="">' +
+      '<button type="button" class="certview-close" data-close="1">닫기</button>' +
+      "</div>";
+    document.body.appendChild(box);
+    box.addEventListener("click", function (e) {
+      if (e.target.dataset.close) closeCert();
+    });
+    return box;
+  }
+
+  function openCert(btn) {
+    var box = certBox();
+    var img = box.querySelector(".certview-img");
+    img.src = btn.dataset.cert;
+    img.alt = btn.dataset.certLabel || "자격증";
+    box.querySelector(".certview-title").textContent = btn.dataset.certLabel || "";
+    box.hidden = false;
+    document.body.classList.add("certview-open");
+    certLast = btn;
+    box.querySelector(".certview-close").focus();
+  }
+
+  function closeCert() {
+    var box = document.getElementById("certview");
+    if (!box || box.hidden) return;
+    box.hidden = true;
+    document.body.classList.remove("certview-open");
+    if (certLast) { certLast.focus(); certLast = null; }
+  }
+
+  function initCert(scope) {
+    Array.prototype.forEach.call(scope.querySelectorAll(".person-cert.is-link"), function (b) {
+      if (b.dataset.bound === "1") return;
+      b.dataset.bound = "1";
+      b.addEventListener("click", function () { openCert(b); });
+    });
+  }
+
   function init(scope) {
     scope = scope || document;
     initNav(scope);
     initDeck(scope);
     initReveal(scope);
     initHeader();
+    initCert(scope);
     // Keep the current subsection visible without moving the vertical scroll.
     Array.prototype.forEach.call(scope.querySelectorAll(".lnb-in"), function (nav) {
       if (!nav.offsetWidth) return;

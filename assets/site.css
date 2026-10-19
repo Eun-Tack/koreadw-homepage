@@ -788,6 +788,66 @@ body.is-scrolled .hdr{
 @media (max-width:700px){ .client-grid{grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px} }
 @media (max-width:420px){ .client-grid{grid-template-columns:repeat(2,minmax(0,1fr))} }
 
+/* 연혁 연도의 '년' — 숫자보다 작고 연하게 */
+.hist-year > b i{
+  font-style:normal; font-family:var(--f-body); font-size:.72em;
+  font-weight:500; color:var(--text-3); margin-left:2px;
+}
+
+/* ---------- 자격증 보기 ---------- */
+.person-cert.is-link{
+  border:1px solid transparent; cursor:pointer; font:inherit;
+  font-family:var(--f-body); font-size:12px; white-space:nowrap;
+  background:var(--blue-soft); color:var(--blue); border-radius:999px; padding:5px 11px;
+  transition:background .16s, color .16s;
+}
+.person-cert.is-link::after{content:" ↗"; font-size:.85em; opacity:.6}
+.person-cert.is-link:hover{background:var(--blue); color:var(--on-blue)}
+body.certview-open{overflow:hidden}
+.certview{position:fixed; inset:0; z-index:400; display:grid; place-items:center; padding:24px}
+.certview[hidden]{display:none}
+.certview-dim{position:absolute; inset:0; background:rgba(8,20,40,.62)}
+.certview-panel{
+  position:relative; background:var(--surface); border-radius:16px; padding:18px;
+  max-width:min(560px,92vw); max-height:92vh; display:flex; flex-direction:column; gap:12px;
+  box-shadow:var(--shadow-md);
+}
+.certview-title{font-family:var(--f-display); font-weight:600; font-size:14.5px; color:var(--text)}
+.certview-img{
+  max-width:100%; max-height:72vh; width:auto; object-fit:contain;
+  border:1px solid var(--line-soft); border-radius:10px; display:block; margin:0 auto;
+}
+.certview-close{
+  align-self:center; font:inherit; font-family:var(--f-display); font-weight:600; font-size:14px;
+  padding:9px 22px; border-radius:9px; border:1px solid var(--line);
+  background:var(--surface); color:var(--text-2); cursor:pointer;
+}
+.certview-close:hover{border-color:var(--blue); color:var(--blue)}
+
+/* ---------- 분야별 자문위원 ---------- */
+.minor-h .count{
+  margin-left:9px; font-family:var(--f-mono); font-size:11px; font-weight:600;
+  color:var(--blue); background:var(--blue-soft); border-radius:999px; padding:3px 9px;
+  vertical-align:middle;
+}
+.adv-note{margin:6px 0 22px}
+.advisors{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:18px}
+.adv-group{
+  background:var(--surface); border:1px solid var(--line-soft); border-radius:14px;
+  padding:20px 18px 18px;
+}
+.adv-field{
+  font-family:var(--f-display); font-size:13px; color:var(--blue);
+  padding-bottom:10px; margin-bottom:12px; border-bottom:1px solid var(--line-soft);
+}
+.adv-group ul{list-style:none; margin:0; padding:0; display:grid; gap:11px}
+.adv-group li{font-size:13.5px; line-height:1.5; color:var(--text-2)}
+.adv-group li b{font-family:var(--f-display); font-size:14.5px; color:var(--text); margin-right:6px}
+.adv-title{color:var(--text-2)}
+.adv-org{display:block; margin-top:3px; font-size:12px; color:var(--text-3); word-break:keep-all}
+@media (max-width:1040px){ .advisors{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:620px){ .advisors{grid-template-columns:1fr} }
+
 /* ---------- footer ---------- */
 .ftr{border-top:1px solid var(--line-soft); background:var(--paper-2); padding:52px 0 44px; margin-top:0}
 .ftr-top{display:grid; grid-template-columns:1.1fr 1.4fr; gap:44px; padding-bottom:34px}
@@ -948,7 +1008,8 @@ body.is-scrolled .hdr{
 .person h3{font-size:20px; display:flex; flex-wrap:wrap; align-items:baseline; gap:8px}
 .person h3 small{display:block; width:100%; margin-top:3px; font-size:13px; font-weight:500; color:var(--text-2)}
 .person-meta{gap:11px; margin:0}
-.person-meta div{grid-template-columns:36px minmax(0,1fr); gap:12px}
+.person-meta div{grid-template-columns:64px minmax(0,1fr); gap:12px}
+.person-meta dt{white-space:nowrap}
 .person-certs{
   margin-top:auto; padding-top:14px; border-top:1px dashed var(--line);
   display:block;
