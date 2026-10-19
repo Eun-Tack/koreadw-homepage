@@ -139,6 +139,52 @@ def clients_html():
     return chr(10).join(out)
 
 
+def attr(t):
+    """HTML 속성값용. 엔티티로 바꾸지 않고 속성을 깨뜨리는 문자만 막는다."""
+    return (t.replace("&", "&amp;").replace('"', "&quot;")
+             .replace("<", "&lt;").replace(">", "&gt;"))
+
+
+def load_credentials():
+    """[분류] 아래에 '시점 | 내용 | 설명 | 이미지파일' 을 적는다."""
+    groups, cur = [], None
+    for line in _lines("credentials.md"):
+        if line.startswith("[") and line.endswith("]"):
+            cur = (line[1:-1].strip(), []); groups.append(cur); continue
+        when, title, desc, img = _cells(line, 4)
+        if not title or cur is None:
+            continue
+        cur[1].append((when, title, desc, img))
+    return [g for g in groups if g[1]]
+
+
+def credentials_html():
+    groups = load_credentials()
+    total = sum(len(g[1]) for g in groups)
+    shots = sum(1 for _, items in groups for it in items if it[3])
+    out = ['<h3 class="minor-h story-h">인증 · 협약 · 대외활동'
+           '<span class="count">%d건</span></h3>' % total,
+           '<p class="note adv-note">공공기관·지자체와의 협약과 대외 활동 기록입니다. '
+           '자료가 있는 %d건은 눌러서 원본을 볼 수 있습니다.</p>' % shots,
+           '<div class="creds reveal-group">']
+    for field, items in groups:
+        out.append('<div class="cred-group reveal">')
+        out.append('<h4 class="adv-field">%s</h4><ul>' % field)
+        for when, title, desc, img in items:
+            w = ('<span class="cred-when">%s</span>' % esc(when)) if when else '<span class="cred-when">&middot;</span>'
+            d = ('<span class="cred-desc">%s</span>' % esc(desc)) if desc else ''
+            body = '<span class="cred-title">%s</span>%s' % (esc(title), d)
+            if img:
+                out.append('<li>%s<button type="button" class="cred-item is-link" '
+                           'data-cert="{root}assets/credentials/%s" data-cert-label="%s">%s</button></li>'
+                           % (w, img, attr(title), body))
+            else:
+                out.append('<li>%s<span class="cred-item">%s</span></li>' % (w, body))
+        out.append('</ul></div>')
+    out.append('</div>')
+    return chr(10).join(out)
+
+
 def load_advisors():
     """[분야] 아래에 '이름 | 직함 | 소속' 을 적는다."""
     groups, cur = [], None
@@ -745,7 +791,7 @@ def history_html():
 
 page("history", "company/history.html", "company", "연혁",
      "연혁", "코리아데이터월드 연혁 및 주요 활동",
-     '<h3 class="minor-h">기업 주요 연혁</h3>' + history_html(),
+     '<h3 class="minor-h">기업 주요 연혁</h3>' + history_html() + credentials_html(),
      sub="2016년 창립 이후 걸어온 길입니다.")
 
 page("organization", "company/organization.html", "company", "조직도",
