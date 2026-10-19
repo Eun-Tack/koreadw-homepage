@@ -151,10 +151,10 @@ def load_credentials():
     for line in _lines("credentials.md"):
         if line.startswith("[") and line.endswith("]"):
             cur = (line[1:-1].strip(), []); groups.append(cur); continue
-        when, title, desc, img = _cells(line, 4)
+        when, title, desc, img, hero = _cells(line, 5)
         if not title or cur is None:
             continue
-        cur[1].append((when, title, desc, img))
+        cur[1].append((when, title, desc, img, hero))
     return [g for g in groups if g[1]]
 
 
@@ -162,6 +162,7 @@ def credentials_html():
     groups = load_credentials()
     total = sum(len(g[1]) for g in groups)
     shots = sum(1 for _, items in groups for it in items if it[3])
+
     out = ['<h3 class="minor-h story-h">인증 · 협약 · 대외활동'
            '<span class="count">%d건</span></h3>' % total,
            '<p class="note adv-note">공공기관·지자체와의 협약과 대외 활동 기록입니다. '
@@ -170,7 +171,7 @@ def credentials_html():
     for field, items in groups:
         out.append('<div class="cred-group reveal">')
         out.append('<h4 class="adv-field">%s</h4><ul>' % field)
-        for when, title, desc, img in items:
+        for when, title, desc, img, _hero in items:
             w = ('<span class="cred-when">%s</span>' % esc(when)) if when else '<span class="cred-when">&middot;</span>'
             d = ('<span class="cred-desc">%s</span>' % esc(desc)) if desc else ''
             body = '<span class="cred-title">%s</span>%s' % (esc(title), d)
@@ -182,6 +183,40 @@ def credentials_html():
                 out.append('<li>%s<span class="cred-item">%s</span></li>' % (w, body))
         out.append('</ul></div>')
     out.append('</div>')
+    return chr(10).join(out)
+
+
+def hero_roll_html():
+    """메인 첫 화면에서 돌릴 자료. credentials.md 의 '히어로' 칸이 '예' 인 항목."""
+    picks = []
+    for field, items in load_credentials():
+        for when, title, desc, img, hero in items:
+            if hero.strip() == "예" and img:
+                picks.append((field, when, title, img))
+    if not picks:
+        return ""
+    out = ['<div class="roll" data-roll>',
+           '<div class="roll-stage">']
+    for i, (field, when, title, img) in enumerate(picks):
+        out.append(
+            '<figure class="roll-item%s"%s>'
+            '<img src="{root}assets/credentials/%s" alt="%s" loading="%s" decoding="async">'
+            '<figcaption><span class="roll-kind">%s</span>'
+            '<b>%s</b><span class="roll-when">%s</span></figcaption></figure>'
+            % (" is-on" if i == 0 else "",
+               "" if i == 0 else ' aria-hidden="true"',
+               img, attr(title), "eager" if i == 0 else "lazy",
+               esc(field), esc(title), esc(when)))
+    out.append('</div>')
+    out.append('<div class="roll-nav">')
+    out.append('<button type="button" class="roll-prev" aria-label="이전 자료">&#8249;</button>')
+    out.append('<div class="roll-dots" role="tablist" aria-label="자료 선택">')
+    for i, (_f, _w, title, _i) in enumerate(picks):
+        out.append('<button type="button" class="roll-dot%s" data-go="%d" '
+                   'aria-label="%s"></button>' % (" is-on" if i == 0 else "", i, attr(title)))
+    out.append('</div>')
+    out.append('<button type="button" class="roll-next" aria-label="다음 자료">&#8250;</button>')
+    out.append('</div></div>')
     return chr(10).join(out)
 
 
@@ -466,6 +501,34 @@ OFFICES = """
 """
 
 
+# 첫 화면에 있던 설문 목업. 설문 플랫폼 페이지를 다시 열 때 쓰려고 남겨 둔다.
+# (고객 요청 1008-9: "첫화면에 있는 플랫폼 관련 이미지는 이곳에서 활용")
+VIS_DECK = """
+<div class="vis-deck" aria-hidden="true">
+      <span class="vis-caption">설문 화면 예시</span>
+      <div class="vis-card vis-a">
+        <span class="vis-tag">Q7 / LIKERT 5점</span>
+        <p class="vis-q">제공받은 서비스에 전반적으로 얼마나 만족하십니까?</p>
+        <div class="scale"><i>1</i><i>2</i><i>3</i><i class="on">4</i><i>5</i></div>
+      </div>
+      <div class="vis-card vis-b">
+        <span class="vis-tag">실시간 응답 현황</span>
+        <div class="bars">
+          <div class="bar"><span>서울권</span><span class="bar-track"><span class="bar-fill" style="width:86%"></span></span><span class="bar-val">86%</span></div>
+          <div class="bar"><span>경상권</span><span class="bar-track"><span class="bar-fill" style="width:71%"></span></span><span class="bar-val">71%</span></div>
+          <div class="bar"><span>호남권</span><span class="bar-track"><span class="bar-fill" style="width:54%"></span></span><span class="bar-val">54%</span></div>
+        </div>
+      </div>
+      <div class="vis-card vis-c">
+        <span class="vis-tag">쿼터 · 목표 표본</span>
+        <div class="bars">
+          <div class="bar"><span>20~39세</span><span class="bar-track"><span class="bar-fill done" style="width:100%"></span></span><span class="bar-val">달성</span></div>
+          <div class="bar"><span>40~59세</span><span class="bar-track"><span class="bar-fill" style="width:63%"></span></span><span class="bar-val">63%</span></div>
+        </div>
+      </div>
+    </div>
+"""
+
 # ─────────────────────────────────────────────────────────────
 # 페이지 콘텐츠
 # ─────────────────────────────────────────────────────────────
@@ -495,28 +558,9 @@ MAIN = """
       </div>
     </div>
 
-    <div class="hero-vis" aria-hidden="true">
-      <span class="vis-caption">설문 화면 예시</span>
-      <div class="vis-card vis-a">
-        <span class="vis-tag">Q7 / LIKERT 5점</span>
-        <p class="vis-q">제공받은 서비스에 전반적으로 얼마나 만족하십니까?</p>
-        <div class="scale"><i>1</i><i>2</i><i>3</i><i class="on">4</i><i>5</i></div>
-      </div>
-      <div class="vis-card vis-b">
-        <span class="vis-tag">실시간 응답 현황</span>
-        <div class="bars">
-          <div class="bar"><span>서울권</span><span class="bar-track"><span class="bar-fill" style="width:86%"></span></span><span class="bar-val">86%</span></div>
-          <div class="bar"><span>경상권</span><span class="bar-track"><span class="bar-fill" style="width:71%"></span></span><span class="bar-val">71%</span></div>
-          <div class="bar"><span>호남권</span><span class="bar-track"><span class="bar-fill" style="width:54%"></span></span><span class="bar-val">54%</span></div>
-        </div>
-      </div>
-      <div class="vis-card vis-c">
-        <span class="vis-tag">쿼터 · 목표 표본</span>
-        <div class="bars">
-          <div class="bar"><span>20~39세</span><span class="bar-track"><span class="bar-fill done" style="width:100%"></span></span><span class="bar-val">달성</span></div>
-          <div class="bar"><span>40~59세</span><span class="bar-track"><span class="bar-fill" style="width:63%"></span></span><span class="bar-val">63%</span></div>
-        </div>
-      </div>
+    <div class="hero-vis">
+      <span class="vis-caption">언론 보도 &middot; 협약 &middot; 인증</span>
+      {HEROROLL}
     </div>
   </div>
 
@@ -1329,6 +1373,7 @@ def render_content(p, href, root):
     c = c.replace("{FIELDS}", FIELDS_GRID)
     c = c.replace("{PLATFORM}", PLATFORM_GRID)
     c = c.replace("{CLIENTS}", clients_html())
+    c = c.replace("{HEROROLL}", hero_roll_html())
     c = c.replace("{CTA}", CTA)
     c = c.replace("{OFFICES}", OFFICES)
     c = c.replace("{NOTICES5}", notice_rows(5))

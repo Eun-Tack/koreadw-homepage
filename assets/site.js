@@ -215,6 +215,50 @@
     });
   }
 
+  /* ---------- 첫 화면 자료 롤링 ----------
+     5초마다 다음 자료로 넘어간다. 마우스를 올리거나 초점이 들어오면 멈추고,
+     모션을 줄이도록 설정한 방문자에게는 자동 전환을 걸지 않는다. */
+  function initRoll(scope) {
+    Array.prototype.forEach.call(scope.querySelectorAll("[data-roll]"), function (root) {
+      if (root.dataset.bound === "1") return;
+      root.dataset.bound = "1";
+
+      var items = Array.prototype.slice.call(root.querySelectorAll(".roll-item"));
+      var dots  = Array.prototype.slice.call(root.querySelectorAll(".roll-dot"));
+      if (items.length < 2) return;
+      var at = 0, timer = null;
+
+      function show(i) {
+        at = (i + items.length) % items.length;
+        items.forEach(function (el, n) {
+          var on = n === at;
+          el.classList.toggle("is-on", on);
+          if (on) { el.removeAttribute("aria-hidden"); }
+          else { el.setAttribute("aria-hidden", "true"); }
+        });
+        dots.forEach(function (d, n) { d.classList.toggle("is-on", n === at); });
+      }
+      function go(step) { show(at + step); }
+      function start() {
+        if (REDUCED || timer) return;
+        timer = setInterval(function () { go(1); }, 5000);
+      }
+      function stop() { if (timer) { clearInterval(timer); timer = null; } }
+      function nudge(step) { stop(); go(step); start(); }
+
+      root.querySelector(".roll-prev").addEventListener("click", function () { nudge(-1); });
+      root.querySelector(".roll-next").addEventListener("click", function () { nudge(1); });
+      dots.forEach(function (d) {
+        d.addEventListener("click", function () { stop(); show(+d.dataset.go); start(); });
+      });
+      root.addEventListener("mouseenter", stop);
+      root.addEventListener("mouseleave", start);
+      root.addEventListener("focusin", stop);
+      root.addEventListener("focusout", start);
+      start();
+    });
+  }
+
   function init(scope) {
     scope = scope || document;
     initNav(scope);
@@ -222,6 +266,7 @@
     initReveal(scope);
     initHeader();
     initCert(scope);
+    initRoll(scope);
     // Keep the current subsection visible without moving the vertical scroll.
     Array.prototype.forEach.call(scope.querySelectorAll(".lnb-in"), function (nav) {
       if (!nav.offsetWidth) return;
