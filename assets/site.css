@@ -160,7 +160,7 @@ img{max-width:100%}
 }
 
 /* ---------- hero (메인) ---------- */
-.hero{position:relative; padding:84px 0 0; overflow:hidden}
+.hero{position:relative; padding:84px 0 72px; overflow:hidden}
 .hero-bg{
   position:absolute; inset:0; pointer-events:none;
   background:
@@ -887,50 +887,13 @@ body.certview-open{overflow:hidden}
   .cred-when{padding-top:0}
 }
 
-/* ---------- 첫 화면 자료 롤링 ---------- */
-.roll{position:relative; display:grid; gap:14px}
-.roll-stage{
-  position:relative; background:var(--surface); border:1px solid var(--line);
-  border-radius:16px; box-shadow:var(--shadow-md); overflow:hidden;
+
+/* ---------- 첫 화면 추상 비주얼 ---------- */
+.hvis{width:100%; height:auto; max-width:560px; display:block; margin-left:auto; overflow:visible}
+@media (max-width:1000px){
+  .hvis{max-width:420px; margin:0 auto}
 }
-.roll-item{
-  margin:0; position:absolute; inset:0; display:grid; grid-template-rows:1fr auto;
-  opacity:0; visibility:hidden; transition:opacity .5s ease;
-}
-.roll-item.is-on{opacity:1; visibility:visible}
-.roll-item img{
-  width:100%; height:100%; min-height:0; object-fit:contain; object-position:center;
-  display:block; background:var(--paper-2); padding:10px;
-}
-.roll-stage{aspect-ratio:4/3}
-.roll-item figcaption{
-  padding:13px 16px 15px; border-top:1px solid var(--line-soft); background:var(--surface);
-  display:grid; gap:3px;
-}
-.roll-kind{
-  font-family:var(--f-mono); font-size:10px; font-weight:600; letter-spacing:.11em;
-  color:var(--blue); text-transform:uppercase;
-}
-.roll-item figcaption b{
-  font-family:var(--f-display); font-size:13.5px; font-weight:600; color:var(--text);
-  line-height:1.45; word-break:keep-all;
-}
-.roll-when{font-family:var(--f-mono); font-size:11px; color:var(--text-3)}
-.roll-nav{display:flex; align-items:center; justify-content:center; gap:12px}
-.roll-prev,.roll-next{
-  width:30px; height:30px; border-radius:50%; border:1px solid var(--line);
-  background:var(--surface); color:var(--text-2); cursor:pointer; font-size:15px;
-  line-height:1; display:grid; place-items:center; padding:0;
-}
-.roll-prev:hover,.roll-next:hover{border-color:var(--blue); color:var(--blue)}
-.roll-dots{display:flex; gap:7px}
-.roll-dot{
-  width:7px; height:7px; border-radius:50%; border:0; padding:0; cursor:pointer;
-  background:var(--line); transition:background .2s, transform .2s;
-}
-.roll-dot.is-on{background:var(--blue); transform:scale(1.35)}
-@media (prefers-reduced-motion: reduce){ .roll-item{transition:none} }
-@media (max-width:1000px){ .roll-stage{aspect-ratio:3/2} }
+@media (max-width:560px){ .hvis{max-width:330px} }
 
 /* ---------- footer ---------- */
 .ftr{border-top:1px solid var(--line-soft); background:var(--paper-2); padding:52px 0 44px; margin-top:0}

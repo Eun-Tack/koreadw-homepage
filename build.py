@@ -185,40 +185,6 @@ def credentials_html():
     return chr(10).join(out)
 
 
-def hero_roll_html():
-    """메인 첫 화면에서 돌릴 자료. credentials.md 의 '히어로' 칸이 '예' 인 항목."""
-    picks = []
-    for field, items in load_credentials():
-        for when, title, desc, img, hero in items:
-            if hero.strip() == "예" and img:
-                picks.append((field, when, title, img))
-    if not picks:
-        return ""
-    out = ['<div class="roll" data-roll>',
-           '<div class="roll-stage">']
-    for i, (field, when, title, img) in enumerate(picks):
-        out.append(
-            '<figure class="roll-item%s"%s>'
-            '<img src="{root}assets/credentials/%s" alt="%s" loading="%s" decoding="async">'
-            '<figcaption><span class="roll-kind">%s</span>'
-            '<b>%s</b><span class="roll-when">%s</span></figcaption></figure>'
-            % (" is-on" if i == 0 else "",
-               "" if i == 0 else ' aria-hidden="true"',
-               img, attr(title), "eager" if i == 0 else "lazy",
-               esc(field), esc(title), esc(when)))
-    out.append('</div>')
-    out.append('<div class="roll-nav">')
-    out.append('<button type="button" class="roll-prev" aria-label="이전 자료">&#8249;</button>')
-    out.append('<div class="roll-dots" role="tablist" aria-label="자료 선택">')
-    for i, (_f, _w, title, _i) in enumerate(picks):
-        out.append('<button type="button" class="roll-dot%s" data-go="%d" '
-                   'aria-label="%s"></button>' % (" is-on" if i == 0 else "", i, attr(title)))
-    out.append('</div>')
-    out.append('<button type="button" class="roll-next" aria-label="다음 자료">&#8250;</button>')
-    out.append('</div></div>')
-    return chr(10).join(out)
-
-
 def load_advisors():
     """[분야] 아래에 '이름 | 직함 | 소속' 을 적는다."""
     groups, cur = [], None
@@ -368,6 +334,76 @@ ICONS.update({
 def ico(key):
     return ('<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">%s</svg>'
             % ICONS.get(key, ""))
+
+
+# ─────────────────────────────────────────────────────────────
+# 첫 화면 추상 비주얼
+#   리서치 회사들의 첫 화면은 대형 타이포 + 추상 데이터 그래픽이 표준이다.
+#   생성 이미지 대신 SVG 로 그려 색이 테마와 정확히 맞고 어느 화면에서도 선명하다.
+# ─────────────────────────────────────────────────────────────
+HERO_VIS = """
+<svg class="hvis" viewBox="0 0 560 412" role="img" aria-label="조사 데이터를 형상화한 그래픽">
+  <defs>
+    <radialGradient id="hv-glow" cx="50%" cy="42%" r="58%">
+      <stop offset="0%" stop-color="#2E7FB0" stop-opacity=".16"/>
+      <stop offset="100%" stop-color="#2E7FB0" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="hv-bar" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#3A78C4"/>
+      <stop offset="100%" stop-color="#24589C"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="300" cy="186" r="226" fill="url(#hv-glow)"/>
+
+  <!-- 응답 분포를 형상화한 도넛 -->
+  <g transform="translate(300 182)">
+    <circle r="118" fill="none" stroke="#DCE5F2" stroke-width="22"/>
+    <circle r="118" fill="none" stroke="#24589C" stroke-width="22"
+            stroke-linecap="round" stroke-dasharray="470 741"
+            transform="rotate(-90)"/>
+    <circle r="118" fill="none" stroke="#2E7FB0" stroke-width="22"
+            stroke-linecap="round" stroke-dasharray="168 741"
+            transform="rotate(140)"/>
+    <circle r="78" fill="#FFFFFF"/>
+    <circle r="78" fill="none" stroke="#EBF0F8"/>
+    <g fill="none" stroke="#3A78C4" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M-34 16 L-12 -8 L8 6 L34 -22"/>
+    </g>
+    <g fill="#24589C">
+      <circle cx="-34" cy="16" r="3.4"/><circle cx="-12" cy="-8" r="3.4"/>
+      <circle cx="8" cy="6" r="3.4"/><circle cx="34" cy="-22" r="3.4"/>
+    </g>
+  </g>
+
+  <!-- 표본 막대 -->
+  <g transform="translate(62 206)">
+    <rect x="0"  y="66" width="16" height="56"  rx="8" fill="url(#hv-bar)" opacity=".45"/>
+    <rect x="24" y="40" width="16" height="82"  rx="8" fill="url(#hv-bar)" opacity=".65"/>
+    <rect x="48" y="14" width="16" height="108" rx="8" fill="url(#hv-bar)" opacity=".85"/>
+    <rect x="72" y="0"  width="16" height="122" rx="8" fill="url(#hv-bar)"/>
+  </g>
+
+  <!-- 5점 척도 : 한 줄 띠 위에 선택 지점을 표시한다 -->
+  <g transform="translate(176 366)">
+    <rect x="0" y="7" width="208" height="12" rx="6" fill="#E3EBF7"/>
+    <rect x="0" y="7" width="128" height="12" rx="6" fill="#24589C" opacity=".22"/>
+    <g fill="#FFFFFF" stroke="#C7D6EC" stroke-width="1.4">
+      <circle cx="16" cy="13" r="7"/><circle cx="68" cy="13" r="7"/>
+      <circle cx="172" cy="13" r="7"/><circle cx="208" cy="13" r="7"/>
+    </g>
+    <circle cx="124" cy="13" r="12" fill="#FFFFFF" stroke="#24589C" stroke-width="4"/>
+  </g>
+
+  <!-- 점 격자 -->
+  <g fill="#C7D6EC">
+    <circle cx="96"  cy="68"  r="3"/><circle cx="126" cy="68"  r="3"/><circle cx="156" cy="68"  r="3"/>
+    <circle cx="96"  cy="98" r="3"/><circle cx="126" cy="98" r="3"/>
+    <circle cx="470" cy="132" r="3"/><circle cx="500" cy="132" r="3"/>
+    <circle cx="470" cy="162" r="3"/><circle cx="500" cy="162" r="3"/><circle cx="530" cy="162" r="3"/>
+  </g>
+</svg>
+"""
 
 # ─────────────────────────────────────────────────────────────
 # 공통 컴포넌트
@@ -557,10 +593,7 @@ MAIN = """
       </div>
     </div>
 
-    <div class="hero-vis">
-      <span class="vis-caption">언론 보도 &middot; 협약 &middot; 인증</span>
-      {HEROROLL}
-    </div>
+    <div class="hero-vis" aria-hidden="false">{HEROVIS}</div>
   </div>
 
 </section>
@@ -1372,7 +1405,7 @@ def render_content(p, href, root):
     c = c.replace("{FIELDS}", FIELDS_GRID)
     c = c.replace("{PLATFORM}", PLATFORM_GRID)
     c = c.replace("{CLIENTS}", clients_html())
-    c = c.replace("{HEROROLL}", hero_roll_html())
+    c = c.replace("{HEROVIS}", HERO_VIS)
     c = c.replace("{CTA}", CTA)
     c = c.replace("{OFFICES}", OFFICES)
     c = c.replace("{NOTICES5}", notice_rows(5))
