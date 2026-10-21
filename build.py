@@ -12,6 +12,7 @@
 콘텐츠는 아래 PAGES 리스트만 고치면 됩니다.
 """
 import io
+import datetime
 import hashlib
 import os
 import re
@@ -196,14 +197,35 @@ def timeline_html():
     return chr(10).join(out)
 
 
+def _is_future(year, when):
+    """연혁의 '2026 | 11', '2026 | 10.31' 같은 표기를 오늘과 견준다.
+       월만 있으면 그 달 1일로 본다."""
+    try:
+        y = int(str(year)[:4])
+    except ValueError:
+        return False
+    nums = re.findall(r"\d+", str(when))
+    m = int(nums[0]) if nums else 1
+    d = int(nums[1]) if len(nums) > 1 else 1
+    if not (1 <= m <= 12 and 1 <= d <= 31):
+        return False
+    try:
+        return datetime.date(y, m, d) > datetime.date.today()
+    except ValueError:
+        return False
+
+
 def recent_news_html(limit=3):
     """첫 화면의 '최근 소식'.
        content/timeline.md 맨 위부터 가져오므로 한 줄만 추가하면 첫 화면이 바뀐다.
-       사내 항목(창립 · 시스템 도입)은 대외로 보여 줄 소식이 아니라 건너뛴다."""
+       사내 항목(창립 · 시스템 도입)은 대외로 보여 줄 소식이 아니라 건너뛴다.
+       아직 오지 않은 날짜('인증 예정' 같은)는 소식이 아니므로 건너뛴다."""
     picks = []
     for year, items in load_timeline():
         for when, kind, title, desc, img in items:
             if kind == "사내":
+                continue
+            if _is_future(year, when):
                 continue
             picks.append((year, when, kind, title, img))
             if len(picks) >= limit:
