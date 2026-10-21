@@ -286,3 +286,42 @@
     init();
   }
 })();
+
+/* 공지 목록 검색.
+   시연 사이트에는 서버가 없으므로 화면에 있는 목록을 걸러 보여 준다.
+   후이즈 게시판에서는 같은 자리의 검색창이 서버로 넘어가므로(input 에
+   name="ss" 가 붙어 있다) 그때는 끼어들지 않는다. */
+(function () {
+  var form = document.querySelector(".board-search");
+  if (!form) return;
+  var box = form.querySelector("input[type=text]");
+  if (!box || box.getAttribute("name")) return;
+
+  var list = document.querySelector(".notice-list");
+  var pager = document.querySelector(".board-pager");
+  if (!list) return;
+  var items = [].slice.call(list.children);
+
+  function apply() {
+    var q = box.value.trim().toLowerCase();
+    var hit = 0;
+    for (var i = 0; i < items.length; i++) {
+      var on = !q || items[i].textContent.toLowerCase().indexOf(q) >= 0;
+      items[i].style.display = on ? "" : "none";
+      if (on) hit++;
+    }
+    if (pager) pager.style.visibility = q ? "hidden" : "";
+    var none = list.querySelector(".notice-none");
+    if (!hit && !none) {
+      none = document.createElement("li");
+      none.className = "notice-none";
+      none.innerHTML = '<span class="notice-title">찾으시는 글이 없습니다.</span>';
+      list.appendChild(none);
+    } else if (none) {
+      none.style.display = hit ? "none" : "";
+    }
+  }
+
+  form.addEventListener("submit", function (e) { e.preventDefault(); apply(); });
+  box.addEventListener("input", apply);
+})();

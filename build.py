@@ -86,38 +86,26 @@ def load_notices():
 
 
 def load_notice_posts():
-    """content/notice-posts.md 의 본문. '=== 글번호' 로 글이 나뉜다.
+    """content/notice-posts.md 의 본문. '=== 글번호' 로 글이 나뉘고,
+       그 아래는 고객 게시판 글의 원본 HTML 이다.
 
-       후이즈에서는 이 본문을 쓰지 않는다. 거기서는 고객이 관리자에서
-       쓴 게시판 글이 그대로 나온다. 이 파일은 시연 사이트에서 같은
-       화면을 보여 주기 위한 사본이다."""
+       후이즈에서는 이 본문을 쓰지 않는다. 거기서는 고객이 관리자에서 쓴
+       글이 그대로 나온다. 시연 사이트에서 같은 화면을 보여 주려고 가져온
+       사본이므로, 다시 꾸미지 않고 원본 그대로 넣어야 두 화면이 겹친다."""
     path = os.path.join(CONTENT, "notice-posts.md")
     if not os.path.isfile(path):
         return {}
-    def norm(s):
-        # 게시판에서 가져온 글에는 줄바꿈 없는 공백(\xa0)이 섞여 있다.
-        # 본문과 링크 글자를 같은 기준으로 맞춰야 서로 짝이 맞는다.
-        return re.sub(r"\s+", " ", s.replace(" ", " ")).strip()
-
-    posts, seq, cur = {}, None, None
+    posts, seq = {}, None
     for raw in io.open(path, encoding="utf-8"):
-        line = norm(raw.rstrip("\n"))
+        line = raw.rstrip(chr(10))
         if line.startswith("==="):
             seq = line[3:].strip()
-            cur = {"body": [], "imgs": [], "links": []}
-            posts[seq] = cur
+            posts[seq] = []
             continue
-        if cur is None or line.startswith("#"):
+        if seq is None or (not posts[seq] and line.startswith("#")):
             continue
-        if line.startswith("[사진]"):
-            cur["imgs"].append(line[4:].strip())
-        elif line.startswith("[링크]"):
-            label, _, url = line[4:].partition("|")
-            if url.strip():
-                cur["links"].append((norm(label), url.strip()))
-        elif line:
-            cur["body"].append(line)
-    return posts
+        posts[seq].append(line)
+    return {k: chr(10).join(v).strip() for k, v in posts.items() if "".join(v).strip()}
 
 
 def load_clients():
@@ -610,10 +598,11 @@ NOTICES = load_notices()
 NOTICE_POSTS = load_notice_posts()
 
 
-def notice_rows(limit=None):
+def notice_rows(limit=None, rows=None):
     """limit 이 있으면 첫 화면용 짧은 목록(공지 페이지로 보냄),
-       없으면 공지 페이지의 전체 목록(글마다 본문으로 보냄)."""
-    rows = NOTICES[:limit] if limit else NOTICES
+       rows 를 주면 그 묶음만(공지 목록의 한 페이지), 글마다 본문으로 보낸다."""
+    if rows is None:
+        rows = NOTICES[:limit] if limit else NOTICES
     out = []
     for tag, title, date, seq in rows:
         badge = '<span class="notice-tag">%s</span>' % (tag or "소식")
@@ -1379,14 +1368,53 @@ page("process", "business/process.html", "business", "진행 절차",
      sub="문의부터 결과 납품까지, 여섯 단계로 진행합니다.")
 
 # ── 고객지원 ──────────────────────────────────────────────────
-page("notice", "support/notice.html", "support", "공지사항",
-     "공지사항", "코리아데이터월드 공지사항 및 새 소식",
-     """
-<ul class="notice-list full">
-  {NOTICES_ALL}
-</ul>
-""",
-     sub="회사의 소식과 안내 사항을 전해드립니다.")
+# 후이즈 게시판이 실제로 보여 주는 수. 설정 화면에는 10 으로 보이지만
+# 공개 화면을 세어 보면 한 페이지에 5건이고, 페이지 번호도 5개씩 묶여 나온다.
+# 시연 사이트를 여기에 맞춰야 고객이 본 화면과 실제가 어긋나지 않는다.
+NOTICE_PER_PAGE = 5
+NOTICE_PAGER_BLOCK = 5
+
+
+def register_notice_list():
+    listed = NOTICES
+    total = (len(listed) + NOTICE_PER_PAGE - 1) // NOTICE_PER_PAGE
+    for n in range(1, total + 1):
+        rows = listed[(n - 1) * NOTICE_PER_PAGE: n * NOTICE_PER_PAGE]
+        blk = (n - 1) // NOTICE_PAGER_BLOCK
+        lo = blk * NOTICE_PAGER_BLOCK + 1
+        hi = min(lo + NOTICE_PAGER_BLOCK - 1, total)
+        pager = []
+        if lo > 1:
+            pager.append('<a href="{root}%s">이전</a>' % notice_page_path(lo - 1))
+        for i in range(lo, hi + 1):
+            if i == n:
+                pager.append("<strong>%d</strong>" % i)
+            else:
+                pager.append('<a href="{root}%s">%d</a>' % (notice_page_path(i), i))
+        if hi < total:
+            pager.append('<a href="{root}%s">다음</a>' % notice_page_path(hi + 1))
+        body = ('<ul class="notice-list full">\n%s\n</ul>\n'
+                '<div class="board-foot">\n'
+                '  <div class="board-pager">%s</div>\n'
+                '  <form class="board-search" role="search">\n'
+                '    <label class="sr-only" for="bbs-ss">제목 검색</label>\n'
+                '    <input id="bbs-ss" type="text" placeholder="제목으로 찾기" autocomplete="off">\n'
+                '    <button type="submit">검색</button>\n'
+                '  </form>\n'
+                '</div>\n' % (notice_rows(rows=rows), "".join(pager)))
+        page("notice" if n == 1 else "notice-p%d" % n,
+             notice_page_path(n), "support", "공지사항",
+             "공지사항" if n == 1 else "공지사항 (%d/%d)" % (n, total),
+             "코리아데이터월드 공지사항 및 새 소식", body,
+             sub="회사의 소식과 안내 사항을 전해드립니다.",
+             lnb_key="notice", h1="공지사항")
+
+
+def notice_page_path(n):
+    return "support/notice.html" if n == 1 else "support/notice-%d.html" % n
+
+
+register_notice_list()
 
 
 def register_notice_posts():
@@ -1404,34 +1432,9 @@ def register_notice_posts():
                  '<h2>%s</h2>' % title,
                  '<time datetime="%s">%s</time>' % (date, date.replace("-", ".")),
                  '</header>',
-                 '<div class="post-body">']
-        for img in post["imgs"]:
-            parts.append('<figure class="post-fig">'
-                         '<img src="{root}assets/notice/%s" alt="" loading="lazy">'
-                         '</figure>' % attr(img))
-        # 관련 기사 링크는 대개 본문 문장 안에 이미 들어 있다.
-        # 그 자리를 링크로 바꾸고, 본문에 없는 것만 아래에 따로 붙인다.
-        used = set()
-        for b in post["body"]:
-            line = esc(b)
-            for label, url in post["links"]:
-                if not label:
-                    continue
-                marker = esc(label)
-                if marker and marker in line:
-                    line = line.replace(
-                        marker,
-                        '<a href="%s" target="_blank" rel="noopener">%s</a>'
-                        % (attr(url), marker), 1)
-                    used.add(url)
-            parts.append("<p>%s</p>" % line)
-        for label, url in post["links"]:
-            if url in used:
-                continue
-            parts.append('<p class="post-link">'
-                         '<a href="%s" target="_blank" rel="noopener">%s</a></p>'
-                         % (attr(url), esc(label or "관련 기사")))
-        parts.append("</div>")
+                 '<div class="post-body">',
+                 post,
+                 '</div>']
 
         nav = ['<nav class="post-nav">']
         if i + 1 < len(listed):
@@ -1447,8 +1450,10 @@ def register_notice_posts():
 
         plain = re.sub(r"<[^>]+>", "", title)
         page("notice-%s" % seq, "support/notice/%s.html" % seq, "support",
-             "공지사항", plain, (post["body"][0][:110] if post["body"] else plain),
-             "\n".join(parts), lnb_key="notice", h1="공지사항")
+             "공지사항", plain,
+             re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", post)).strip()[:110] or plain,
+             "\n".join(parts), sub="회사의 소식과 안내 사항을 전해드립니다.",
+             lnb_key="notice", h1="공지사항")
 
 
 register_notice_posts()
@@ -1702,7 +1707,7 @@ def build_site():
             body += page_head_block(p, href)
             body += build_lnb(p["group"], p.get("lnb_key") or p["key"], href)
             inner = render_content(p, href, root)
-            if p["key"] in ASK_ON:
+            if p["key"] in ASK_ON or p["key"].startswith("notice-"):
                 inner += ASK_CTA.replace("{root}", root).replace("{tel}", SITE["tel"])
             body += '<section class="sec"><div class="wrap">' + inner + "</div></section>"
         else:
@@ -2038,6 +2043,27 @@ WHOIS_BOARD_JS = """
     }
   }
 
+  /* {pagebar} 는 현재 쪽을 '[ 1 ]' 로, 다음·끝을 화살표 그림으로 뱉는다.
+     시연 사이트의 페이지 번호와 같아 보이도록 글자를 다듬는다. */
+  var tab = document.querySelector(".board-pager .board_pagetab");
+  if (tab) {
+    /* 링크 사이에 &nbsp; 가 끼어 있어 간격이 벌어진다. 글자 노드를 걷어낸다. */
+    for (var z = tab.childNodes.length - 1; z >= 0; z--) {
+      if (tab.childNodes[z].nodeType === 3) tab.removeChild(tab.childNodes[z]);
+    }
+  }
+  var tabs = document.querySelectorAll(".board-pager .board_pagetab a");
+  for (var q = 0; q < tabs.length; q++) {
+    var a = tabs[q], txt = a.textContent.replace(/[\\[\\]]/g, "").trim();
+    if (txt) {
+      a.textContent = txt;
+    } else if (a.querySelector("img")) {
+      var href = a.getAttribute("href") || "";
+      a.textContent = /page=1(&|$)/.test(href) ? "처음"
+        : (a.className.indexOf("prev") >= 0 ? "이전" : "다음");
+    }
+  }
+
   var times = document.querySelectorAll(".notice-list time, .post-head time");
   for (var k = 0; k < times.length; k++) {
     var t = times[k];
@@ -2084,9 +2110,9 @@ WHOIS_BOARD_LIST = """{PHEAD}
     <p class="board-admin"><a class="btn btn-ghost" href="{url_write}">글쓰기</a></p>
     {/}
 
+{ASK}
   </div>
 </section>
-{ASK}
 """
 
 # 게시판 읽기화면. 시연 사이트의 공지 본문 페이지와 같은 모양으로 맞춘다.
@@ -2133,9 +2159,9 @@ WHOIS_BOARD_VIEW = """{PHEAD}
       {/}
     </article>
 
+{ASK}
   </div>
 </section>
-{ASK}
 """
 
 
@@ -2192,6 +2218,9 @@ def build_whois():
         for k, _t in items:
             if k in WHOIS_PCODE:
                 pcode_group[WHOIS_PCODE[k]] = gid
+    # 견적 문의는 상단 메뉴에 따로 뜨지 않지만 고객지원에 속한다.
+    # 정적 사이트가 그렇게 표시하므로 여기서도 같게 맞춘다.
+    pcode_group.setdefault(WHOIS_PCODE["contact"], "support")
     js = whois_rewrite(js) + WHOIS_NAV_JS.replace(
         "{MAP}", ",".join('"%s":"%s"' % (pc, g) for pc, g in sorted(pcode_group.items())))
     js += WHOIS_BOARD_JS

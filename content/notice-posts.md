@@ -1,702 +1,150 @@
 # 공지사항 본문
 #
-# '=== 글번호' 줄로 글이 나뉩니다. 그 아래가 본문입니다.
-# 빈 줄은 문단 나눔입니다.
-# '[사진] 파일명' 은 assets/notice/ 의 사진을 넣습니다.
-# '[링크] 보일글자 | 주소' 는 링크를 넣습니다.
-#
-# 후이즈 홈페이지에서는 이 본문을 쓰지 않습니다. 거기서는 고객이
-# 관리자에서 직접 쓴 게시판 글이 그대로 나옵니다. 이 파일은 시연용
-# 사이트에서 같은 화면을 보여 주려고 2026-10-21 에 게시판에서
-# 가져와 둔 것입니다.
+# '=== 글번호' 아래는 고객 게시판 글의 원본 HTML 입니다.
+# 손으로 고치는 파일이 아닙니다. 후이즈에서는 이 본문을 쓰지 않고,
+# 고객이 관리자에서 쓴 글이 그대로 나옵니다. 시연 사이트에서 같은
+# 화면을 보여 주려고 2026-10-21 에 게시판에서 가져온 사본이라,
+# 원본 그대로 두어야 두 화면이 어긋나지 않습니다.
+# 사진 경로만 우리 사본(assets/notice/)으로 바꿔 두었습니다.
 
 === 50
-[사진] 050_wiOJ3uoih4IfYSAMALAaUXgADJe.png
-2026년 10월 12일(월) (주)코리아데이터월드가 사단법인 한국보훈진흥회와 국가유공자와 보훈가족을 위한 보훈 정책 연구 협력을 골자로 한 업무협약을 체결하였습니다.
-
-김근지 대표이사는 독립유공자(故 김영석 님)의 증손으로 "나라를 위해 헌신하신 분들에 대한 예우는 정확한 현실 인식에서 출발한다"고 강조하며, 당사의 조사 및 데이터 분석 역량을 바탕으로 보훈 정책 개선에 실질적으로 기여하겠다는 뜻을 밝혔습니다.
-
-이번 협약을 통해 양 기관은 보훈체계 발전과 미래 가치 확산을 위한 여론조사를 기획·수행하고, 그 결과를 공유하여 보훈에 대한 사회적 공감대를 넓혀 나갈 방침입니다.
-
-(주)코리아데이터월드는 국립민주묘지 명칭 개선 관련 조사(국가보훈부, 2025), 국가보훈부 생활안정지원 만족도 조사(국가보훈부, 2021~23, 2026), 광복 80주년 독립유공자 후손 및 일반국민 대상 정체성 인식 및 실태 조사(광복회, 2025) 등 보훈관련 사업에 적극 참여하고 있는 조사 기관으로
-
-앞으로도 신뢰할 수 있는 데이터와 여론조사를 통해 사회적 책임을 다하며, 지속 가능한 성장을 이끄는 올바른 기업으로 도약해 나갈 것입니다.
-
-*업무협약을 체결 중인 (주)코리아데이터월드의 김근지 대표(좌)와 한국보훈진흥회 김광용 회장(우)
-
-관련기사 : [대구신문] 코리아데이터월드-보훈진흥회, 보훈정책 연구 협력 MOU
-
-관련기사 : [월간조선] “보훈은 구호가 아니라 실천”… 데이터로 국가유공자의 삶 살핀다
-
-[링크] [대구신문] 코리아데이터월드-보훈진흥회, 보훈정책 연구 협력 MOU | https://www.idaegu.co.kr/news/articleView.html?idxno=562089
-[링크] [월간조선] | https://monthly.chosun.com/news/articleView.html?idxno=71674
-[링크] “보훈은 구호가 아니라 실천”… 데이터로 국가유공자의 삶 살핀다 | https://monthly.chosun.com/news/articleView.html?idxno=71674
+ <div>2026년 10월 12일(월) (주)코리아데이터월드가 사단법인 한국보훈진흥회와</div><div>국가유공자와 보훈가족을 위한 보훈 정책 연구 협력을 골자로 한 업무협약을 체결하였습니다.&nbsp; &nbsp;</div><div><span style="font-size: 12px;"><br></span></div><div><span style="font-size: 12px;">김근지 대표이사는 독립유공자(故 김영석 님)의 증손으로&nbsp;</span></div><div><span style="font-size: 12px;">"나라를 위해 헌신하신 분들에 대한 예우는&nbsp;</span>정확한 현실 인식에서 출발한다"고 강조하며,</div><div><span style="font-size: 12px;">당사의 조사 및 데이터 분석 역량을 바탕으로&nbsp;</span>보훈 정책 개선에 실질적으로 기여하겠다는 뜻을 밝혔습니다.</div><div><span style="font-size: 12px;"><br></span></div><div><span style="font-size: 12px;">이번 협약을 통해 양 기관은 보훈체계 발전과 미래 가치 확산을 위한&nbsp;</span>여론조사를 기획·수행하고,</div><div>그 결과를 공유하여 보훈에 대한 사회적 공감대를 넓혀 나갈 방침입니다.&nbsp;</div><div><span style="font-size: 12px;"><br></span></div><div><span style="font-size: 12px;">(주)코리아데이터월드는&nbsp;&nbsp;</span>국립민주묘지 명칭 개선 관련 조사(국가보훈부, 2025),&nbsp;</div><div><span style="font-size: 12px;">국가보훈부 생활안정지원 만족도 조사(국가보훈부, 2021~23, 2026),&nbsp;</span></div><div><span style="font-size: 12px;">광복 80주년 독립유공자 후손 및 일반국민 대상&nbsp;</span>정체성 인식 및 실태 조사(광복회, 2025) 등&nbsp;</div><div><span style="font-size: 12px;">보훈관련 사업에 적극 참여하고 있는 조사 기관으로</span></div><div><span style="font-size: 12px;">&nbsp;</span></div><div><span style="font-size: 12px;">앞으로도 신뢰할 수 있는 데이터와 여론조사를 통해 사회적 책임을 다하며,</span></div><div><span style="font-size: 12px;">지속 가능한 성장을 이끄는 올바른 기업으로 도약해 나갈 것입니다.</span></div><div><span style="font-size: 12px;"><br></span></div><div><img src="{root}assets/notice/050_wiOJ3uoih4IfYSAMALAaUXgADJe.png" alt="그림2.png" id="image_0.77690588022249" style="width: 240px; height: 186px;"></div><div><div><br></div><div>*업무협약을 체결 중인 (주)코리아데이터월드의 김근지 대표(좌)와 한국보훈진흥회 김광용 회장(우)</div><div><br></div><div><b><font color="#0070c0">관련기사 :</font></b> <a href="https://www.idaegu.co.kr/news/articleView.html?idxno=562089" target="_blank"><b><font color="#0070c0">[대구신문]&nbsp;코리아데이터월드-보훈진흥회, 보훈정책 연구 협력 MOU</font></b></a>&nbsp;</div><div><br></div><div><b><font color="#0070c0">관련기사 :</font></b>&nbsp;<font color="#0070c0" style=""><b><a href="https://monthly.chosun.com/news/articleView.html?idxno=71674" target="_blank"><font color="#0070c0">[월간조선]&nbsp;</font></a></b></font><span style="font-size: 12px;"><b><a href="https://monthly.chosun.com/news/articleView.html?idxno=71674" target="_blank"><font color="#0070c0">“보훈은 구호가 아니라 실천”… 데이터로 국가유공자의 삶 살핀다</font></a></b></span></div><div><br></div></div>
 
 === 49
-[사진] 049_OP1qcPplKjIIHJjM6mJ71r2xyPm9TBB.jpg
-(주)코리아데이터월드 김근지 대표와 임직원(최준 수석연구원, 방유진 전임연구원)은 10월 8일(목) 서울 여의도 FKI TOWER에서 개최된 [2026년 양평군 제2차 정책 포럼]에 참석했습니다.
-
-이번 포럼에는 전진선 양평군수 및 각 분야 전문가들이 참석해, 양평군의 미래 발전 방향을 모색하고, 양평군의 지역 경제 성장과 활성화 방안을 논의했습니다.
-
-이 자리에서 김근지 대표는 "주민이 필요로 하는 정책을 얼마나 정확하게 찾아내고 실제로 정책에 반영하느냐가 중요하다"고 언급했으며, 주민에게 먼저 묻고, 정책을 만들고, 실행하고, 다시 주민에게 평가받는 선순환 구조를 제안하여 참석자들의 공감을 얻었습니다.
-
-(주)코리아데이터월드는 앞으로도 정확한 데이터를 통해 지역사회 발전에 기여하며, 지속 가능한 성장을 이끄는 올바른 기업으로 도약해 나가겠습니다.
-
-* 양평군 제2차 정책 포럼에서 발표 중인 김근지 대표
-
-관련 기사 : [프레시안] 양평의 미래 모색…양평군, '2026 제2차 정책포럼' 개최
-
-[링크] [프레시안] 양평의 미래 모색…양평군, '2026 제2차 정책포럼' 개최 | https://www.pressian.com/pages/articles/2026101212354067685
+ <div><div><span style="font-size: 12px;">(주)코리아데이터월드 김근지 대표와&nbsp;</span></div><div><span style="font-size: 12px;">임직원(최준 수석연구원, 방유진 전임연구원)은</span></div><div><span style="font-size: 12px;">10월 8일(목) 서울 여의도 FKI TOWER에서 개최된</span></div><div><span style="font-size: 12px;">[2026년 양평군 제2차 정책 포럼]에 참석했습니다.</span></div><div><span style="font-size: 12px;"><br></span></div><div><span style="font-size: 12px;">이번 포럼에는 전진선 양평군수 및 각 분야 전문가들이 참석해,</span></div><div><span style="font-size: 12px;">양평군의 미래 발전 방향을 모색하고,&nbsp;</span></div><div><span style="font-size: 12px;">양평군의 지역 경제 성장과 활성화 방안을 논의했습니다.</span></div><div><span style="font-size: 12px;"><br></span></div><div><span style="font-size: 12px;">이 자리에서 김근지 대표는</span></div><div><span style="font-size: 12px;">"주민이 필요로 하는 정책을 얼마나 정확하게 찾아내고&nbsp;</span></div><div><span style="font-size: 12px;">실제로 정책에 반영하느냐가 중요하다"고 언급했으며,</span></div><div><span style="font-size: 12px;">주민에게 먼저 묻고, 정책을 만들고, 실행하고, 다시 주민에게 평가받는</span></div><div><span style="font-size: 12px;">선순환 구조를 제안하여 참석자들의 공감을 얻었습니다.&nbsp;</span></div><div><span style="font-size: 12px;"><br></span></div><div><span style="font-size: 12px;">(주)코리아데이터월드는 앞으로도 정확한 데이터를 통해 지역사회 발전에 기여하며,</span></div><div><span style="font-size: 12px;">지속 가능한 성장을 이끄는 올바른 기업으로 도약해 나가겠습니다.</span></div></div><div><br></div><div><br></div><div><div style="text-align: left;"><img src="{root}assets/notice/049_OP1qcPplKjIIHJjM6mJ71r2xyPm9TBB.jpg" alt="사진1.jpg" style="width: 208px; height: 232px;" id="image_0.011704853506755208"></div><div style="text-align: left;"><br></div><div style="text-align: left;">* 양평군 제2차 정책 포럼에서 발표 중인 김근지 대표</div><div style="text-align: left;"><br></div><div style="text-align: left;">관련 기사 : <a href="https://www.pressian.com/pages/articles/2026101212354067685" target="_blank"><b><font color="#0070c0">[프레시안]&nbsp;양평의 미래 모색…양평군, '2026 제2차 정책포럼' 개최</font></b></a></div><div style="text-align: left;"><br></div></div>
 
 === 48
-[사진] 048_ATvV6VJMmrJBZsdP4MsrNjGNqYdqbP.png
-(주)코리아데이터월드가 박혜진 팀장의 근속 5주년과 생일을 맞아 작은 축하 자리를 마련했습니다.
-
-이 자리에서 임직원들은 꽃다발과 함께 감사의 마음을 담아
-
-김근지 대표님이 준비한 현금100만원을 전달했습니다.
-
-박혜진 팀장은 지난 5년간 조사 현장의 실무를 이끌며 회사의 성장을 함께해 왔습니다.
-
-(주)코리아데이터월드는 직원 한 사람 한 사람의 시간과 노력이 회사의 실력이 된다고 믿으며,
-
-앞으로도 임직원이 함께 성장하는 가족 친화적인 조직 문화를 만들어가겠습니다.
-
+ <p dir="ltr"><br></p><div><br><div style="text-align: left;"><img src="{root}assets/notice/048_ATvV6VJMmrJBZsdP4MsrNjGNqYdqbP.png" alt="KakaoTalk_20260929_155417804.png" id="image_0.47342953641035634" style="width: 725px; height: 254px;"></div><br><br></div><p dir="ltr" style="text-align: left;">(주)코리아데이터월드가 박혜진 팀장의 근속 5주년과 생일을 맞아 작은 축하 자리를 마련했습니다.&nbsp;</p><p dir="ltr" style="text-align: left;"><br></p><p dir="ltr" style="text-align: left;">이 자리에서 임직원들은 꽃다발과 함께 감사의 마음을 담아</p><p dir="ltr" style="text-align: left;"><br></p><p dir="ltr" style="text-align: left;">김근지 대표님이 준비한 현금100만원을 전달했습니다.</p><p dir="ltr" style="text-align: left;"><br></p>
+<p dir="ltr" style="text-align: left;"><br></p><p dir="ltr" style="text-align: left;">박혜진 팀장은 지난 5년간 조사 현장의 실무를 이끌며 회사의 성장을 함께해 왔습니다.</p><p dir="ltr" style="text-align: left;"><br></p><p dir="ltr" style="text-align: left;">(주)코리아데이터월드는 직원 한 사람 한 사람의 시간과 노력이 회사의 실력이 된다고 믿으며,&nbsp;</p><p dir="ltr" style="text-align: left;"><br></p><p dir="ltr" style="text-align: left;">앞으로도 임직원이 함께 성장하는 가족 친화적인 조직 문화를 만들어가겠습니다.</p>
 
 === 47
-안녕하세요, 코리아데이터월드입니다.
-
-어느새 한 해의 절반이 훌쩍 지나 다시 한 번 풍성한 한가위가 찾아왔습니다.
-
-한 해 동안 저희 코리아데이터월드를 믿고 이용해 주신 여러분께 진심으로 감사의 말씀을 전합니다. 바쁜 일상 속에서도 잠시 멈추어 가족, 그리고 소중한 사람들과 정을 나누는 따뜻한 시간이 되시기를 바랍니다. 넉넉하고 풍성한 명절 보내시길 바라며, 오가는 길 모두 안전하시길 기원합니다.
-
-이에 아래와 같이 추석 연휴 기간 동안 휴무를 안내드립니다.
-
-■ 휴무 기간: 2026년 9월 24일(목) ~ 9월 27일(일) ■ 정상 업무 개시일: 2026년 9월 28일(월)
-
-휴무 기간 중에는 문의 및 요청은 업무 재개 후 순서대로 꼼꼼히 확인하고 답변드리겠습니다.
-
-늘 건강하시고 하시는 모든 일들이 두루 잘 풀리시기를 바랍니다.
-
-감사합니다.
-
-대표이사 김근지 드림
-
+ <div>안녕하세요, 코리아데이터월드입니다.</div><div><br></div><div>어느새 한 해의 절반이 훌쩍 지나 다시 한 번 풍성한 한가위가 찾아왔습니다.&nbsp;</div><div><br></div><div>한 해 동안 저희 코리아데이터월드를 믿고 이용해 주신 여러분께 진심으로 감사의 말씀을 전합니다.&nbsp;</div><div>바쁜 일상 속에서도 잠시 멈추어 가족, 그리고 소중한 사람들과 정을 나누는 따뜻한 시간이 되시기를 바랍니다.</div><div>넉넉하고 풍성한 명절 보내시길 바라며, 오가는 길 모두 안전하시길 기원합니다.</div><div><br></div><div>이에 아래와 같이 추석 연휴 기간 동안 휴무를 안내드립니다.</div><div><br></div><div>■ 휴무 기간: 2026년 9월 24일(목) ~ 9월 27일(일)</div><div>■ 정상 업무 개시일: 2026년 9월 28일(월)</div><div><br></div><div>휴무 기간 중에는 문의 및 요청은&nbsp;</div><div>업무 재개 후 순서대로 꼼꼼히 확인하고 답변드리겠습니다.</div><div><br></div><div>늘 건강하시고 하시는 모든 일들이 두루 잘 풀리시기를 바랍니다.</div><div><br></div><div>감사합니다.</div><div><br></div><div>대표이사 김근지 드림</div>
 
 === 46
-국가보훈부의 의뢰를 받아 (주)코리아데이터월드에서 [2026년 국가보훈부 생활안정지원 만족도 조사]를 실시하고 있습니다.
-
-• 조사 대상: 2025년 10월 01일 ~ 2026년 08월 31일 기간 중 국가보훈부 생활안정지원 서비스 이용자
-
-• 조사 기간: 2026년 09월 14일(월) ~ 2026.10.13.(화)
-
-• 발신 번호: 02-2038-4105, 02-2038-4107
-
-※ 2026년 생활안정지원 만족도 조사 관련 국가보훈부 공지 바로가기 (클릭)
-
-조사 기간 동안 조사 대상에 해당되시는 분들께 상기 발신번호로 연락이 갈 수 있습니다.
-
-국가보훈부의 더 나은 생활안정지원 서비스 제공을 위해 응답 협조 부탁드립니다.
-
-조사 관련 문의 (주)코리아데이터월드 박혜진 책임연구원 TEL: 02-780-2273
-
-[링크] ※ 2026년 생활안정지원 만족도 조사 관련 국가보훈부 공지 바로가기 (클릭) | https://www.mpva.go.kr/mpva/selectBbsNttView.do?key=76&bbsNo=15&nttNo=275633&searchCtgry=&searchCnd=all&searchKrwd=&integrDeptCode=&pageIndex=1
+ <div><br></div><div>국가보훈부의 의뢰를 받아 (주)코리아데이터월드에서</div><div>[2026년 국가보훈부 생활안정지원 만족도 조사]를 실시하고 있습니다.</div><div><br></div><div><br></div><div>• 조사 대상:&nbsp;</div><div>&nbsp; &nbsp; 2025년 10월 01일 ~ 2026년 08월 31일 기간 중 국가보훈부 생활안정지원 서비스 이용자</div><div><br></div><div>• 조사 기간:</div><div>&nbsp; &nbsp; 2026년 09월 14일(월) ~ 2026.10.13.(화)</div><div><br></div><div>• 발신 번호:</div><div>&nbsp; &nbsp; 02-2038-4105, 02-2038-4107</div><div><br></div><div>&nbsp; <a href="https://www.mpva.go.kr/mpva/selectBbsNttView.do?key=76&amp;bbsNo=15&amp;nttNo=275633&amp;searchCtgry=&amp;searchCnd=all&amp;searchKrwd=&amp;integrDeptCode=&amp;pageIndex=1" target="_blank" style="">※ <u>2026년 생활안정지원 만족도 조사 관련 국가보훈부 공지 바로가기 (클릭)</u></a></div><div><br></div><div><br></div><div>조사 기간 동안 조사 대상에 해당되시는 분들께 상기 발신번호로 연락이 갈 수 있습니다.</div><div><br></div><div>국가보훈부의 더 나은 생활안정지원 서비스 제공을 위해 응답 협조 부탁드립니다.</div><div><br></div><div><br></div><div>&nbsp;조사 관련 문의</div><div>&nbsp;(주)코리아데이터월드 박혜진 책임연구원</div><div>&nbsp;TEL: 02-780-2273</div>
 
 === 45
-(주)코리아데이터월드의 방유진 전임연구원이 최근 지역사회 미래 인재 육성을 위해 (재)양산시인재육성장학재단에 장학금 100만 원을 기탁했습니다.
-
-방유진 전임연구원은 학창 시절 '양산사랑 장학생'으로 선발되어 성장의 기회를 얻었으며, 당사에 입사해 사회 구성원으로 자리 잡은 후 자신이 받은 응원을 후배들에게 되돌려주고자 나눔을 실천했습니다.
-
-방 연구원은 "학창 시절 큰 버팀목이 되었던 장학금에 감사하며, 작은 금액이지만 지역 후배들의 꿈을 응원하고 싶었다"고 전했습니다.
-
-(주)코리아데이터월드는 뜻깊은 나눔으로 선한 영향력을 전파한 방유진 연구원의 따뜻한 행보를 응원하며, 앞으로도 임직원들과 함께 사회적 책임을 다하는 기업이 되겠습니다.
-
-*관련 기사: [경남도민일보] 양산사랑 장학생 출신 방유진, 장학금 기부 (https://www.idomin.com/news/articleView.html?idxno=2012469)
-
-[링크] https://www.idomin.com/news/articleView.html?idxno=2012469 | https://www.idomin.com/news/articleView.html?idxno=2012469
+ <div><br></div><div>(주)코리아데이터월드의 방유진 전임연구원이</div><div>최근 지역사회 미래 인재 육성을 위해</div><div>(재)양산시인재육성장학재단에 장학금 100만 원을 기탁했습니다.</div><div><br></div><div>방유진 전임연구원은 학창 시절</div><div>'양산사랑 장학생'으로 선발되어 성장의 기회를 얻었으며,</div><div>당사에 입사해 사회 구성원으로 자리 잡은 후</div><div>자신이 받은 응원을 후배들에게 되돌려주고자 나눔을 실천했습니다.</div><div><br></div><div>방 연구원은 "학창 시절 큰 버팀목이 되었던 장학금에 감사하며,</div><div>작은 금액이지만 지역 후배들의 꿈을 응원하고 싶었다"고 전했습니다.</div><div><br></div><div>(주)코리아데이터월드는 뜻깊은 나눔으로</div><div>선한 영향력을 전파한 방유진 연구원의 따뜻한 행보를 응원하며,</div><div>앞으로도 임직원들과 함께 사회적 책임을 다하는 기업이 되겠습니다.</div><div><br></div><div>*관련 기사:</div><div><div>[경남도민일보] 양산사랑 장학생 출신 방유진, 장학금 기부</div><div>(<a href="https://www.idomin.com/news/articleView.html?idxno=2012469" target="_blank">https://www.idomin.com/news/articleView.html?idxno=2012469</a>)</div></div><div><br></div>
 
 === 44
-[사진] 044_C7bv87AXNhkCgPxCpah29y7gGf.jpg
-[사진] 044_fVQBg4B2Tg82qcdswIi8gi.jpg
-(주)코리아데이터월드 김근지 대표이사가 독립유공자 후손으로서 뜻깊은 광복절 주요 행사에 연이어 초청받아 참석하였습니다.
-
-김근지 대표이사는 제81주년 광복절을 맞아 청와대 영빈관에서 개최된 '독립유공자 및 후손 초청 오찬'에 참석해 순국선열의 숭고한 희생정신을 기리고 국가 보훈의 의미를 나누었습니다.
-
-이어 8월 15일 열린 '광복절 경축식'에도 참석하여 나라 사랑의 정신을 되새기는 자리를 함께했습니다.
-
-(주)코리아데이터월드는 앞으로도 사회적 책임을 다하고 지속 가능한 성장을 이끄는 올바른 기업으로 도약해 나갈 것입니다.
-
-* 사진 출처: MBC * 둘째 줄 왼쪽에서 세 번째, (주)코리아데이터월드 김근지 대표이사
-
+ <div><br></div><div>(주)코리아데이터월드 김근지 대표이사가</div><div>독립유공자 후손으로서</div><div>뜻깊은 광복절 주요 행사에 연이어 초청받아 참석하였습니다.</div><div><br></div><div>김근지 대표이사는 제81주년 광복절을 맞아</div><div>청와대 영빈관에서 개최된 '독립유공자 및 후손 초청 오찬'에 참석해</div><div>순국선열의 숭고한 희생정신을 기리고 국가 보훈의 의미를 나누었습니다.</div><div><br></div><div>이어 8월 15일 열린 '광복절 경축식'에도 참석하여</div><div>나라 사랑의 정신을 되새기는 자리를 함께했습니다.</div><div><br></div><div>(주)코리아데이터월드는 앞으로도 사회적 책임을 다하고</div><div>지속 가능한 성장을 이끄는 올바른 기업으로 도약해 나갈 것입니다.</div><div><br></div><div><br></div><div><br><div style="text-align: left;"><img src="{root}assets/notice/044_fVQBg4B2Tg82qcdswIi8gi.jpg" alt="mbc 화면.jpg" id="image_0.9349178313556025" style="width: 320px; height: 180px;"></div><div style="text-align: left;"><div>* 사진 출처: MBC</div><div>* 둘째 줄 왼쪽에서 세 번째, (주)코리아데이터월드 김근지 대표이사</div><div><br></div><div><br></div></div></div><div><br><div style="text-align: left;"><img src="{root}assets/notice/044_C7bv87AXNhkCgPxCpah29y7gGf.jpg" alt="KakaoTalk_20260818_153648948.jpg" style="width: 320px; height: 320px;" id="image_0.6307319813849466"></div><br><br></div>
 
 === 43
-안녕하세요, (주)코리아데이터월드입니다.
-
-(주)코리아데이터월드가 중소벤처기업부가 주관하는 '2026년 중소기업 스마트서비스 지원사업'의 대상 기업으로 최종 선정되는 뜻깊은 결실을 맺었습니다.
-
-'중소기업 스마트서비스 지원사업'은 중소기업의 서비스 분야에 빅데이터, AI, 클라우드 등 첨단 ICT 기술을 접목하여 디지털 전환(DX)을 촉진하고 서비스 혁신 및 고부가가치 창출을 지원하는 정부 사업입니다.
-
-(주)코리아데이터월드는 이번 사업 선정을 통해 사내 업무 시스템 체계와 조사 플랫폼 및 운영 시스템을 한층 더 고도화하고, 첨단 디지털 기술 기반의 혁신적인 서비스 전달 체계를 구축할 예정입니다.
-
-이를 통해 고객 여러분께 보다 신속하고 고품질의 서비스를 제공하며, 업무 효율성과 서비스 경쟁력을 대폭 강화해 나갈 것입니다.
-
-이번 선정을 발판 삼아 (주)코리아데이터월드는 지속적인 기술 혁신과 스마트 서비스 전환을 이끌어 나가며, 고객과 파트너사 모두에게 가치 있는 결실을 전할 수 있도록 최선을 다하겠습니다.
-
-새로운 도약과 성장을 이뤄낼 (주)코리아데이터월드의 행보에 앞으로도 많은 관심과 응원 부탁드립니다.
-
-감사합니다.
-
+ <div><br></div><div>안녕하세요, (주)코리아데이터월드입니다.</div><div><br></div><div>(주)코리아데이터월드가 중소벤처기업부가 주관하는</div><div>'2026년 중소기업 스마트서비스 지원사업'의 대상 기업으로</div><div>최종 선정되는 뜻깊은 결실을 맺었습니다.</div><div><br></div><div>'중소기업 스마트서비스 지원사업'은 중소기업의 서비스 분야에</div><div>빅데이터, AI, 클라우드 등 첨단 ICT 기술을 접목하여</div><div>디지털 전환(DX)을 촉진하고 서비스 혁신 및 고부가가치 창출을 지원하는 정부 사업입니다.&nbsp;</div><div><br></div><div>(주)코리아데이터월드는 이번 사업 선정을 통해</div><div>사내 업무 시스템 체계와 조사 플랫폼 및 운영 시스템을 한층 더 고도화하고,</div><div>첨단 디지털 기술 기반의 혁신적인 서비스 전달 체계를 구축할 예정입니다.</div><div><br></div><div>이를 통해 고객 여러분께 보다 신속하고 고품질의 서비스를 제공하며,</div><div>업무 효율성과 서비스 경쟁력을 대폭 강화해 나갈 것입니다.</div><div><br></div><div>이번 선정을 발판 삼아</div><div>(주)코리아데이터월드는 지속적인 기술 혁신과 스마트 서비스 전환을 이끌어 나가며,</div><div>고객과 파트너사 모두에게 가치 있는 결실을 전할 수 있도록 최선을 다하겠습니다.</div><div><br></div><div>새로운 도약과 성장을 이뤄낼 (주)코리아데이터월드의 행보에</div><div>앞으로도 많은 관심과 응원 부탁드립니다.</div><div><br></div><div>감사합니다.</div><div><br></div>
 
 === 42
-안녕하세요. (주)코리아데이터월드입니다.
-
-(주)코리아데이터월드는 임직원들의 워라밸 향상과 건강한 조직 문화를 만들기 위해 다양한 문화 이벤트를 운영하고 있습니다.
-
-오는 8월 6일(수), 임직원 간 자유로운 소통과 리프레시를 위해 '8월 문화의 날' 행사를 개최합니다.
-
-[행사 개요]
-
-1. 일 시 : 2026년 8월 5일(수) 16:00 ~ 2. 장 소 : 메가박스 코엑스 부티크 스위트 (Boutique Suite) 3. 상영작 : 영화 <오디세이>
-
-프리미엄 상영관의 편안하고 프라이빗한 공간에서 진행되는 이번 행사는 임직원들이 바쁜 일상에서 벗어나 리프레시하고, 자유롭게 친목을 도모하는 소통의 장이 될 것입니다.
-
-(주)코리아데이터월드는 앞으로도
-
-임직원이 행복하게 일할 수 있는 일터이자
-
-활기찬 기업 문화를 조성하기 위해 지원을 아끼지 않을 것입니다.
-
-사람 중심의 기업 문화 속에서 더 높이 도약할
-
-(주)코리아데이터월드의 행보에 많은 관심과 응원 부탁드립니다.
-
+ <div><br></div><div>안녕하세요. (주)코리아데이터월드입니다.</div><div><br></div><div>(주)코리아데이터월드는 임직원들의 워라밸 향상과</div><div>건강한 조직 문화를 만들기 위해</div><div>다양한 문화 이벤트를 운영하고 있습니다.</div><div><br></div><div>오는 8월 6일(수),</div><div>임직원 간 자유로운 소통과 리프레시를 위해</div><div><span data-path-to-node="8,3" data-index-in-node="37" style="">'8월 문화의 날'</span> 행사를 개최합니다.</div><div><br></div><div><div>[행사 개요]</div><div><br></div><div>1. 일&nbsp; &nbsp;시 : 2026년 8월 5일(수) 16:00 ~</div><div>2. 장&nbsp; &nbsp;소 : 메가박스 코엑스 부티크 스위트 (Boutique Suite)</div><div>3. 상영작 : 영화 &lt;오디세이&gt;</div></div><div><br></div><div>프리미엄 상영관의 편안하고 프라이빗한 공간에서 진행되는 이번 행사는&nbsp;</div><div>임직원들이 바쁜 일상에서 벗어나 리프레시하고,</div><div>자유롭게 친목을 도모하는 소통의 장이 될 것입니다.</div><div><br></div><div><p data-path-to-node="8,7">(주)코리아데이터월드는 앞으로도</p><p data-path-to-node="8,7">임직원이 행복하게 일할 수 있는 일터이자</p><p data-path-to-node="8,7">활기찬 기업 문화를 조성하기 위해 지원을 아끼지 않을 것입니다.</p><p data-path-to-node="8,7"><br></p><p data-path-to-node="8,8">사람 중심의 기업 문화 속에서 더 높이 도약할</p><p data-path-to-node="8,8">(주)코리아데이터월드의 행보에 많은 관심과 응원 부탁드립니다.</p><p data-path-to-node="8,8"><br></p></div>
 
 === 41
-안녕하세요, (주)코리아데이터월드입니다.
-
-(주)코리아데이터월드의 김근지 대표이사가 2026년 6월 10일자로 한국로봇산업진흥원의 '경영전략 자문위원회' 위원으로 위촉되었음을 알립니다.
-
-한국로봇산업진흥원은 국내 로봇산업 육성 및 생태계 조성을 주도하는 산업통상자원부 산하 공공기관으로, 경영전략 자문위원회는 진흥원의 중장기 경영 전략 및 주요 사업 방향을 설정하는 전문 자문 기구입니다.
-
-김근지 대표는 향후 자문위원으로서 그동안 쌓아온 전문성과 경영 노하우를 바탕으로, 국내 로봇산업의 경쟁력 강화와 정책 수립에 기여할 예정입니다.
-
-고객사 여러분의 변함없는 성원에 감사드립니다.
-
--(주)코리아데이터월드-
-
+ <div>안녕하세요, (주)코리아데이터월드입니다.</div><div><br></div><div>(주)코리아데이터월드의 김근지 대표이사가</div><div>2026년 6월 10일자로 한국로봇산업진흥원의 '경영전략 자문위원회'</div><div>위원으로 위촉되었음을 알립니다.</div><div><br></div><div>한국로봇산업진흥원은 국내 로봇산업 육성 및 생태계 조성을 주도하는 산업통상자원부 산하 공공기관으로,</div><div>경영전략 자문위원회는 진흥원의 중장기 경영 전략 및 주요 사업 방향을 설정하는 전문 자문 기구입니다.</div><div><br></div><div>김근지 대표는 향후 자문위원으로서</div><div>그동안 쌓아온 전문성과 경영 노하우를 바탕으로,</div><div>국내 로봇산업의 경쟁력 강화와 정책 수립에 기여할 예정입니다.</div><div><br></div><div>고객사 여러분의 변함없는 성원에 감사드립니다.</div><div><br></div><div>-(주)코리아데이터월드-</div>
 
 === 40
-안녕하세요,(주)코리아데이터월드입니다.
-
-(주)코리아데이터월드에서는 임직원의 일과 삶의 균형을 도모하고, 몰입도 높은 근무 환경을 통해 고객사 여러분께 더욱 질 높은 서비스를 제공하고자 매월 마지막 주 금요일 단축 근무(조기 퇴근제)를 시행하고 있습니다.
-
-- 시행 시기: 2026년 1월 ~ - 시행 내용: 매월 마지막 주 금요일 근무 시간 단축(10:00 ~ 16:00) - 긴급 연락처: 070-8861-2273
-
-* 단축 근무일 오후 4시 이후에는 전화 연결 및 실시간 업무 대응이 어려울 수 있으며, 휴무 시간 중 발생하는 중대한 문의 사항은 긴급 연락처로 연락 바랍니다.
-
-충전된 에너지를 바탕으로 더욱더 발전된 서비스로 보답드리겠습니다. 고객사와 협력사 여러분의 너른 양해와 협조를 부탁드립니다. 감사합니다.
-
-- (주)코리아데이터월드 임직원 일동 -
-
+ <div>안녕하세요,(주)코리아데이터월드입니다.</div><div><br></div><div>(주)코리아데이터월드에서는 임직원의 일과 삶의 균형을 도모하고,&nbsp;</div><div>몰입도 높은 근무 환경을 통해 고객사 여러분께 더욱 질 높은 서비스를 제공하고자</div><div>매월 마지막 주 금요일 단축 근무(조기 퇴근제)를 시행하고 있습니다.</div><div><br></div><div>- 시행 시기: 2026년 1월 ~</div><div>- 시행 내용: 매월 마지막 주 금요일 근무 시간 단축(10:00 ~ 16:00)</div><div>- 긴급 연락처: 070-8861-2273</div><div><br></div><div>* 단축 근무일 오후 4시 이후에는 전화 연결 및 실시간 업무 대응이 어려울 수 있으며,</div><div>&nbsp; &nbsp;휴무 시간 중 발생하는 중대한 문의 사항은 긴급 연락처로 연락 바랍니다.</div><div><br></div><div>충전된 에너지를 바탕으로 더욱더 발전된 서비스로 보답드리겠습니다.</div><div>고객사와 협력사 여러분의 너른 양해와 협조를 부탁드립니다.</div><div>감사합니다.</div><div><br></div><div>- (주)코리아데이터월드 임직원 일동 -</div>
 
 === 39
-(주)코리아데이터월드의 가정의 달 5월 연휴 기간을 다음과 같이 안내드립니다.
-
-<연휴 기간> 5/1(금) ~ 5/5(화) (*5월 4일 휴무)
-
-충분한 휴식과 재정비를 통해 더욱 정진하는 모습으로 찾아뵙겠습니다.
-
-감사합니다.
-
+ <div style="border: 0px; color: rgb(82, 83, 87); font-family: verdana, Gulim; font-size: 13px;">(주)코리아데이터월드의</div><div style="border: 0px; color: rgb(82, 83, 87); font-family: verdana, Gulim; font-size: 13px;">가정의 달 5월 연휴 기간을 다음과 같이 안내드립니다.</div><div style="border: 0px; color: rgb(82, 83, 87); font-family: verdana, Gulim; font-size: 13px;"><br></div><div style="border: 0px; color: rgb(82, 83, 87); font-family: verdana, Gulim; font-size: 13px;"><span style="color: rgb(82, 83, 87); font-family: verdana, Gulim; font-size: 13px;">&lt;연휴 기간&gt;</span></div><div style="border: 0px; color: rgb(82, 83, 87); font-family: verdana, Gulim; font-size: 13px;">5/1(금) ~ 5/5(화)</div><div style="border: 0px; color: rgb(82, 83, 87); font-family: verdana, Gulim; font-size: 13px;">(*5월 4일 휴무)</div><div style="border: 0px; color: rgb(82, 83, 87); font-family: verdana, Gulim; font-size: 13px;"><br></div><div style="border: 0px; color: rgb(82, 83, 87); font-family: verdana, Gulim; font-size: 13px;">충분한 휴식과 재정비를 통해</div><div style="border: 0px; color: rgb(82, 83, 87); font-family: verdana, Gulim; font-size: 13px;">더욱 정진하는 모습으로 찾아뵙겠습니다.</div><div style="border: 0px; color: rgb(82, 83, 87); font-family: verdana, Gulim; font-size: 13px;"><br></div><div style="border: 0px; color: rgb(82, 83, 87); font-family: verdana, Gulim; font-size: 13px;">감사합니다.</div><div style="border: 0px; color: rgb(82, 83, 87); font-family: verdana, Gulim; font-size: 13px;"><br></div>
 
 === 38
-안녕하세요, (주)코리아데이터월드입니다.
-
-지난 봄의 정취가 완연했던 4월, 임직원 간의 결속력을 다지고 미래 비전을 공유하기 위해 1박 2일 워크샵을 다녀왔습니다.
-
-<워크샵 개요>
-
-- 일정: 2026년 4월 23일(목) ~ 4월 24일(금) / 1박 2일 - 장소: 안토 호텔 (Anto Hotel, 구 파라스파라 서울) - 참석대상: 임직원 전원
-
-충전을 마치고 돌아온 코리아데이터월드 임직원 모두는 이번 워크샵을 통해 얻은 새로운 아이디어와 팀워크로 정진하려 합니다. 코리아데이터월드의 새로운 도약에 많은 관심과 응원 부탁드립니다.
-
-감사합니다.
-
+ <div><div><br></div><div>안녕하세요, (주)코리아데이터월드입니다.</div><div><br></div><div>지난 봄의 정취가 완연했던 4월,</div><div>임직원 간의 결속력을 다지고 미래 비전을 공유하기 위해 1박 2일 워크샵을 다녀왔습니다.&nbsp;</div><div><br></div><div>&lt;워크샵 개요&gt;</div><div><br></div><div>&nbsp;- 일정: 2026년 4월 23일(목) ~ 4월 24일(금) / 1박 2일</div><div>&nbsp;- 장소: 안토 호텔 (Anto Hotel, 구 파라스파라 서울)</div><div>&nbsp;- 참석대상:&nbsp; 임직원 전원</div><div><br></div><div>충전을 마치고 돌아온 코리아데이터월드 임직원 모두는</div><div>이번 워크샵을 통해 얻은 새로운 아이디어와 팀워크로 정진하려 합니다.</div><div>코리아데이터월드의 새로운 도약에 많은 관심과 응원 부탁드립니다.</div><div><br></div><div>감사합니다.</div></div><div><div></div></div>
 
 === 37
-"직원의 행복이 곧 회사의 미래입니다.“
-
-우리 회사는 '함께 성장하고 함께 행복한 문화'를 지향합니다. 지난 한 해 동안 열정과 헌신을 다해준 우리 임직원 여러분을 위해, 회사가 준비한 특별한 선물 [호주 Refresh 휴가] 소식을 전합니다.
-
-이번 여행지는 직원 여러분의 소중한 투표를 통해 직접 선정되었습니다. 일상의 분주함을 잠시 내려놓고, 광활한 대자연 속에서 진정한 휴식을 즐기시길 바라는 마음을 듬뿍 담았습니다. 단순한 휴가 부여를 넘어, 여러분이 오직 '쉼'에만 집중할 수 있도록 파격적인 지원을 결정했습니다.
-
-휴가 지원 범위
-
-1. 항공권: 호주 왕복 항공권 전액 지원 2. 여행 경비: 현지 체류비 일부 지원 3. 휴가 일정: 2026년 4월 ~ 5월 중 본인이 희망하는 시기 선택 가능 4. 특별 혜택: 개인 연차 소진이 없는 특별 유급 휴가
-
-이번 리프레시 휴가를 통해 충전한 에너지는 더 나은 가치를 제공하는 소중한 밑거름이 될 것입니다.
-
-(주)코리아데이터월드 대표이사 김근지 드림
-
+ <div><br></div><div>"직원의 행복이 곧 회사의 미래입니다.“</div><div><br></div><div>우리 회사는 '함께 성장하고 함께 행복한 문화'를 지향합니다.&nbsp;</div><div>지난 한 해 동안 열정과 헌신을 다해준 우리 임직원 여러분을 위해,&nbsp;</div><div>회사가 준비한 특별한 선물 [호주 Refresh 휴가] 소식을 전합니다.</div><div><br></div><div>이번 여행지는 직원 여러분의 소중한 투표를 통해 직접 선정되었습니다.&nbsp;</div><div>일상의 분주함을 잠시 내려놓고, 광활한 대자연 속에서 진정한 휴식을 즐기시길 바라는 마음을 듬뿍 담았습니다.</div><div>단순한 휴가 부여를 넘어, 여러분이 오직 '쉼'에만 집중할 수 있도록 파격적인 지원을 결정했습니다.</div><div><br></div><div>휴가 지원 범위</div><div><br></div><div>1. 항공권: 호주 왕복 항공권 전액 지원&nbsp;</div><div>2. 여행 경비: 현지 체류비 일부 지원</div><div>3. 휴가 일정: 2026년 4월 ~ 5월 중 본인이 희망하는 시기 선택 가능&nbsp;</div><div>4. 특별 혜택: 개인 연차 소진이 없는 특별 유급 휴가</div><div><br></div><div>이번 리프레시 휴가를 통해 충전한 에너지는 더 나은 가치를 제공하는 소중한 밑거름이 될 것입니다.</div><div><br></div><div>(주)코리아데이터월드 대표이사 김근지 드림</div><div><br></div>
 
 === 36
-(주)코리아데이터월드는 여론조사 서비스의 다각화와 효율 증대를 위해 다음과 같이 ARS 전화 조사 시스템을 도입하여 운영함을 알려드립니다.
-
-- 도입 시스템 : 고성능 ARS(Automatic Response System) 조사 솔루션 - 주요 용도 : 정책 현안 및 선거 여론조사, 지자체 및 공공기관 정책 만족도 조사, 사회적 이슈에 대한 대국민 여론 수렴 - 시행 시기 : 2026년 3월 17일(화) ~
-
-무선/유선 RDD(Random Digit Dialing) 방식 및 무선 가상번호와의 결합을 통해 조사 정밀도를 향상하고자 합니다.
-
-많은 관심과 참여 부탁드립니다.
-
-감사합니다.
-
-- 코리아데이터월드 임직원 일동 -
-
+ <div><br></div><div><div>(주)코리아데이터월드는 여론조사 서비스의 다각화와 효율 증대를 위해</div><div>다음과 같이 ARS 전화 조사 시스템을 도입하여 운영함을 알려드립니다.</div><div><br></div><div><b>&nbsp; &nbsp;- 도입 시스템 : 고성능 ARS(Automatic Response System) 조사 솔루션</b></div><div><b>&nbsp; &nbsp;- 주요 용도 :&nbsp; 정책 현안 및 선거 여론조사, 지자체 및 공공기관 정책 만족도 조사, 사회적 이슈에 대한 대국민 여론 수렴</b></div><div><b>&nbsp; &nbsp;- 시행 시기 : 2026년 3월 17일(화) ~</b></div><div><br></div><div>무선/유선 RDD(Random Digit Dialing) 방식 및 무선 가상번호와의 결합을 통해 조사 정밀도를 향상하고자 합니다.</div><div><br></div><div>많은 관심과 참여 부탁드립니다.&nbsp;</div><div><br></div><div>감사합니다.</div><div><br></div><div>- 코리아데이터월드 임직원 일동 -</div></div>
 
 === 35
-안녕하세요, 코리아데이터월드입니다.
-
-사내 시스템 안정화를 위해 진행되었던 서버 점검이 2026년 3월 17일(화) 오전 10시 기준으로 정상적으로 완료되었습니다. 현재 이메일을 포함한 모든 서비스가 정상적으로 이용 가능합니다.
-
-점검 기간 동안 이용에 불편을 드린 점 양해 부탁드리며, 앞으로도 보다 안정적이고 원활한 서비스 제공을 위해 최선을 다하겠습니다.
-
-감사합니다.
-
-- 코리아데이터월드 임직원 드림 -
-
+ <div><br></div><div><div>안녕하세요, 코리아데이터월드입니다.</div><div><br></div><div>사내 시스템 안정화를 위해 진행되었던 서버 점검이</div><div><b>2026년 3월 17일(화) 오전 10시 기준으로 정상적으로 완료</b>되었습니다.</div><div>현재 이메일을 포함한 모든 서비스가 정상적으로 이용 가능합니다.</div><div><br></div><div>점검 기간 동안 이용에 불편을 드린 점 양해 부탁드리며,</div><div>앞으로도 보다 안정적이고 원활한 서비스 제공을 위해 최선을 다하겠습니다.</div><div><br></div><div>감사합니다.</div><div><br></div><div>- 코리아데이터월드 임직원 드림 -</div></div>
 
 === 34
-안녕하세요, 코리아데이터월드입니다.
-
-2026년 3월 13일(금) 오후 5시부터 사내 서버 점검이 진행되고 있습니다. 해당 점검으로 인해 일시적으로 메일 확인 및 회신이 원활하지 않을 수 있으니 이용에 참고해 주시기 바랍니다.
-
-급한 문의 사항이 있으신 경우 아래 연락처로 연락 주시면 안내해 드리겠습니다. T. 070-8861-2273
-
-보다 안정적이고 원활한 서비스 제공을 위해 노력하겠습니다. 이용에 불편을 드린 점 양해 부탁드립니다.
-
-감사합니다.
-
-- 코리아데이터월드 임직원 드림
-
+ <div><br></div><div><div>안녕하세요, 코리아데이터월드입니다.</div><div><br></div><div>2026년 3월 13일(금) 오후 5시부터 사내 서버 점검이 진행되고 있습니다.</div><div>해당 점검으로 인해 일시적으로 메일 확인 및 회신이 원활하지 않을 수 있으니 이용에 참고해 주시기 바랍니다.</div><div><br></div><div>급한 문의 사항이 있으신 경우 아래 연락처로 연락 주시면 안내해 드리겠습니다.</div><div>T. 070-8861-2273</div><div><br></div><div>보다 안정적이고 원활한 서비스 제공을 위해 노력하겠습니다.</div><div>이용에 불편을 드린 점 양해 부탁드립니다.</div><div><br></div><div>감사합니다.</div><div><br></div><div>- 코리아데이터월드 임직원 드림</div></div>
 
 === 33
-[사진] 033_ZpgYFXEv1lhyutb2L8uUx9QUz9KR.jpg
-한국환경연구원의 의뢰를 받아 (주)코리아데이터월드에서 [2026년 한국환경연구원 연구주제 대국민 수요조사]를 실시하고 있습니다.
-
-환경 문제에 관심 있는 분들의 많은 참여 부탁드립니다.
-
-- 참여 대상: 대한민국 환경 문제에 관심이 있는 누구나 - 참여 방법: 아래 설문 참여 링크 또는 배너의 QR로 접속 - 참여 기간: 2026.03.09.(월) ~ 2026.03.20.(금) - 참여 혜택: 조사 참여자 5천원 상당 커피 기프티콘 제공(100명 추첨), 연구 주제 선정 시 기프티콘 3만원권 제공(3명) - 추첨 결과 발표: 2026년 4월 말 한국환경연구원 홈페이지 공지사항 게시 예정
-
-* 설문 참여 링크: https://kdw.svybx.kr/?pid=S20305kb5wh7&grpid=rdn&nd=
-
-* 한국환경연구원 공지사항 안내페이지: 공지사항 | 알림·참여 : 한국환경연구원
-
-[링크] https://kdw.svybx.kr/?pid=S20305kb5wh7&grpid=rdn&nd= | https://kdw.svybx.kr/?pid=S20305kb5wh7&grpid=rdn&nd=
-[링크] 공지사항 | 알림·참여 : 한국환경연구원 | https://www.kei.re.kr/board.es?mid=a10301000000&bid=0001&list_no=60211&act=view
+ <div><br></div><div style="text-align: left;">한국환경연구원의 의뢰를 받아</div><div style="text-align: left;">(주)코리아데이터월드에서</div><div style="text-align: left;">[2026년 한국환경연구원 연구주제 대국민 수요조사]를 실시하고 있습니다.</div><div style="text-align: left;"><br></div><div style="text-align: left;">환경 문제에 관심 있는 분들의 많은 참여 부탁드립니다.</div><div style="text-align: left;"><br></div><div style="text-align: left;">&nbsp;- 참여 대상: 대한민국 환경 문제에 관심이 있는 누구나</div><div style="text-align: left;">&nbsp;- 참여 방법: 아래 설문 참여 링크 또는 배너의 QR로 접속</div><div style="text-align: left;">&nbsp;- 참여 기간: 2026.03.09.(월) ~ 2026.03.20.(금)</div><div style="text-align: left;">&nbsp;- 참여 혜택: 조사 참여자 5천원 상당 커피 기프티콘 제공(100명 추첨), 연구 주제 선정 시 기프티콘 3만원권 제공(3명)</div><div style="text-align: left;">&nbsp;- 추첨 결과 발표: 2026년 4월 말 한국환경연구원 홈페이지 공지사항 게시 예정</div><div style="text-align: left;"><br></div><div style="text-align: left;">&nbsp;* 설문 참여 링크:&nbsp;<a href="https://kdw.svybx.kr/?pid=S20305kb5wh7&amp;grpid=rdn&amp;nd=" target="_blank">https://kdw.svybx.kr/?pid=S20305kb5wh7&amp;grpid=rdn&amp;nd=</a></div><div style="text-align: left;">&nbsp;</div><div style="text-align: left;">&nbsp;* 한국환경연구원 공지사항 안내페이지:&nbsp;<a href="https://www.kei.re.kr/board.es?mid=a10301000000&amp;bid=0001&amp;list_no=60211&amp;act=view"><u>공지사항 | 알림·참여 : 한국환경연구원</u></a></div><div><br></div><div><br><div style="text-align: left;"><img src="{root}assets/notice/033_ZpgYFXEv1lhyutb2L8uUx9QUz9KR.jpg" alt="한국환경연구원 2026 대국민 수요조사 QR 배너(최종안).jpg" id="image_0.927614172061443" style="width: 725px; height: 363px;"></div><br><br></div>
 
 === 32
-안녕하세요?
-
-(주)코리아데이터월드는 용역 완료 후, 서비스 품질 향상을 위해 외부 고객만족도 조사를 진행하고 있습니다.
-
-형식적인 절차가 아닌, 실제 고객의 목소리(VOC)를 듣고 개선에 반영하기 위한 목적입니다. 응답해 주신 의견은 향후 업무 프로세스와 서비스 품질 개선에 소중히 활용하겠습니다.
-
-* 조사 대상 : 용역 완료 고객 * 설문 내용 : 용역 진행 과정 및 결과 만족도, 개선 의견 등 * 소요 시간 : 약 1분 내외
-
-설문에 참여해 주신 모든 분께 스타벅스 1만원 모바일 상품권을 발송드립니다.
-
-※ 제공 방식 및 일정은 개별 안내되며, 입력 정보는 상품권 발송 및 서비스 개선 목적 외에는 사용되지 않습니다.
-
+ <div>안녕하세요?</div><div><br></div><div>(주)코리아데이터월드는 용역 완료 후,</div><div>서비스 품질 향상을 위해 외부 고객만족도 조사를 진행하고 있습니다.</div><div><br></div><div>형식적인 절차가 아닌, 실제 고객의 목소리(VOC)를 듣고 개선에 반영하기 위한 목적입니다.&nbsp;</div><div>응답해 주신 의견은 향후 업무 프로세스와 서비스 품질 개선에 소중히 활용하겠습니다.</div><div><br></div><div>&nbsp;* 조사 대상 : 용역 완료 고객</div><div>&nbsp;* 설문 내용 : 용역 진행 과정 및 결과 만족도, 개선 의견 등</div><div>&nbsp;* 소요 시간 : 약 1분 내외</div><div><br></div><div>설문에 참여해 주신 모든 분께 스타벅스 1만원 모바일 상품권을 발송드립니다.</div><div><br></div><div>※ 제공 방식 및 일정은 개별 안내되며, 입력 정보는 상품권 발송 및 서비스 개선 목적 외에는 사용되지 않습니다.</div>
 
 === 31
-2025년 종무식과 2026년 시무식을 아래와 같이 진행하고자 합니다.
-
-1. 종무식 : 2025년 12월 31일(수) 2. 시무식 : 2026년 01월 05일(월) 3. 시무식 행사 : 전 직원 브런치 타임
-
-2026년 첫 근무일에는 전 직원이 함께 브런치 타임을 가지며 한 해의 시작을 나누고, 2026년에도 서로를 격려하며 좋은 조직문화를 이어가고자 합니다.
-
-감사합니다.
-
-- ㈜코리아데이터월드 임직원 일동 -
-
+ <div>2025년 종무식과 2026년 시무식을 아래와 같이 진행하고자 합니다.</div><div><br></div><div>1. 종무식 : 2025년 12월 31일(수)</div><div>2. 시무식 : 2026년 01월 05일(월)</div><div>3. 시무식 행사 : 전 직원 브런치 타임</div><div><br></div><div>2026년 첫 근무일에는 전 직원이 함께 브런치 타임을 가지며 한 해의 시작을 나누고,&nbsp;</div><div>2026년에도 서로를 격려하며 좋은 조직문화를 이어가고자 합니다.</div><div><br></div><div>감사합니다.</div><div><br></div><div>- ㈜코리아데이터월드 임직원 일동 -</div>
 
 === 30
-[사진] 030_JVTwdrx27LwWG.jpg
-㈜코리아데이터월드 김근지 대표이사의 인터뷰가 2025년 12월 31일자 대구일보 특집으로 게재되었습니다.
-
-김근지 대표는 광복 80주년을 맞아 ‘독립운동가 후손 80인’에 선정되었으며, 여성 기업인이자 독립유공자 후손으로서 삶과 기억을 여론조사와 데이터라는 방법으로 기록하고 조사가 사회적 책임을 어떻게 담아낼 수 있는지 조명한 내용이 이번 특집을 통해 소개되었습니다.
-
-김근지 대표는 안동 출신 독립유공자 고(故) 김영석 지사의 증손녀로, 광복 80주년을 계기로 진행된 독립유공자 후손 대상 실태 조사와 국가보훈 관련 주요 정책 조사에 참여하며 느낀 문제의식을 공유했습니다.
-
-특히, 독립유공자 후손들의 삶과 기억이 단순한 역사적 서술에 머무르지 않고 정책과 사회 인식으로 이어지기 위해서는 체계적이고 윤리적인 조사 설계가 필요하다는 점을 강조했습니다.
-
-출처: 대구일보
-
+ <div>㈜코리아데이터월드 김근지 대표이사의 인터뷰가</div><div>2025년 12월 31일자 대구일보 특집으로 게재되었습니다.</div><div><br></div><div>김근지 대표는 광복 80주년을 맞아 ‘독립운동가 후손 80인’에 선정되었으며,</div><div>여성 기업인이자 독립유공자 후손으로서</div><div>삶과 기억을 여론조사와 데이터라는 방법으로 기록하고</div><div>조사가 사회적 책임을 어떻게 담아낼 수 있는지 조명한 내용이</div><div>이번 특집을 통해 소개되었습니다.</div><div><br></div><div>김근지 대표는 안동 출신 독립유공자 고(故) 김영석 지사의 증손녀로,</div><div>광복 80주년을 계기로 진행된 독립유공자 후손 대상 실태 조사와</div><div>국가보훈 관련 주요 정책 조사에 참여하며 느낀 문제의식을 공유했습니다.</div><div><br></div><div>특히, 독립유공자 후손들의 삶과 기억이 단순한 역사적 서술에 머무르지 않고</div><div>정책과 사회 인식으로 이어지기 위해서는</div><div>체계적이고 윤리적인 조사 설계가 필요하다는 점을 강조했습니다.</div><div><br></div><div><br></div><div><br><div style="text-align: left;"><img src="{root}assets/notice/030_JVTwdrx27LwWG.jpg" alt="KakaoTalk_20251231_114801023.jpg" style="width: 725px; height: 1057px;" id="image_0.5139550780185455"></div><br>출처: 대구일보</div>
 
 === 29
-오늘 2025년 10월 31일 (주)코리아데이터월드가 창립 9주년을 맞이했습니다.
-
-고객사 여러분의 신뢰와 성원 덕분에 지금의 코리아데이터월드가 있을 수 있었습니다. 더 정확하고 신뢰성 높은 데이터를 제공하기 위한 우리의 여정은 오늘도 계속되고 있습니다.
-
-또한, 새로운 사무실 인테리어 공사가 오늘부로 완전히 마무리되었습니다. 쾌적하고 창의적인 공간에서 더 나은 연구와 서비스를 제공하기 위해 한 걸음 더 도약하는 (주)코리아데이터월드가 되겠습니다.
-
-앞으로도 변함없는 관심과 응원 부탁드립니다. 감사합니다.
-
-- (주)코리아데이터월드 임직원 일동 -
-
+ <div><br></div><div>오늘 2025년 10월 31일</div><div>(주)코리아데이터월드가 창립 9주년을 맞이했습니다.</div><div><br></div><div>고객사 여러분의 신뢰와 성원 덕분에</div><div>지금의 코리아데이터월드가 있을 수 있었습니다.</div><div>더 정확하고 신뢰성 높은 데이터를 제공하기 위한</div><div>우리의 여정은 오늘도 계속되고 있습니다.</div><div><br></div><div>또한, 새로운 사무실 인테리어 공사가 오늘부로 완전히 마무리되었습니다.</div><div>쾌적하고 창의적인 공간에서 더 나은 연구와 서비스를 제공하기 위해</div><div>한 걸음 더 도약하는 (주)코리아데이터월드가 되겠습니다.</div><div><br></div><div>앞으로도 변함없는 관심과 응원 부탁드립니다.</div><div>감사합니다.</div><div><br></div><div>- (주)코리아데이터월드 임직원 일동 -&nbsp;</div><div><br></div>
 
 === 28
-국민은행과 전국경제인연합회의 지원으로 (주)코리아데이터월드가 인테리어 새단장을 진행합니다.
-
-일정은 아래와 같으며, 공사기간 중에도 업무는 정상적으로 운영합니다.
-
-<공사일정> 2025.10.20.(월) ~ 10.28.(화)
-
-감사합니다.
-
+ <div>국민은행과 전국경제인연합회의 지원으로</div><div>(주)코리아데이터월드가 인테리어 새단장을 진행합니다.</div><div><br></div><div>일정은 아래와 같으며,</div><div>공사기간 중에도 업무는 정상적으로 운영합니다.</div><div><br></div><div>&lt;공사일정&gt;</div><div>2025.10.20.(월) ~ 10.28.(화)</div><div><br></div><div>감사합니다.</div>
 
 === 27
-(주)코리아데이터월드의 2025년 추석 연휴 기간을 아래와 같이 안내드립니다.
-
-<추석 연휴 기간> 10/3(금) ~ 10/10(금)
-
-올 한해 보여주신 성원과 관심에 감사드리며, 즐겁고 풍성한 한가위 보내시길 바랍니다.
-
-감사합니다.
-
-- (주)코리아데이터월드 임직원 일동 -
-
+ <div>(주)코리아데이터월드의</div><div>2025년 추석 연휴 기간을 아래와 같이 안내드립니다.</div><div><br></div><div>&lt;추석 연휴 기간&gt;</div><div>10/3(금) ~ 10/10(금)</div><div><br></div><div>올 한해 보여주신 성원과 관심에 감사드리며,</div><div>즐겁고 풍성한 한가위 보내시길 바랍니다.</div><div><br></div><div>감사합니다.</div><div><br></div><div>- (주)코리아데이터월드 임직원 일동 -</div>
 
 === 26
-[사진] 026_3NdfuDNz.png
-2025년 8월 15일, 광복 80주년을 맞아 개최된 광복절 경축식에 (주)코리아데이터월드 김근지 대표이사가 80인의 독립유공자 후손으로 선정되어 참석하였습니다.
-
-이날의 행사는 개인적인 영광을 넘어, 우리 기업이 역사를 기억하며 미래를 향해 나아가고 있음을 보여주는 뜻깊은 자리였습니다.
-
-앞으로도 (주)코리아데이터월드는 고객, 임직원, 그리고 사회와 함께하는 기업으로서 공익 가치를 실현하고자 노력하겠습니다.
-
-사진 출처: MBC
-
+ <div><div>2025년 8월 15일, 광복 80주년을 맞아 개최된 광복절 경축식에</div><div>(주)코리아데이터월드 김근지 대표이사가</div><div>80인의 독립유공자 후손으로 선정되어 참석하였습니다.</div><div><br></div><div>이날의 행사는 개인적인 영광을 넘어,</div><div>우리 기업이 역사를 기억하며 미래를 향해 나아가고 있음을 보여주는 뜻깊은 자리였습니다.</div><div><br></div><div>앞으로도 (주)코리아데이터월드는</div><div>고객, 임직원, 그리고 사회와 함께하는 기업으로서</div><div>공익 가치를 실현하고자 노력하겠습니다.</div></div><div><br></div><div><br></div><div><div style="text-align: left;"><img src="{root}assets/notice/026_3NdfuDNz.png" alt="광복절 경축식.png" style="width: 703px; height: 395px;"></div><div style="text-align: left;"><br></div><div style="text-align: left;">사진 출처: MBC</div></div><div style="text-align: left;"><br></div>
 
 === 25
-[사진] 025_SLwkjcXoh68ErwJmQLi3k4GdqrC.jpg
-광복 80주년을 맞아 광복회와 광복회학술원의 의뢰로 실시한 '광복 80주년 독립유공자 후손 정체성 및 인식 실태조사'의 결과가 2025년 8월 14일 KBS 특집 사사건건 방송에 방영되었습니다.
-
+ <font face="맑은 고딕, Malgun Gothic" style="" color="#000000">광복 80주년을 맞아</font><div><font face="맑은 고딕, Malgun Gothic" color="#000000">광복회와 광복회학술원의 의뢰로 실시한</font></div><div><font face="맑은 고딕, Malgun Gothic" color="#000000">'광복 80주년 독립유공자 후손 정체성 및 인식 실태조사'의 결과가</font></div><div><font face="맑은 고딕, Malgun Gothic" color="#000000">2025년 8월 14일 KBS 특집 사사건건 방송에 방영되었습니다.</font></div><div><br></div><div><br><div style="text-align: left;"><img src="{root}assets/notice/025_SLwkjcXoh68ErwJmQLi3k4GdqrC.jpg" alt="사사건건.jpg" style="width: 725px; height: 407px;"></div><br><br></div>
 
 === 24
-[사진] 024_INjPuo9EWXotxSQfFh4V.jpg
-광복 80주년을 맞아 광복회와 광복회학술원의 의뢰로 실시한 '광복 80주년 독립유공자 후손 정체성 및 인식 실태조사'의 결과가 2025년 8월 10일 MBC 스트레이트 방송에 방영되었습니다.
-
+ 광복 80주년을 맞아<div>광복회와 광복회학술원의 의뢰로 실시한</div><div>'광복 80주년 독립유공자 후손 정체성 및 인식 실태조사'의 결과가</div><div>2025년 8월 10일 MBC 스트레이트 방송에 방영되었습니다.</div><div><br></div><div><div style="text-align: left;"><br></div><div style="text-align: left;"><img src="{root}assets/notice/024_INjPuo9EWXotxSQfFh4V.jpg" alt="mbc 스트레이트.jpg" style="width: 725px; height: 404px;"></div></div><div><br><br></div>
 
 === 23
-국민 10명 중 7명은 1945년 해방 이후 80년이 지났지만
-
-친일 잔재가 청산되지 않았다고 생각하는 것으로 조사됐습니다.
-
-광복회는 지난 1∼7일 코리아데이터월드에 의뢰해
-
-일반 국민 1천 명, 독립유공자 후손 850명을 대상으로 광복 80주년 계기 여론조사를 실시한 결과,
-
-일반 국민의 70.9%, 독립유공자 후손의 78.0%가 ‘해방 이후 친일 잔재가 청산되지 않았다’고 응답했다고 오늘(13일) 밝혔습니다.
-
-‘친일 반민족 행위자 후손이 여전히 사회 전반에 영향력을 행사한다’는 응답 비율은 일반 국민 63.6%, 독립유공자 후손 70.2%였습니다.
-
-‘지금이라도 친일 잔재 청산이 필요하다’에는 일반 국민 71.8%, 독립유공자 후손 83.1%가 공감했습니다.
-
-한일관계 개선을 위한 중요 사항에 관한 문항에 일반 국민은 ‘일본의 진정성 있는 사과와 반성’(30.5%),
-
-‘역사 왜곡 방지를 위한 공동 역사연구 및 교육협력’(17.1%), ‘정치적 이용이 아닌 일관된 외교원칙 유지’(11.5%) 순으로 응답했습니다.
-
-일반 국민 대상 조사는 온라인 조사로 표본오차는 95% 신뢰수준에 ±3.09%포인트,
-
-독립유공자 대상 조사는 자기기입식 조사로 표본오차는 95% 신뢰수준에 ±3.19%포인트입니다.
-
-KBS 기사 원문1: 국민 70% “해방 이후 친일 잔재 청산되지 않았다”
-
-KBS 기사 원문2: 국민 70% “해방 이후 친일 잔재 청산 안 돼”
-
-[링크] 국민 70% “해방 이후 친일 잔재 청산되지 않았다” | https://n.news.naver.com/article/056/0012008283?sid=100
-[링크] 국민 70% “해방 이후 친일 잔재 청산 안 돼” | https://n.news.naver.com/article/056/0012008337?sid=100
+ <p style="line-height: 1.5;"><font size="2" face="맑은 고딕, Malgun Gothic"><span style="color: rgb(48, 48, 56); letter-spacing: -0.3px;"><br></span></font></p><p style="line-height: 1.5;"><font size="2" face="맑은 고딕, Malgun Gothic"><span style="color: rgb(48, 48, 56); letter-spacing: -0.3px;">국민 10명 중 7명은 1945년 해방 이후 80년이 지났지만</span></font></p><p style="line-height: 1.5;"><font size="2" face="맑은 고딕, Malgun Gothic"><span style="color: rgb(48, 48, 56); letter-spacing: -0.3px;">친일 잔재가 청산되지 않았다고 생각하는 것으로 조사됐습니다.</span><br style="color: rgb(48, 48, 56); letter-spacing: -0.3px;"><br style="color: rgb(48, 48, 56); letter-spacing: -0.3px;"><span style="color: rgb(48, 48, 56); letter-spacing: -0.3px;">광복회는 지난 1∼7일 코리아데이터월드에 의뢰해</span></font></p><p style="line-height: 1.5;"><font face="맑은 고딕, Malgun Gothic"><font size="2"><span style="color: rgb(48, 48, 56); letter-spacing: -0.3px;">일반 국민 1천 명, 독립유공자 후손 850명을 대상으로&nbsp;</span></font><span style="color: rgb(48, 48, 56); letter-spacing: -0.3px;">광복 80주년 계기 여론조사를 실시한 결과,</span></font></p><p style="line-height: 1.5;"><span style="color: rgb(48, 48, 56); letter-spacing: -0.3px;"><font face="맑은 고딕, Malgun Gothic">일반 국민의 70.9%, 독립유공자 후손의 78.0%가 ‘해방 이후 친일 잔재가 청산되지 않았다’고 응답했다고 오늘(13일) 밝혔습니다.</font></span></p><p style="line-height: 1.5;"><font size="2" face="맑은 고딕, Malgun Gothic"><br style="color: rgb(48, 48, 56); letter-spacing: -0.3px;"><span style="color: rgb(48, 48, 56); letter-spacing: -0.3px;">‘친일 반민족 행위자 후손이 여전히 사회 전반에 영향력을 행사한다’는 응답 비율은 일반 국민 63.6%, 독립유공자 후손 70.2%였습니다.</span><br style="color: rgb(48, 48, 56); letter-spacing: -0.3px;"><br style="color: rgb(48, 48, 56); letter-spacing: -0.3px;"><span style="color: rgb(48, 48, 56); letter-spacing: -0.3px;">‘지금이라도 친일 잔재 청산이 필요하다’에는 일반 국민 71.8%, 독립유공자 후손 83.1%가 공감했습니다.</span><br style="color: rgb(48, 48, 56); letter-spacing: -0.3px;"><br style="color: rgb(48, 48, 56); letter-spacing: -0.3px;"><span style="color: rgb(48, 48, 56); letter-spacing: -0.3px;">한일관계 개선을 위한 중요 사항에 관한 문항에 일반 국민은 ‘일본의 진정성 있는 사과와 반성’(30.5%),&nbsp;</span></font></p><p style="line-height: 1.5;"><font size="2" face="맑은 고딕, Malgun Gothic"><span style="color: rgb(48, 48, 56); letter-spacing: -0.3px;">‘역사 왜곡 방지를 위한 공동 역사연구 및 교육협력’(17.1%), ‘정치적 이용이 아닌 일관된 외교원칙 유지’(11.5%) 순으로 응답했습니다.</span><br style="color: rgb(48, 48, 56); letter-spacing: -0.3px;"><br style="color: rgb(48, 48, 56); letter-spacing: -0.3px;"><span style="color: rgb(48, 48, 56); letter-spacing: -0.3px;">일반 국민 대상 조사는 온라인 조사로 표본오차는 95% 신뢰수준에 ±3.09%포인트,</span></font></p><p style="line-height: 1.5;"><font size="2" face="맑은 고딕, Malgun Gothic"><span style="color: rgb(48, 48, 56); letter-spacing: -0.3px;">독립유공자 대상 조사는 자기기입식 조사로 표본오차는 95% 신뢰수준에 ±3.19%포인트입니다.</span></font></p><p style="line-height: 1.5;"><font face="맑은 고딕, Malgun Gothic" size="2"><span style="color: rgb(48, 48, 56); letter-spacing: -0.3px;"><br></span></font></p><p style="line-height: 1.5;"><span style="letter-spacing: -0.3px;">KBS 기사 원문1:&nbsp;</span><a href="https://n.news.naver.com/article/056/0012008283?sid=100">국민 70% “해방 이후 친일 잔재 청산되지 않았다”</a></p><p style="line-height: 1.5;">KBS 기사 원문2:&nbsp;<a href="https://n.news.naver.com/article/056/0012008337?sid=100">국민 70% “해방 이후 친일 잔재 청산 안 돼”</a></p><p style="line-height: 1.5;"><br></p><p style="line-height: 1.5;"><br></p>
 
 === 22
-(주)코리아데이터월드는 광복 80주년을 맞아 KB금융그룹, 국가보훈부, 광복회가 공동 주관한 ‘독립유공자 후손 명품가게’에 최종 선정되었습니다.
-
-대표이사가 독립운동가의 후손으로서 역사의 책임을 품고 걸어온 길이 사회적 가치 실현이라는 성과로 인정받은 결과입니다.
-
-이에 따라 본사는 2025년 9월 중 인테리어 공사를 진행하며, 새로운 공간으로 새 출발을 준비합니다.
-
-이번 공사는 단순한 리모델링이 아닌, ‘정직한 데이터, 신뢰받는 여론’이라는 철학을 공간에 담아내는 상징적 작업입니다.
-
-(주)코리아데이터월드는 앞으로도 대한민국의 정신을 이어받아 공정하고 책임 있는 여론조사로 더 큰 신뢰를 만들어가겠습니다.
-
-감사합니다.
-
-2025년 8월 4일, (주)코리아데이터월드 대표이사 김근지
-
+ <div>(주)코리아데이터월드는</div><div>광복 80주년을 맞아 KB금융그룹, 국가보훈부, 광복회가 공동 주관한</div><div>‘독립유공자 후손 명품가게’에 최종 선정되었습니다.</div><div><br></div><div>대표이사가 독립운동가의 후손으로서</div><div>역사의 책임을 품고 걸어온 길이</div><div>사회적 가치 실현이라는 성과로 인정받은 결과입니다.</div><div><br></div><div>이에 따라 본사는 2025년 9월 중 인테리어 공사를 진행하며,</div><div>새로운 공간으로 새 출발을 준비합니다.</div><div><br></div><div>이번 공사는 단순한 리모델링이 아닌,</div><div>‘정직한 데이터, 신뢰받는 여론’이라는 철학을</div><div>공간에 담아내는 상징적 작업입니다.</div><div><br></div><div>(주)코리아데이터월드는 앞으로도</div><div>대한민국의 정신을 이어받아</div><div>공정하고 책임 있는 여론조사로</div><div>더 큰 신뢰를 만들어가겠습니다.</div><div><br></div><div>감사합니다.</div><div><br></div><div>2025년 8월 4일,</div><div>(주)코리아데이터월드</div><div>대표이사 김근지</div><div><br></div>
 
 === 21
-안녕하세요?
-
-㈜코리아데이터월드 대표이사 김근지입니다.
-
-올해는 대한민국 광복 80주년을 맞는 뜻깊은 해입니다.
-
-저는 독립운동가 고(故) 김영석 선생의 후손으로서, 광복회와 함께 2025년 6월 3일(화)~6월 5일(목) 중국 상하이를 방문할 예정입니다. 상하이는 대한민국 임시정부의 수립지이자 수많은 독립운동가들이 나라를 위해 활동한 곳입니다. 이번 여정은 대한민국의 뿌리와 정신을 되새기기 위한 의미 있는 여정이 될 것입니다.
-
-여론조사 기관을 운영하며, 저는 늘 ‘국민의 목소리를 듣고 기록하는 일’이 얼마나 중요한지 알고 있습니다. 독립운동가들이 지켜내고자 했던 가치 또한 국민의 뜻이었고, 시대의 여론이었다고 생각합니다. 그 뜻을 기리고자 하는 이번 방문은 저와 저희 회사에 또 다른 책임감을 안겨주는 계기가 될 것입니다.
-
-㈜코리아데이터월드는 앞으로도 국민의 목소리를 정확히 담아내는 기관으로 공정한 여론 형성과 사회적 가치 실현을 위해 노력하겠습니다.
-
-감사합니다.
-
-2025년 6월 2일 (주)코리아데이터월드 대표이사 김근지
-
+ <div>안녕하세요?</div><div><br></div><div>㈜코리아데이터월드 대표이사 김근지입니다.</div><div><br></div><div>올해는 대한민국 광복 80주년을 맞는 뜻깊은 해입니다.</div><div><br></div><div>저는 독립운동가 고(故) 김영석 선생의 후손으로서,</div><div>광복회와 함께 2025년 6월 3일(화)~6월 5일(목) 중국 상하이를 방문할 예정입니다.&nbsp;</div><div>상하이는 대한민국 임시정부의 수립지이자 수많은 독립운동가들이 나라를 위해 활동한 곳입니다.</div><div>이번 여정은 대한민국의 뿌리와 정신을 되새기기 위한 의미 있는 여정이 될 것입니다.</div><div><br></div><div>여론조사 기관을 운영하며, 저는 늘 ‘국민의 목소리를 듣고 기록하는 일’이 얼마나 중요한지 알고 있습니다.</div><div>독립운동가들이 지켜내고자 했던 가치 또한 국민의 뜻이었고, 시대의 여론이었다고 생각합니다.</div><div>그 뜻을 기리고자 하는 이번 방문은 저와 저희 회사에 또 다른 책임감을 안겨주는 계기가 될 것입니다.</div><div><br></div><div>㈜코리아데이터월드는 앞으로도 국민의 목소리를 정확히 담아내는 기관으로</div><div>공정한 여론 형성과 사회적 가치 실현을 위해 노력하겠습니다.</div><div><br></div><div>감사합니다.</div><div><br></div><div>2025년 6월 2일</div><div>(주)코리아데이터월드 대표이사&nbsp;</div><div>김근지</div>
 
 === 20
-안녕하세요. ㈜코리아데이터월드 대표이사 김근지입니다.
-
-제21대 대통령선거를 앞두고, ㈜코리아데이터월드는 대구일보와 협력하여 여론조사 기획 및 결과 분석, 그리고 대선 후보 토론회에 대한 전문 자문을 제공하게 되었습니다. 유권자들에게 더 정확하고 공정한 정보 제공을 목표로 하며, 선거 과정에서 국민의 목소리가 제대로 반영될 수 있도록 기여하고자 합니다.
-
-㈜코리아데이터월드는 그동안 축적된 조사 역량과 데이터 분석 노하우를 바탕으로, 선거 여론의 흐름을 면밀히 파악하고 의미 있는 통찰을 전달해드릴 것입니다. 또한, 후보자 간의 토론 내용에 대한 공정한 평가와 해석을 통해 유권자 판단에 도움이 되는 정보를 제공하겠습니다.
-
-앞으로도 ㈜코리아데이터월드는 국민의 의견을 정확히 듣고 책임감 있게 전달하기 위해 최선을 다하겠습니다.
-
-감사합니다.
-
-㈜코리아데이터월드 대표이사 김근지
-
+ <div>안녕하세요.</div><div>㈜코리아데이터월드 대표이사 김근지입니다.</div><div><br></div><div>제21대 대통령선거를 앞두고,</div><div>㈜코리아데이터월드는 대구일보와 협력하여</div><div>여론조사 기획 및 결과 분석, 그리고 대선 후보 토론회에 대한 전문 자문을 제공하게 되었습니다.&nbsp;</div><div>유권자들에게 더 정확하고 공정한 정보 제공을 목표로 하며,</div><div>선거 과정에서 국민의 목소리가 제대로 반영될 수 있도록 기여하고자 합니다.</div><div><br></div><div>㈜코리아데이터월드는 그동안 축적된 조사 역량과 데이터 분석 노하우를 바탕으로,</div><div>선거 여론의 흐름을 면밀히 파악하고 의미 있는 통찰을 전달해드릴 것입니다.&nbsp;</div><div>또한, 후보자 간의 토론 내용에 대한 공정한 평가와 해석을 통해 유권자 판단에 도움이 되는 정보를 제공하겠습니다.</div><div><br></div><div>앞으로도 ㈜코리아데이터월드는</div><div>국민의 의견을 정확히 듣고 책임감 있게 전달하기 위해 최선을 다하겠습니다.</div><div><br></div><div>감사합니다.</div><div><br></div><div>㈜코리아데이터월드</div><div>대표이사 김근지</div><div><br></div>
 
 === 19
-2025년 4월 4일(금)은 대통령 탄핵 심판으로 인한 여의도 일대 혼잡 우려로 긴급 재택 근무로 전환합니다.
-
-진행중이던 전화조사 등은 잠시 중단되오며, 4월 7일(월)부터 재개됩니다.
-
-(주)코리아데이터월드는 언제나 직원 안전을 위해 최선을 다하겠습니다.
-
-감사합니다.
-
+ <div><br></div><div>2025년 4월 4일(금)은</div><div>대통령 탄핵 심판으로 인한</div><div>여의도 일대 혼잡 우려로</div><div>긴급 재택 근무로 전환합니다.</div><div><br></div><div>진행중이던 전화조사 등은</div><div>잠시 중단되오며,</div><div>4월 7일(월)부터 재개됩니다.</div><div><br></div><div>(주)코리아데이터월드는</div><div>언제나 직원 안전을 위해</div><div>최선을 다하겠습니다.</div><div><br></div><div>감사합니다.</div>
 
 === 18
-국가보훈부의 의뢰를 받아 (주)코리아데이터월드에서 [국립민주묘지 명칭 개선 인식조사]를 실시하고 있습니다.
-
-• 조사 대상: 개인정보제공에 동의한 민주화운동 관련 보훈단체 회원
-
-• 조사 기간: 2025년 04월 02일(수) ~
-
-• 발신 번호: 02-2038-4105
-
-조사 기간 동안 조사 대상에 해당되시는 분들께 위의 발신번호로 연락이 가게 됩니다. 국립민주묘지 명칭 개선 관련 의견 수렴을 위해 협조해주시면 감사하겠습니다.
-
-조사 관련 문의 (주)코리아데이터월드 박혜진 선임연구원 TEL: 070-8820-8566
-
+ <div><br></div><div>국가보훈부의 의뢰를 받아 (주)코리아데이터월드에서</div><div>[국립민주묘지 명칭 개선 인식조사]를 실시하고 있습니다.</div><div><br></div><div><br></div><div>• 조사 대상:&nbsp;</div><div>&nbsp; &nbsp; 개인정보제공에 동의한 민주화운동 관련 보훈단체 회원</div><div><br></div><div>• 조사 기간:</div><div>&nbsp; &nbsp; 2025년 04월 02일(수) ~</div><div><br></div><div>• 발신 번호:</div><div>&nbsp; &nbsp; 02-2038-4105&nbsp;</div><div><br></div><div>조사 기간 동안 조사 대상에 해당되시는 분들께 위의 발신번호로 연락이 가게 됩니다.</div><div>국립민주묘지 명칭 개선 관련 의견 수렴을 위해 협조해주시면 감사하겠습니다.</div><div><br></div><div><br></div><div>&nbsp;조사 관련 문의</div><div>&nbsp;(주)코리아데이터월드 박혜진 선임연구원</div><div>&nbsp;TEL: 070-8820-8566&nbsp;</div>
 
 === 17
-(주)코리아데이터월드 2025년도 구정 연휴 기간을 아래와 같이 안내드립니다.
-
-<구정 연휴 기간> 1/27(월) ~ 1/31(금)
-
-지난 한 해 보내주신 관심에 진심으로 감사드리며, 새해에는 더욱 건강하시고 좋은 일만 가득하시길 바랍니다.
-
-즐겁고 행복한 설 명절 보내세요.
-
-감사합니다.
-
-- (주)코리아데이터월드 임직원 일동 -
-
+ <div><br></div><div>(주)코리아데이터월드</div><div>2025년도 구정 연휴 기간을 아래와 같이 안내드립니다.</div><div><br></div><div><br></div><div>&lt;구정 연휴 기간&gt;</div><div>1/27(월) ~ 1/31(금)</div><div><br></div><div><br></div><div>지난 한 해 보내주신 관심에 진심으로 감사드리며,</div><div>새해에는 더욱 건강하시고 좋은 일만 가득하시길 바랍니다.</div><div><br></div><div>즐겁고 행복한 설 명절 보내세요.</div><div><br></div><div>감사합니다.</div><div><br></div><div><br></div><div>- (주)코리아데이터월드 임직원 일동 -</div>
 
 === 16
-(주)코리아데이터월드 종무식 및 시무식 안내
-
-2024년 종무식과 2025년 시무식을 아래와 같이 진행하고자 합니다.
-
-1. 종무식 : 2024년 12월 31일(화) 2. 시무식 : 2025년 01월 06일(월) 3. 시무식 행사 : 전 직원 남산 등반
-
-2025년 첫 근무일에는 산행 후 식사를 마치고 단체 사진 촬영을 진행할 예정입니다.
-
-2025년 을사년도 고객 만족을 위해 최선을 다하겠습니다.
-
-감사합니다.
-
-- ㈜코리아데이터월드 임직원 일동 -
-
+ <div>(주)코리아데이터월드 종무식 및 시무식 안내</div><div><br></div><div>2024년 종무식과 2025년 시무식을 아래와 같이 진행하고자 합니다.</div><div><br></div><div>1. 종무식 : 2024년 12월 31일(화)</div><div>2. 시무식 : 2025년 01월 06일(월)</div><div>3. 시무식 행사 : 전 직원 남산 등반</div><div><br></div><div>2025년 첫 근무일에는 산행 후 식사를 마치고 단체 사진 촬영을 진행할 예정입니다.</div><div><br></div><div>2025년 을사년도 고객 만족을 위해</div><div>최선을 다하겠습니다.</div><div><br></div><div>감사합니다.</div><div><br></div><div>- ㈜코리아데이터월드 임직원 일동 -</div>
 
 === 15
-2024년 한 해 열심히 달려온 만큼 연말을 맞아 크리스마스 기념 행사를 아래와 같이 진행했습니다.
-
-1. 일시: 2024년 12월 24일(화) 2. 장소: 사내 회의실
-
-식사 후 마니또 선물 증정, 레크리에이션 활동도 진행하여 즐거운 추억을 만들었습니다.
-
-남은 연말 따뜻하게 보내시고, 다가오는 새해에는 더욱 건강하고 행복한 일들만 가득하시길 기원합니다.
-
-- ㈜코리아데이터월드 임직원 일동 -
-
+ <div>2024년 한 해 열심히 달려온 만큼</div><div>연말을 맞아 크리스마스 기념 행사를 아래와 같이 진행했습니다.</div><div><br></div><div>1. 일시: 2024년 12월 24일(화)</div><div>2. 장소: 사내 회의실</div><div><br></div><div>식사 후 마니또 선물 증정, 레크리에이션 활동도 진행하여</div><div>즐거운 추억을 만들었습니다.</div><div><br></div><div>남은 연말 따뜻하게 보내시고,&nbsp;</div><div>다가오는 새해에는</div><div>더욱 건강하고 행복한 일들만 가득하시길 기원합니다.</div><div><br></div><div>- ㈜코리아데이터월드 임직원 일동 -</div>
 
 === 14
-We are recruiting foreigners to travel to Hwaseong-si, Gyeonggi-do.
-
-✅ Target for recruitment ▪ A person who has a foreign nationality of at least 19 years of age residing in the Republic of Korea ▪ A person who can speak Korean/English/Japanese
-
-✅ Activity Contents 1) Free travel using public transportation in Hwaseong-si, Gyeonggi-do during the travel period (self-use/rental car not available) 2) Travel route and time history activity sheet and offline submission required 3) Conducting a survey before and after the trip
-
-✅ Activity Schedule (all activity schedules required) * Offline OT: December 26 (Thursday) at 2 p.m. (near the Seoul National Assembly Station) * Travel period: December 27, 2024 to December 30, 2024 * Offline Submissions: Until December 31, 2024 (near the Seoul National Assembly Station)
-
-✅ Activity Benefits Payment of activity fee (1 person team - 150,000 won / 2 person team - 280,000 won / 3 person team - 420,000 won / 4 person team - 560,000 won) * Only teams who submit offline materials after traveling will be paid activity fees * Only one person per team can apply for the activity fee
-
-✅ How to apply Google Form Submission https://forms.gle/NqC9NbTkka8TJfHv7
-
-▪ Organization: Hwaseong City Research Institute ▪ Contact: Korea Data World https://open.kakao.com/me/koreadataworld or Tel. 070-8861-2273
-
-[링크] https://forms.gle/NqC9NbTkka8TJfHv7 | https://forms.gle/NqC9NbTkka8TJfHv7
+ <div><br></div><div>We are recruiting foreigners to travel to Hwaseong-si, Gyeonggi-do.</div><div><br></div><div>✅ Target for recruitment</div><div>　▪ A person who has a foreign nationality of at least 19 years of age residing in the Republic of Korea</div><div>　▪ A person who can speak Korean/English/Japanese</div><div><br></div><div>✅ Activity Contents</div><div>　1) Free travel using public transportation in Hwaseong-si, Gyeonggi-do during the travel period (self-use/rental car not available)</div><div>　2) Travel route and time history activity sheet and offline submission required</div><div>　3) Conducting a survey before and after the trip</div><div><br></div><div>✅ Activity Schedule (all activity schedules required)</div><div>　* Offline OT: December 26 (Thursday) at 2 p.m. (near the Seoul National Assembly Station)</div><div>　* Travel period: December 27, 2024 to December 30, 2024</div><div>　* Offline Submissions: Until December 31, 2024 (near the Seoul National Assembly Station)</div><div><br></div><div>✅ Activity Benefits</div><div>　Payment of activity fee (1 person team - 150,000 won / 2 person team - 280,000 won / 3 person team - 420,000 won / 4 person team - 560,000 won)</div><div>　* Only teams who submit offline materials after traveling will be paid activity fees</div><div>　* Only one person per team can apply for the activity fee</div><div><br></div><div>✅ How to apply</div><div>　Google Form Submission</div><div>　<a href="https://forms.gle/NqC9NbTkka8TJfHv7" target="_blank">https://forms.gle/NqC9NbTkka8TJfHv7</a></div><div><br></div><div>▪ Organization: Hwaseong City Research Institute</div><div>▪ Contact: Korea Data World</div><div>&nbsp; &nbsp; &nbsp;https://open.kakao.com/me/koreadataworld or Tel. 070-8861-2273</div><div><br></div>
 
 === 13
-2024년 12월 2일(월) 서부여성발전센터의 지원을 받아 경력단절예방 지원 사업의 일환으로 스트레스 리셋을 위한 기업특강 '감정 오일 만들기' 프로그램을 진행했습니다.
-
-'감정 오일 만들기'는 아로마테라피의 일환으로, 자신의 현재 감정 상태에 맞는 에센셜 오일을 선택하여 자신만의 오일 향수를 만들어보는 프로그램입니다.
-
-이번 특강은 직원들에게 스트레스를 관리하고 일상에 적용할 수 있는 힐링 기법을 제공하는 뜻깊은 시간이었습니다.
-
-앞으로도 (주)코리아데이터월드는 직원들의 행복하고 건강한 근무 환경을 위해 다양한 프로그램을 지속적으로 진행할 예정입니다.
-
+ <div><br></div><div>2024년 12월 2일(월)&nbsp;</div><div>서부여성발전센터의 지원을 받아</div><div>경력단절예방 지원 사업의 일환으로</div><div>스트레스 리셋을 위한 기업특강</div><div>'감정 오일 만들기' 프로그램을 진행했습니다.</div><div><br></div><div>'감정 오일 만들기'는 아로마테라피의 일환으로,</div><div>자신의 현재 감정 상태에 맞는 에센셜 오일을 선택하여</div><div>자신만의 오일 향수를 만들어보는 프로그램입니다.</div><div><br></div><div>이번 특강은 직원들에게 스트레스를 관리하고</div><div>일상에 적용할 수 있는 힐링 기법을 제공하는 뜻깊은 시간이었습니다.</div><div><br></div><div>앞으로도 (주)코리아데이터월드는 직원들의 행복하고 건강한 근무 환경을 위해</div><div>다양한 프로그램을 지속적으로 진행할 예정입니다.</div><div><br></div>
 
 === 12
-지난 8년간 ㈜코리아데이터월드와 함께해 주신
-
-국책 연구기관과 대학 연구진 및 공공기관 담당자분들께
-
-감사의 마음을 전합니다.
-
-㈜코리아데이터월드는 2016년 10월 31일 여성기업으로 창업하여
-
-국책 연구기관과 공공기관, 여러 대학과 함께
-
-주요 정책과제에 활용될
-
-데이터 구축을 위해 노력해 왔습니다.
-
-열심히 노력하며 달려온 결과
-
-㈜코리아데이터월드가 8주년을 맞았습니다.
-
-2024년 8주년 기념 행사를 아래와 같이 진행할 예정입니다.
-
-1. 일시 : 2024년 10월 28일(월)
-
-2. 장소 : 영등포 바이킹스 워프
-
-임직원 식사 후 우수 사원 시상식을 진행할 예정입니다.
-
-언제나 고객 만족도 제고를 위해 노력하는 ㈜코리아데이터월드가 되겠습니다.
-
-- ㈜코리아데이터월드 임직원 일동 -
-
+ <p class="0"><font face="돋움"><br></font></p><p class="0"><font face="돋움">지난 <span lang="EN-US" style="mso-fareast-font-family:함초롬바탕;mso-font-width:100%;letter-spacing:0pt;mso-text-raise:0pt;">8</span>년간 <span style="letter-spacing: 0pt;">㈜</span>코리아데이터월드와 함께해 주신</font></p><p class="0"><font face="돋움">국책 연구기관과 대학 연구진 및 공공기관 담당자분들께</font></p><p class="0"><font face="돋움">감사의 마음을 전합니다<span lang="EN-US" style="mso-fareast-font-family:함초롬바탕;mso-font-width:100%;letter-spacing:0pt;mso-text-raise:0pt;">.</span></font></p><p class="0"> <font face="돋움">&nbsp; <o:p></o:p></font></p><p class="0"><font face="돋움"><span style="letter-spacing: 0pt;">㈜</span>코리아데이터월드는 <span lang="EN-US" style="mso-fareast-font-family:함초롬바탕;mso-font-width:100%;letter-spacing:0pt;mso-text-raise:0pt;">2016</span>년 <span lang="EN-US" style="mso-fareast-font-family:함초롬바탕;mso-font-width:100%;letter-spacing:0pt;mso-text-raise:0pt;">10</span>월 <span lang="EN-US" style="mso-fareast-font-family:함초롬바탕;mso-font-width:100%;letter-spacing:0pt;mso-text-raise:0pt;">31</span>일 여성기업으로 창업하여</font></p><p class="0"><font face="돋움">국책 연구기관과 공공기관, 여러 대학과 함께</font></p><p class="0"><font face="돋움">주요 정책과제에 활용될</font></p><p class="0"><font face="돋움">데이터 구축을 위해 노력해 왔습니다.</font></p><p class="0"><br></p><p class="0"><font face="돋움">열심히 노력하며 달려온 결과</font></p><p class="0"><font face="돋움"><span style="letter-spacing: 0pt;">㈜</span>코리아데이터월드가 <span lang="EN-US" style="mso-fareast-font-family:함초롬바탕;mso-font-width:100%;letter-spacing:0pt;mso-text-raise:0pt;">8</span>주년을 맞았습니다<span lang="EN-US" style="mso-fareast-font-family:함초롬바탕;mso-font-width:100%;letter-spacing:0pt;mso-text-raise:0pt;">.</span></font></p><p class="0"> <font face="돋움">&nbsp; <o:p></o:p></font></p><p class="0"><font face="돋움"><span lang="EN-US" style="mso-fareast-font-family:함초롬바탕;mso-font-width:100%;letter-spacing:0pt;mso-text-raise:0pt;">2024</span>년 <span lang="EN-US" style="mso-fareast-font-family:함초롬바탕;mso-font-width:100%;letter-spacing:0pt;mso-text-raise:0pt;">8</span>주년 기념 행사를 아래와 같이 진행할 예정입니다<span lang="EN-US" style="mso-fareast-font-family:함초롬바탕;mso-font-width:100%;letter-spacing:0pt;mso-text-raise:0pt;">.</span></font></p><p class="0"> <font face="돋움">&nbsp; <o:p></o:p></font></p><p class="0"><font face="돋움">1. 일시 <span lang="EN-US" style="mso-fareast-font-family:함초롬바탕;mso-font-width:100%;letter-spacing:0pt;mso-text-raise:0pt;">: 2024</span>년 <span lang="EN-US" style="mso-fareast-font-family:함초롬바탕;mso-font-width:100%;letter-spacing:0pt;mso-text-raise:0pt;">10</span>월 <span lang="EN-US" style="mso-fareast-font-family:함초롬바탕;mso-font-width:100%;letter-spacing:0pt;mso-text-raise:0pt;">28</span>일<span lang="EN-US" style="mso-fareast-font-family:함초롬바탕;mso-font-width:100%;letter-spacing:0pt;mso-text-raise:0pt;">(</span>월<span lang="EN-US" style="mso-fareast-font-family:함초롬바탕;mso-font-width:100%;letter-spacing:0pt;mso-text-raise:0pt;">)</span></font></p><p class="0"><font face="돋움"><span lang="EN-US" style="mso-fareast-font-family:함초롬바탕;mso-font-width:100%;letter-spacing:0pt;mso-text-raise:0pt;">2. </span>장소 <span lang="EN-US" style="mso-fareast-font-family:함초롬바탕;mso-font-width:100%;letter-spacing:0pt;mso-text-raise:0pt;">: </span>영등포 바이킹스 워프</font></p><p class="0"> <font face="돋움">&nbsp; <o:p></o:p></font></p><p class="0"><font face="돋움">임직원 식사 후 우수 사원 시상식을 진행할 예정입니다<span lang="EN-US" style="mso-fareast-font-family:함초롬바탕;mso-font-width:100%;letter-spacing:0pt;mso-text-raise:0pt;">.</span></font></p><p class="0"> <font face="돋움">&nbsp; <o:p></o:p></font></p><p class="0"><font face="돋움">언제나 고객 만족도 제고를 위해 노력하는 <span style="letter-spacing: 0pt;">㈜</span>코리아데이터월드가 되겠습니다<span lang="EN-US" style="mso-fareast-font-family:함초롬바탕;mso-font-width:100%;letter-spacing:0pt;mso-text-raise:0pt;">.</span></font></p><p class="0"> <font face="돋움">&nbsp; <o:p></o:p></font></p><p class="0"><font face="돋움"><span lang="EN-US"> </span><span lang="EN-US" style="mso-fareast-font-family:함초롬바탕;mso-font-width:100%;letter-spacing:0pt;mso-text-raise:0pt;">- </span><span style="letter-spacing: 0pt;">㈜</span>코리아데이터월드 임직원 일동 <span lang="EN-US" style="mso-fareast-font-family:함초롬바탕;mso-font-width:100%;letter-spacing:0pt;mso-text-raise:0pt;">-</span></font></p><p class="0"><span lang="EN-US" style="mso-fareast-font-family:함초롬바탕;mso-font-width:100%;letter-spacing:0pt;mso-text-raise:0pt;"><br></span></p><div id="hwpEditorBoardContent" class="hwp_editor_board_content" data-hjsonver="1.0" data-jsonlen="12802"></div>
 
 === 11
-(주)코리아데이터월드의 2024년 추석 연휴 기간을 아래와 같이 안내드립니다.
-
-<추석 연휴 기간> 9/16(월) ~ 9/20(금)
-
-즐겁고 풍성한 한가위 보내시길 바랍니다.
-
-감사합니다.
-
-- (주)코리아데이터월드 임직원 일동 -
-
+ <div>(주)코리아데이터월드의</div><div>2024년 추석 연휴 기간을 아래와 같이 안내드립니다.</div><div><br></div><div>&lt;추석 연휴 기간&gt;</div><div>9/16(월) ~ 9/20(금)</div><div><br></div><div>즐겁고 풍성한 한가위 보내시길 바랍니다.</div><div><br></div><div>감사합니다.</div><div><br></div><div>- (주)코리아데이터월드 임직원 일동 -</div>
 
 === 10
-안녕하세요, (주)코리아데이터월드입니다.
-
-당사에서는 탄소중립 관련 연구를 진행하며 탄소중립의 실천 필요성을 절감하여 '탄소중립 실천하기 프로젝트'를 실시하고 있습니다.
-
-아래와 같은 탄소중립 실천 항목을 시행하고, 실천 결과가 가장 우수한 직원에게는 소정의 상품을 전달하는 프로젝트입니다.
-
-[탄소중립 실천 항목]
-
-- 출퇴근 시 대중교통, 따릉이 이용하기 - 엘리베이터 대신 계단 이용하기 - 커피 테이크아웃 시 텀블러 사용하기 - 점심시간 소등하기 - 점심 도시락 다회용기 사용하기 등
-
-지속적인 실천으로 탄소중립에 기여하는 (주)코리아데이터월드가 되겠습니다.
-
-감사합니다.
-
-- (주)코리아데이터월드 임직원 일동 -
-
+ <div>&nbsp;안녕하세요, (주)코리아데이터월드입니다.</div><div><br></div><div>&nbsp;당사에서는 탄소중립 관련 연구를 진행하며</div><div>&nbsp;탄소중립의 실천 필요성을 절감하여</div><div>'탄소중립 실천하기 프로젝트'를 실시하고 있습니다.</div><div><br></div><div>&nbsp;아래와 같은 탄소중립 실천 항목을 시행하고,</div><div>&nbsp;실천 결과가 가장 우수한 직원에게는</div><div>&nbsp;소정의 상품을 전달하는 프로젝트입니다.</div><div><br></div><div>[탄소중립 실천 항목]</div><div><br></div><div>- 출퇴근 시 대중교통, 따릉이 이용하기</div><div>- 엘리베이터 대신 계단 이용하기</div><div>- 커피 테이크아웃 시 텀블러 사용하기</div><div>- 점심시간 소등하기</div><div>- 점심 도시락 다회용기 사용하기 등</div><div><br></div><div>&nbsp;지속적인 실천으로 탄소중립에 기여하는</div><div>&nbsp;(주)코리아데이터월드가 되겠습니다.</div><div><br></div><div>&nbsp;감사합니다.</div><div><br></div><div>- (주)코리아데이터월드 임직원 일동 -</div>
 
 === 9
-안녕하세요?
-
-그동안 (주)코리아데이터월드와 함께해주신 고객 여러분들께 감사의 마음을 전합니다.
-
-2024년 2월부터 더 나은 서비스를 제공하고자 모든 고객을 대상으로 조사/연구 용역 완료 후 만족도 조사를 실시할 예정입니다.
-
-만족도 조사에 적극 참여 부탁드립니다.
-
-참여해주신 분들께는 감사의 마음을 담아 소정의 기프티콘을 보내드립니다.
-
-더 나은 고객 서비스를 제공하기 위해 항상 노력하는 (주)코리아데이터월드가 되겠습니다.
-
-감사합니다.
-
-- (주)코리아데이터월드 임직원 일동 -
-
+ <div><br></div><div>안녕하세요?</div><div><br></div><div>그동안 (주)코리아데이터월드와 함께해주신&nbsp;</div><div>고객 여러분들께 감사의 마음을 전합니다.</div><div><br></div><div>2024년 2월부터 더 나은 서비스를 제공하고자</div><div>모든 고객을 대상으로 조사/연구 용역 완료 후 만족도 조사를 실시할 예정입니다.</div><div><br></div><div>만족도 조사에 적극 참여 부탁드립니다.</div><div><br></div><div>참여해주신 분들께는 감사의 마음을 담아</div><div>소정의 기프티콘을 보내드립니다.</div><div><br></div><div>더 나은 고객 서비스를 제공하기 위해&nbsp;</div><div>항상 노력하는 (주)코리아데이터월드가 되겠습니다.</div><div><br></div><div>감사합니다.</div><div><br></div><div>- (주)코리아데이터월드 임직원 일동 -</div><div><br></div>
 
 === 8
-(주)코리아데이터월드 2024년도 구정 연휴 기간을 아래와 같이 안내드립니다.
-
-<구정 연휴 기간> 2/6(화) ~ 2/12(월)
-
-지난 한 해 보내주신 관심에 진심으로 감사드리며, 새해에는 더욱 건강하시고 좋은 일만 가득하시길 바랍니다.
-
-즐겁고 행복한 설 명절 보내세요.
-
-감사합니다.
-
-- (주)코리아데이터월드 임직원 일동 -
-
+ <div><br></div>(주)코리아데이터월드<div>2024년도 구정 연휴 기간을 아래와 같이 안내드립니다.</div><div><br></div><div><br></div><div>&lt;구정 연휴 기간&gt;</div><div>2/6(화) ~ 2/12(월)</div><div><br></div><div><br></div><div>지난 한 해 보내주신 관심에 진심으로 감사드리며,</div><div>새해에는 더욱 건강하시고 좋은 일만 가득하시길 바랍니다.</div><div><br></div><div>즐겁고 행복한 설 명절 보내세요.</div><div><br></div><div>감사합니다.</div><div><br></div><div><br></div><div>- (주)코리아데이터월드 임직원 일동 -</div>
 
 === 7
-2024년 갑진년 새해를 맞아 (주)코리아데이터월드는 1월 5일(금) 남산에서 시무식을 진행하였습니다.
-
-새해에도 더 노력하고 발전하는 기업이 될 수 있도록 최선을 다하겠습니다.
-
-감사합니다.
-
+ <div><br></div><div>2024년 갑진년 새해를 맞아</div><div>(주)코리아데이터월드는 1월 5일(금)</div><div>남산에서 시무식을 진행하였습니다.</div><div><br></div><div>새해에도 더 노력하고 발전하는 기업이 될 수 있도록</div><div>최선을 다하겠습니다.</div><div><br></div><div>감사합니다.</div><div><br></div>
 
 === 6
-국가보훈부의 의뢰를 받아 (주)코리아데이터월드에서 [2023년 국가보훈부 생활안정지원 만족도 조사]를 실시하고 있습니다.
-
-• 조사 대상: 2022년 10월 01일 ~ 2023년 09월 30일 기간 중 국가보훈부 생활안정지원 서비스 이용자
-
-• 조사 기간: 2023년 11월 06일(월) ~
-
-• 발신 번호: 02-2038-4105, 4107
-
-※개인정보처리 위탁 관련 국가보훈부 공지: https://www.mpva.go.kr/mpva/selectBbsNttView.do?key=76&bbsNo=15&nttNo=252977
-
-조사 기간 동안 조사 대상에 해당되시는 분들께 위의 발신번호로 연락이 가게 됩니다. 국가보훈부의 더 나은 생활안정지원 서비스 제공을 위해 응답 협조 부탁드립니다.
-
-조사 관련 문의 (주)코리아데이터월드 박혜진 전임연구원 TEL: 070-8861-2273
-
-[링크] https://www.mpva.go.kr/mpva/selectBbsNttView.do?key=76&bbsNo | http://www.mpva.go.kr/mpva/selectBbsNttView.do?key=76&bbsNo=15&nttNo=252977
+ <div><br></div><div>국가보훈부의 의뢰를 받아 (주)코리아데이터월드에서</div><div>[2023년 국가보훈부 생활안정지원 만족도 조사]를 실시하고 있습니다.</div><div><br></div><div><br></div><div>• 조사 대상:&nbsp;</div><div>&nbsp; &nbsp; 2022년 10월 01일 ~ 2023년 09월 30일 기간 중 국가보훈부 생활안정지원 서비스 이용자</div><div><br></div><div>• 조사 기간:</div><div>&nbsp; &nbsp; 2023년 11월 06일(월) ~</div><div><br></div><div>• 발신 번호:</div><div>&nbsp; &nbsp; 02-2038-4105, 4107</div><div><br></div><div>&nbsp;※개인정보처리 위탁 관련 국가보훈부 공지:<a href="http://www.mpva.go.kr/mpva/selectBbsNttView.do?key=76&amp;bbsNo=15&amp;nttNo=252977" target="_blank"> https://www.mpva.go.kr/mpva/selectBbsNttView.do?key=76&amp;bbsNo=15&amp;nttNo=252977</a></div><div><br></div><div><br></div><div>조사 기간 동안 조사 대상에 해당되시는 분들께 위의 발신번호로 연락이 가게 됩니다.</div><div>국가보훈부의 더 나은 생활안정지원 서비스 제공을 위해 응답 협조 부탁드립니다.</div><div><br></div><div><br></div><div><br></div><div>&nbsp;조사 관련 문의</div><div>&nbsp;(주)코리아데이터월드 박혜진 전임연구원</div><div>&nbsp;TEL: 070-8861-2273&nbsp;</div>
 
 === 5
-2023년 10월 31일(화) 창립 7주년을 맞아 '전국천사무료급식소 서울본부'에서 전 직원이 함께 봉사활동에 참여했습니다.
-
-또한 봉사활동 후 창립 7주년 기념 선물로 전 직원에게 50만 원 상당의 시슬리 화장품과 헤어 제품을 전달하였습니다.
-
-앞으로도 직원의 복리증진과 사회 공헌을 위해 노력하는 (주)코리아데이터월드가 되겠습니다.
-
-감사합니다.
-
+ <div>2023년 10월 31일(화) 창립 7주년을 맞아</div><div>'전국천사무료급식소 서울본부'에서 전 직원이 함께 봉사활동에 참여했습니다.</div><div><br></div><div>또한 봉사활동 후 창립 7주년 기념 선물로&nbsp;</div><div>전 직원에게 50만 원 상당의 시슬리 화장품과 헤어 제품을 전달하였습니다.</div><div><br></div><div>앞으로도 직원의 복리증진과 사회 공헌을 위해 노력하는&nbsp;</div><div>(주)코리아데이터월드가 되겠습니다.</div><div><br></div><div>감사합니다.</div>
 
 === 4
-안녕하세요? (주)코리아데이터월드가 2023년 서울우먼업 케리어 페어에 참여하게 되었습니다.
-
-우수 인재 채용을 위한 다양한 행사들이 준비되어 있으니 취업을 희망하는 분들의 많은 관심 부탁드립니다.
-
-https://url.kr/zrkyol
-
-행사 주체 및 주관 : 서울특별시 참여 기업체 수 : 64개 업체
-
-행사 장소 : 동대문디자인플라자 아트홀 1관 행사 일정 : 2023년 7월 3일 (월) 11시 ~ 17시
-
-[링크] https://url.kr/zrkyol | https://url.kr/zrkyol
+ <div><font size="2">안녕하세요?</font></div><div><font size="2">(주)코리아데이터월드가 2023년 서울우먼업 케리어 페어에 참여하게 되었습니다.</font></div><div><font size="2"><br></font></div><div><font size="2">우수 인재 채용을 위한 다양한 행사들이 준비되어 있으니</font></div><div><font size="2">취업을 희망하는 분들의 많은 관심 부탁드립니다.</font></div><div><font size="2"><br></font></div><div><a href="https://url.kr/zrkyol" style="border: 0px; font-family: &quot;Noto Sans KR&quot;, dotum, 돋움, Helvetica, AppleSDGothicNeo, Arial, sans-serif; color: inherit; line-height: 1.4em; box-sizing: border-box; letter-spacing: -0.4px; display: inline-block; word-break: break-all;"><font size="2">https://url.kr/zrkyol</font></a></div><div><font size="2"><br></font></div><div><font size="2">행사 주체 및 주관 : 서울특별시</font></div><div><span style="font-size: small;">참여 기업체 수 : 64개 업체</span></div><div><font size="2"><br></font></div><div><font size="2">행사 장소 : 동대문디자인플라자 아트홀 1관</font></div><div><font size="2">행사 일정 : 2023년 7월 3일 (월) 11시 ~ 17시&nbsp;</font></div>
