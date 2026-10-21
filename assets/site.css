@@ -502,6 +502,91 @@ html:not(.js) .chips{display:none}
 }
 .notice-list time{font-family:var(--f-mono); font-size:11.5px; color:var(--text-3); font-variant-numeric:tabular-nums}
 
+/* ---------- 공지 한 건 보기 ---------- */
+.post{max-width:760px}
+.post-head{border-bottom:1px solid var(--line); padding-bottom:20px; margin-bottom:28px}
+.post-head .notice-tag{margin:0 0 11px; display:inline-block}
+.post-head h2{font-size:22px; line-height:1.45; margin:0 0 10px; letter-spacing:-.01em}
+.post-head time{font-family:var(--f-mono); font-size:11.5px; color:var(--text-3); font-variant-numeric:tabular-nums}
+.post-body p{font-size:15px; line-height:1.85; color:var(--text-2); margin:0 0 17px}
+.post-fig{margin:0 0 24px}
+.post-fig img{
+  display:block; width:100%; height:auto; border-radius:12px;
+  border:1px solid var(--line-soft); background:var(--surface);
+}
+.post-link{margin:22px 0 0; font-size:13.5px}
+.post-link a{color:var(--blue); text-decoration:none; border-bottom:1px solid var(--blue-soft)}
+.post-link a:hover{border-bottom-color:var(--blue)}
+.post-nav{
+  display:grid; grid-template-columns:1fr auto 1fr; gap:14px; align-items:center;
+  margin-top:40px; padding-top:22px; border-top:1px solid var(--line);
+}
+.post-nav a{text-decoration:none; font-size:13.5px; color:var(--text-2); line-height:1.5}
+.post-nav a:hover{color:var(--blue)}
+.post-prev,.post-next{display:grid; gap:4px; min-width:0}
+.post-prev{justify-items:start; text-align:left}
+.post-next{grid-column:3; justify-items:end; text-align:right}
+.post-prev span,.post-next span{
+  font-family:var(--f-mono); font-size:10px; font-weight:600; letter-spacing:.08em; color:var(--text-3);
+}
+.post-list{
+  grid-column:2; padding:9px 18px; border:1px solid var(--line); border-radius:999px;
+  font-size:13px; white-space:nowrap; background:var(--surface);
+}
+.post-list:hover{border-color:var(--blue); background:var(--blue-soft)}
+@media (max-width:640px){
+  .post-head h2{font-size:19px}
+  .post-nav{grid-template-columns:1fr; justify-items:stretch}
+  .post-next{grid-column:1; justify-items:start; text-align:left}
+  .post-list{grid-column:1; justify-self:start}
+}
+
+/* ---------- 게시판 (후이즈 공지 목록) ----------
+   시연 사이트에는 쓰이지 않지만, 후이즈 게시판 화면이 같은 모양이
+   되도록 여기에 함께 둔다. common.css 는 하나뿐이라 따로 둘 곳이 없다. */
+.board-foot{
+  display:flex; flex-wrap:wrap; gap:18px; align-items:center; justify-content:space-between;
+  margin-top:34px; padding-top:22px; border-top:1px solid var(--line);
+}
+.board-pager{display:flex; gap:4px; align-items:center; font-family:var(--f-mono); font-size:12.5px}
+.board-pager a,.board-pager strong{
+  display:inline-grid; place-items:center; min-width:30px; height:30px; padding:0 8px;
+  border-radius:8px; text-decoration:none; color:var(--text-2); font-weight:500;
+}
+.board-pager a:hover{background:var(--blue-soft); color:var(--blue)}
+.board-pager strong{background:var(--blue); color:var(--on-blue)}
+.board-search{display:flex; gap:7px}
+.board-search input[type=text]{
+  width:190px; height:36px; padding:0 12px; font-size:13.5px; font-family:inherit;
+  border:1px solid var(--line); border-radius:9px; background:var(--surface); color:var(--text);
+}
+.board-search input[type=text]:focus{outline:none; border-color:var(--blue)}
+.board-search button{
+  height:36px; padding:0 15px; font-size:13px; font-family:inherit; cursor:pointer;
+  border:1px solid var(--line); border-radius:9px; background:var(--surface); color:var(--text-2);
+}
+.board-search button:hover{border-color:var(--blue); color:var(--blue); background:var(--blue-soft)}
+.board-admin{margin-top:18px; display:flex; gap:8px; justify-content:flex-end}
+.post-files{
+  margin:26px 0 0; padding:15px 18px; list-style:none; font-size:13.5px;
+  background:var(--surface); border:1px solid var(--line-soft); border-radius:11px;
+}
+.post-files a{color:var(--blue); text-decoration:none}
+.post-files a:hover{text-decoration:underline}
+/* 고객이 에디터로 올린 본문은 폭이 고정된 표·이미지를 품고 있을 수 있다 */
+.post-body img{max-width:100%; height:auto}
+.post-body table{max-width:100%}
+/* 에디터가 문단마다 글자 크기·글꼴을 박아 넣어 본문이 들쭉날쭉해진다.
+   글은 그대로 두고 보기만 고르게 맞춘다. 굵게·기울임·색은 살린다. */
+.post-body [style*="font-size"]{font-size:inherit !important}
+.post-body [style*="font-family"]{font-family:inherit !important}
+.post-body div,.post-body span{line-height:inherit}
+.post-body div:empty{min-height:.7em}
+@media (max-width:560px){
+  .board-foot{flex-direction:column; align-items:stretch}
+  .board-search input[type=text]{width:100%}
+}
+
 /* ---------- 오시는 길 ---------- */
 .offices{display:grid; grid-template-columns:1fr 1fr; gap:20px}
 .office{background:var(--surface); border:1px solid var(--line-soft); border-radius:14px; padding:24px 24px 26px}

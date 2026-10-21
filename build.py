@@ -78,11 +78,46 @@ def _cells(line, count):
 def load_notices():
     rows = []
     for line in _lines("notices.md"):
-        date, tag, title = _cells(line, 3)
+        date, tag, title, seq = _cells(line, 4)
         if not date or not title:
             continue
-        rows.append((tag or None, esc(title), date))
+        rows.append((tag or None, esc(title), date, seq.strip()))
     return rows
+
+
+def load_notice_posts():
+    """content/notice-posts.md 의 본문. '=== 글번호' 로 글이 나뉜다.
+
+       후이즈에서는 이 본문을 쓰지 않는다. 거기서는 고객이 관리자에서
+       쓴 게시판 글이 그대로 나온다. 이 파일은 시연 사이트에서 같은
+       화면을 보여 주기 위한 사본이다."""
+    path = os.path.join(CONTENT, "notice-posts.md")
+    if not os.path.isfile(path):
+        return {}
+    def norm(s):
+        # 게시판에서 가져온 글에는 줄바꿈 없는 공백(\xa0)이 섞여 있다.
+        # 본문과 링크 글자를 같은 기준으로 맞춰야 서로 짝이 맞는다.
+        return re.sub(r"\s+", " ", s.replace(" ", " ")).strip()
+
+    posts, seq, cur = {}, None, None
+    for raw in io.open(path, encoding="utf-8"):
+        line = norm(raw.rstrip("\n"))
+        if line.startswith("==="):
+            seq = line[3:].strip()
+            cur = {"body": [], "imgs": [], "links": []}
+            posts[seq] = cur
+            continue
+        if cur is None or line.startswith("#"):
+            continue
+        if line.startswith("[사진]"):
+            cur["imgs"].append(line[4:].strip())
+        elif line.startswith("[링크]"):
+            label, _, url = line[4:].partition("|")
+            if url.strip():
+                cur["links"].append((norm(label), url.strip()))
+        elif line:
+            cur["body"].append(line)
+    return posts
 
 
 def load_clients():
@@ -572,15 +607,23 @@ DECK = """
 """
 
 NOTICES = load_notices()
+NOTICE_POSTS = load_notice_posts()
 
 
 def notice_rows(limit=None):
+    """limit 이 있으면 첫 화면용 짧은 목록(공지 페이지로 보냄),
+       없으면 공지 페이지의 전체 목록(글마다 본문으로 보냄)."""
     rows = NOTICES[:limit] if limit else NOTICES
     out = []
-    for tag, title, date in rows:
+    for tag, title, date, seq in rows:
         badge = '<span class="notice-tag">%s</span>' % (tag or "소식")
-        title_html = ('<a href="{href}">%s%s</a>' % (badge, title) if limit
-                      else '<span class="notice-title">%s%s</span>' % (badge, title))
+        if limit:
+            title_html = '<a href="{href}">%s%s</a>' % (badge, title)
+        elif seq and seq in NOTICE_POSTS:
+            title_html = ('<a href="{root}support/notice/%s.html">%s%s</a>'
+                          % (seq, badge, title))
+        else:
+            title_html = '<span class="notice-title">%s%s</span>' % (badge, title)
         out.append('<li>%s<time datetime="%s">%s</time></li>'
                    % (title_html, date, date.replace("-", ".")))
     return "\n".join(out)
@@ -642,9 +685,11 @@ VIS_DECK = """
 PAGES = []
 
 
-def page(key, path, group, nav_title, title, desc, content, sub="", hero=None):
+def page(key, path, group, nav_title, title, desc, content, sub="", hero=None,
+         lnb_key=None, h1=None):
     PAGES.append(dict(key=key, path=path, group=group, nav_title=nav_title,
-                      title=title, desc=desc, content=content, sub=sub, hero=hero))
+                      title=title, desc=desc, content=content, sub=sub, hero=hero,
+                      lnb_key=lnb_key or key, h1=h1 or title))
 
 
 # ── 메인 ──────────────────────────────────────────────────────
@@ -1343,6 +1388,71 @@ page("notice", "support/notice.html", "support", "공지사항",
 """,
      sub="회사의 소식과 안내 사항을 전해드립니다.")
 
+
+def register_notice_posts():
+    """공지 한 건마다 본문 페이지를 만든다 (support/notice/<글번호>.html).
+
+       후이즈에서는 이 페이지들이 필요 없다. 거기서는 게시판의 읽기화면이
+       같은 일을 한다. 시연 사이트에서 최종 화면을 그대로 보여 주려고 만든다."""
+    listed = [(tag, title, date, seq) for tag, title, date, seq in NOTICES
+              if seq and seq in NOTICE_POSTS]
+    for i, (tag, title, date, seq) in enumerate(listed):
+        post = NOTICE_POSTS[seq]
+        parts = ['<article class="post">',
+                 '<header class="post-head">',
+                 '<span class="notice-tag">%s</span>' % (tag or "소식"),
+                 '<h2>%s</h2>' % title,
+                 '<time datetime="%s">%s</time>' % (date, date.replace("-", ".")),
+                 '</header>',
+                 '<div class="post-body">']
+        for img in post["imgs"]:
+            parts.append('<figure class="post-fig">'
+                         '<img src="{root}assets/notice/%s" alt="" loading="lazy">'
+                         '</figure>' % attr(img))
+        # 관련 기사 링크는 대개 본문 문장 안에 이미 들어 있다.
+        # 그 자리를 링크로 바꾸고, 본문에 없는 것만 아래에 따로 붙인다.
+        used = set()
+        for b in post["body"]:
+            line = esc(b)
+            for label, url in post["links"]:
+                if not label:
+                    continue
+                marker = esc(label)
+                if marker and marker in line:
+                    line = line.replace(
+                        marker,
+                        '<a href="%s" target="_blank" rel="noopener">%s</a>'
+                        % (attr(url), marker), 1)
+                    used.add(url)
+            parts.append("<p>%s</p>" % line)
+        for label, url in post["links"]:
+            if url in used:
+                continue
+            parts.append('<p class="post-link">'
+                         '<a href="%s" target="_blank" rel="noopener">%s</a></p>'
+                         % (attr(url), esc(label or "관련 기사")))
+        parts.append("</div>")
+
+        nav = ['<nav class="post-nav">']
+        if i + 1 < len(listed):
+            nav.append('<a class="post-prev" href="{root}support/notice/%s.html">'
+                       '<span>이전 글</span>%s</a>' % (listed[i + 1][3], listed[i + 1][1]))
+        nav.append('<a class="post-list" href="{root}support/notice.html">목록으로</a>')
+        if i > 0:
+            nav.append('<a class="post-next" href="{root}support/notice/%s.html">'
+                       '<span>다음 글</span>%s</a>' % (listed[i - 1][3], listed[i - 1][1]))
+        nav.append("</nav>")
+        parts.append("\n".join(nav))
+        parts.append("</article>")
+
+        plain = re.sub(r"<[^>]+>", "", title)
+        page("notice-%s" % seq, "support/notice/%s.html" % seq, "support",
+             "공지사항", plain, (post["body"][0][:110] if post["body"] else plain),
+             "\n".join(parts), lnb_key="notice", h1="공지사항")
+
+
+register_notice_posts()
+
 page("contact", "support/contact.html", "support", "견적 문의",
      "견적 문의", "조사 의뢰 및 견적 문의 안내",
      CTA_CONTACT + """
@@ -1484,7 +1594,7 @@ def page_head_block(p, href):
     %s
   </div>
 </section>
-""" % (crumb, p["title"], sub)
+""" % (crumb, p.get("h1") or p["title"], sub)
 
 
 def render_content(p, href, root):
@@ -1590,7 +1700,7 @@ def build_site():
         body = ""
         if p["group"]:
             body += page_head_block(p, href)
-            body += build_lnb(p["group"], p["key"], href)
+            body += build_lnb(p["group"], p.get("lnb_key") or p["key"], href)
             inner = render_content(p, href, root)
             if p["key"] in ASK_ON:
                 inner += ASK_CTA.replace("{root}", root).replace("{tel}", SITE["tel"])
@@ -1651,7 +1761,7 @@ def build_artifact():
         body = ""
         if p["group"]:
             body += page_head_block(p, href)
-            body += build_lnb(p["group"], p["key"], href)
+            body += build_lnb(p["group"], p.get("lnb_key") or p["key"], href)
             body += '<section class="sec"><div class="wrap">' + render_content(p, href, "") + "</div></section>"
         else:
             body = render_content(p, href, "")
@@ -1883,6 +1993,152 @@ WHOIS_NAV_JS = """
 """
 
 
+WHOIS_BOARD_JS = """
+
+/* ── 후이즈 게시판 전용 ─────────────────────────────────────────
+   게시판은 카테고리 기능을 쓰지 않아서 '[소식]' 같은 머리표가 제목
+   글자 안에 들어 있다. 글은 손대지 않고, 화면에 보여 줄 때만 떼어
+   배지로 만든다. 등록일의 시각도 같이 덜어 낸다. */
+;(function () {
+  var HEAD = /^\\s*[\\[(]\\s*([^\\])]{1,10}?)\\s*[\\])]\\s*/;
+
+  function badge(text) {
+    var el = document.createElement("span");
+    el.className = "notice-tag";
+    el.textContent = text;
+    return el;
+  }
+
+  var links = document.querySelectorAll(".notice-list a");
+  for (var i = 0; i < links.length; i++) {
+    var a = links[i], m = a.textContent.match(HEAD);
+    if (!m) continue;
+    a.textContent = a.textContent.replace(HEAD, "");
+    a.insertBefore(badge(m[1]), a.firstChild);
+  }
+
+  var h = document.querySelector(".post-head h2");
+  if (h) {
+    var hm = h.textContent.match(HEAD);
+    if (hm) {
+      h.textContent = h.textContent.replace(HEAD, "");
+      h.parentNode.insertBefore(badge(hm[1]), h);
+    }
+  }
+
+  /* 이전 글 · 다음 글 제목에서도 머리표를 덜어 낸다 (배지는 붙이지 않는다) */
+  var sib = document.querySelectorAll(".post-prev, .post-next");
+  for (var j = 0; j < sib.length; j++) {
+    var kids = sib[j].childNodes;
+    for (var n = 0; n < kids.length; n++) {
+      if (kids[n].nodeType === 3 && HEAD.test(kids[n].nodeValue)) {
+        kids[n].nodeValue = kids[n].nodeValue.replace(HEAD, "");
+        break;
+      }
+    }
+  }
+
+  var times = document.querySelectorAll(".notice-list time, .post-head time");
+  for (var k = 0; k < times.length; k++) {
+    var t = times[k];
+    var s = t.textContent.trim().replace(/\\s+\\d{1,2}:\\d{2}(:\\d{2})?$/, "");
+    t.textContent = s;
+    t.setAttribute("datetime", s.replace(/\\./g, "-").replace(/-+$/, ""));
+  }
+})();
+"""
+
+# 게시판 목록화면. 빌더의 표 대신 우리 목록 마크업을 쓴다.
+# {@LIST} 반복과 {.변수} 는 빌더 문법이라 그대로 두어야 한다.
+WHOIS_BOARD_LIST = """{PHEAD}
+<section class="sec">
+  <div class="wrap">
+
+    <ul class="notice-list full">
+      {@LIST}
+      <li>
+        <a href="{.url_view}">{.bbs_title}</a>
+        <time>{.bbs_reg_date}</time>
+      </li>
+      {:}
+      <li><span class="notice-title">등록된 글이 없습니다.</span></li>
+      {/}
+    </ul>
+
+    <div class="board-foot">
+      <div class="board-pager">{pagebar}</div>
+      <form class="board-search" name="dataForm" action="./" method="post">
+        <input type="hidden" name="act" value="{act}">
+        <input type="hidden" name="ch" value="{ch}">
+        <input type="hidden" name="bbs_code" value="{bbs_code}">
+        <input type="hidden" name="bbs_mode" value="{bbs_mode}">
+        <input type="hidden" name="page" value="1">
+        <input type="hidden" name="sc" value="bbs_title">
+        <label class="sr-only" for="bbs-ss">제목 검색</label>
+        <input id="bbs-ss" name="ss" value="{ss}" type="text" placeholder="제목으로 찾기">
+        <button type="submit">검색</button>
+      </form>
+    </div>
+
+    {?auth_write}
+    <p class="board-admin"><a class="btn btn-ghost" href="{url_write}">글쓰기</a></p>
+    {/}
+
+  </div>
+</section>
+{ASK}
+"""
+
+# 게시판 읽기화면. 시연 사이트의 공지 본문 페이지와 같은 모양으로 맞춘다.
+WHOIS_BOARD_VIEW = """{PHEAD}
+<section class="sec">
+  <div class="wrap">
+
+    <article class="post">
+      <header class="post-head">
+        <h2>{bbs_title}</h2>
+        <time>{bbs_reg_date}</time>
+      </header>
+
+      <div class="post-body">
+        {bbs_content}
+      </div>
+
+      {?dataFileList}
+      <ul class="post-files">
+        {@FILE}
+        <li><a href="{.url_download}" target="download">{.bbs_file_name}</a></li>
+        {/}
+      </ul>
+      {/}
+
+      <nav class="post-nav">
+        {?prev_data.bbs_seq}
+        <a class="post-prev" href="{prev_data.url_view}">
+          <span>이전 글</span>{prev_data.bbs_title}</a>
+        {/}
+        <a class="post-list" href="{url_list}">목록으로</a>
+        {?next_data.bbs_seq}
+        <a class="post-next" href="{next_data.url_view}">
+          <span>다음 글</span>{next_data.bbs_title}</a>
+        {/}
+      </nav>
+
+      {?auth_write}
+      <p class="board-admin">
+        <a class="btn btn-ghost" href="{url_modify}">수정</a>
+        <a class="btn btn-ghost" href="{url_delete}">삭제</a>
+        <a class="btn btn-primary" href="{url_write}">글쓰기</a>
+      </p>
+      {/}
+    </article>
+
+  </div>
+</section>
+{ASK}
+"""
+
+
 def build_whois():
     out = os.path.join(HERE, "dist-whois")
     if os.path.isdir(out):
@@ -1938,7 +2194,24 @@ def build_whois():
                 pcode_group[WHOIS_PCODE[k]] = gid
     js = whois_rewrite(js) + WHOIS_NAV_JS.replace(
         "{MAP}", ",".join('"%s":"%s"' % (pc, g) for pc, g in sorted(pcode_group.items())))
+    js += WHOIS_BOARD_JS
     sizes.append(("common.js", write("common.js", js)))
+
+    # 게시판 두 화면. 공지 페이지와 같은 머리글 · 문의 블록을 붙인다.
+    phead = """
+<section class="phead">
+  <div class="wrap">
+    <p class="ph-crumb">홈 <i>/</i> 공지사항</p>
+    <h1>공지사항</h1>
+    <p class="ph-sub">회사의 소식과 안내 사항을 전해드립니다.</p>
+  </div>
+</section>
+""".strip()
+    ask = whois_rewrite(ASK_CTA.replace("{root}", "/").replace("{tel}", SITE["tel"]))
+    for name, tpl in (("board-list.html", WHOIS_BOARD_LIST),
+                      ("board-view.html", WHOIS_BOARD_VIEW)):
+        sizes.append((name, write(name, tpl.replace("{PHEAD}", phead)
+                                  .replace("{ASK}", ask))))
 
     # 3) 메인 + 서브 본문
     for p in PAGES:
@@ -1994,8 +2267,16 @@ def build_whois():
         lines.append("| `%s` | 새 페이지 > 추가 > 코드 `%s` · 이름 `%s` · 레이아웃 `KDW_SUB` | %d |"
                      % (name, pcode, p["nav_title"], dict(sizes)[name]))
     lines += ["", "## 3. 그대로 두는 것", "",
-              "- **공지사항** — 빌더 게시판(`bbs_code=notice`)에 47건이 이미 있습니다. 새로 만들지 않고 메뉴에서 `%s` 로 연결합니다."
+              "- **공지사항 글 47건** — 빌더 게시판(`bbs_code=notice`)에 이미 있습니다. 글·제목·본문·사진은 **하나도 건드리지 않습니다**.",
+              "  메뉴에서 `%s` 로 연결하고, 아래 두 화면의 **디자인만** 바꿉니다."
               % WHOIS_NOTICE_URL.replace("&amp;", "&"),
+              "", "| 파일 | 붙여넣을 곳 |", "|---|---|",
+              "| `board-list.html` | 디자인 관리 > 게시판 > 공지사항 > **목록화면** |",
+              "| `board-view.html` | 디자인 관리 > 게시판 > 공지사항 > **읽기화면** |", "",
+              "  (주소: `setup.design_page_edit&ch=design&module_code=board.board_list&bbs_code=notice`,",
+              "  `…&module_code=board.board_view&bbs_code=notice`)", "",
+              "  게시판은 카테고리 기능을 쓰지 않아 `[소식]` 같은 머리표가 제목 글자 안에 있습니다.",
+              "  글을 고치지 않고 `common.js` 가 화면에서만 떼어 배지로 보여 줍니다. 등록일의 시각도 같이 덜어 냅니다.",
               "- 기존 페이지코드(`company_history`, `company_greeting`, `sub3_1` 등) — 검수 전까지 건드리지 않습니다.", "",
               "## 4. 시험 페이지로 실제 확인한 것", "",
               "비공개 페이지 `kdw_test` 를 만들어 직접 넣어 보고 읽어서 대조했습니다.", "",
