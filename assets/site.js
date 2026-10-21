@@ -208,7 +208,7 @@
   }
 
   function initCert(scope) {
-    Array.prototype.forEach.call(scope.querySelectorAll(".person-cert.is-link, .tl-item.is-link"), function (b) {
+    Array.prototype.forEach.call(scope.querySelectorAll(".person-cert.is-link, .tl-item.is-link, .news-card.is-link"), function (b) {
       if (b.dataset.bound === "1") return;
       b.dataset.bound = "1";
       b.addEventListener("click", function () { openCert(b); });

@@ -196,6 +196,45 @@ def timeline_html():
     return chr(10).join(out)
 
 
+def recent_news_html(limit=3):
+    """첫 화면의 '최근 소식'.
+       content/timeline.md 맨 위부터 가져오므로 한 줄만 추가하면 첫 화면이 바뀐다.
+       사내 항목(창립 · 시스템 도입)은 대외로 보여 줄 소식이 아니라 건너뛴다."""
+    picks = []
+    for year, items in load_timeline():
+        for when, kind, title, desc, img in items:
+            if kind == "사내":
+                continue
+            picks.append((year, when, kind, title, img))
+            if len(picks) >= limit:
+                break
+        if len(picks) >= limit:
+            break
+    if not picks:
+        return ""
+
+    out = ['<div class="news">',
+           '<div class="news-head">',
+           '<span class="news-label">최근 소식</span>',
+           '<a class="news-more" href="{root}company/history.html">전체 보기</a>',
+           '</div>',
+           '<div class="news-list">']
+    for year, when, kind, title, img in picks:
+        k = kind if kind in KIND_LABEL else "활동"
+        inner = ('<span class="news-kind k-%s">%s</span>'
+                 '<span class="news-title">%s</span>'
+                 '<span class="news-when">%s. %s</span>'
+                 % (k, esc(KIND_LABEL.get(k, k)), esc(title), esc(year), esc(when)))
+        if img:
+            out.append('<button type="button" class="news-card is-link" '
+                       'data-cert="{root}assets/credentials/%s" data-cert-label="%s">%s</button>'
+                       % (img, attr(title), inner))
+        else:
+            out.append('<div class="news-card">%s</div>' % inner)
+    out.append('</div></div>')
+    return chr(10).join(out)
+
+
 def load_advisors():
     """[분야] 아래에 '이름 | 직함 | 소속' 을 적는다."""
     groups, cur = [], None
@@ -606,6 +645,8 @@ MAIN = """
 
     <div class="hero-vis" aria-hidden="false">{HEROVIS}</div>
   </div>
+
+  <div class="wrap news-wrap">{RECENT}</div>
 
 </section>
 
@@ -1413,6 +1454,7 @@ def render_content(p, href, root):
     c = c.replace("{PLATFORM}", PLATFORM_GRID)
     c = c.replace("{CLIENTS}", clients_html())
     c = c.replace("{HEROVIS}", HERO_VIS)
+    c = c.replace("{RECENT}", recent_news_html())
     c = c.replace("{CTA}", CTA)
     c = c.replace("{OFFICES}", OFFICES)
     c = c.replace("{NOTICES5}", notice_rows(5))

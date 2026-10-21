@@ -937,6 +937,61 @@ body.certview-open{overflow:hidden}
 .deliver-item p{margin:9px 20px 22px; font-size:13.5px; line-height:1.72; color:var(--text-2)}
 @media (max-width:900px){ .deliver{grid-template-columns:1fr; gap:16px} }
 
+/* ---------- 첫 화면 최근 소식 ----------
+   content/timeline.md 맨 위 항목이 그대로 올라온다.
+   회사가 활동하면 첫 화면이 같이 움직이게 하려는 자리다. */
+.news-wrap{position:relative; margin-top:52px}
+.news-head{
+  display:flex; align-items:baseline; justify-content:space-between; gap:16px;
+  padding-bottom:13px; margin-bottom:16px; border-bottom:1px solid var(--line);
+}
+.news-label{
+  font-family:var(--f-mono); font-size:11.5px; font-weight:600; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--blue);
+}
+.news-more{
+  font-family:var(--f-display); font-size:13px; font-weight:500; color:var(--text-2);
+  text-decoration:none; white-space:nowrap; transition:color .16s;
+}
+.news-more::after{content:" →"; transition:transform .16s; display:inline-block}
+.news-more:hover{color:var(--blue)}
+.news-more:hover::after{transform:translateX(3px)}
+
+.news-list{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px}
+.news-card{
+  display:grid; gap:9px; align-content:start; text-align:left;
+  font:inherit; font-family:var(--f-body); color:inherit;
+  background:rgba(255,255,255,.72); border:1px solid var(--line-soft);
+  border-radius:13px; padding:17px 18px 16px;
+  backdrop-filter:saturate(1.3) blur(4px);
+  transition:transform .2s cubic-bezier(.22,.8,.3,1), box-shadow .2s, border-color .2s, background .2s;
+}
+.news-card.is-link{cursor:pointer}
+.news-card.is-link:hover{
+  transform:translateY(-3px); background:var(--surface);
+  border-color:var(--line); box-shadow:var(--shadow-md);
+}
+.news-kind{
+  justify-self:start; font-size:11px; font-weight:600; border-radius:6px;
+  padding:3px 9px; background:var(--surface-2); color:var(--text-2); white-space:nowrap;
+}
+.news-kind.k-인증{background:#E3F1EA; color:var(--ok)}
+.news-kind.k-협약{background:var(--blue-soft); color:var(--blue)}
+.news-kind.k-언론{background:#FCF1DF; color:var(--warn)}
+.news-kind.k-활동{background:#EAF2F7; color:var(--sky)}
+.news-title{
+  font-family:var(--f-display); font-size:14.5px; font-weight:600; line-height:1.5;
+  color:var(--text); word-break:keep-all;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+}
+.news-card.is-link .news-title::after{content:" ↗"; font-size:.82em; color:var(--text-3)}
+.news-card.is-link:hover .news-title{color:var(--blue)}
+.news-when{
+  font-family:var(--f-mono); font-size:11.5px; color:var(--text-3);
+  font-variant-numeric:tabular-nums;
+}
+@media (max-width:860px){ .news-list{grid-template-columns:1fr; gap:10px} .news-wrap{margin-top:40px} }
+
 /* ---------- footer ---------- */
 .ftr{border-top:1px solid var(--line-soft); background:var(--paper-2); padding:52px 0 44px; margin-top:0}
 .ftr-top{display:grid; grid-template-columns:1.1fr 1.4fr; gap:44px; padding-bottom:34px}
