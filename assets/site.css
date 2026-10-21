@@ -992,6 +992,29 @@ body.certview-open{overflow:hidden}
 }
 @media (max-width:860px){ .news-list{grid-template-columns:1fr; gap:10px} .news-wrap{margin-top:40px} }
 
+/* ---------- 문의 유도 블록 ----------
+   신뢰를 쌓는 페이지(인사말 · 연혁 · 조직도 · 연구진)를 읽고 난 자리에서
+   다음 행동으로 잇는다. 이 페이지들에는 전환 동선이 아예 없었다. */
+.ask{
+  margin-top:56px; display:grid; grid-template-columns:minmax(0,1fr) auto;
+  gap:24px 40px; align-items:center;
+  background:linear-gradient(135deg, var(--blue-soft), var(--surface-2));
+  border:1px solid var(--line-soft); border-radius:16px; padding:28px 30px;
+}
+.ask h3{font-size:19px; margin-bottom:8px}
+.ask p{font-size:14px; line-height:1.78; color:var(--text-2); max-width:58ch; word-break:keep-all}
+.ask-act{display:grid; gap:10px; justify-items:center}
+.ask-tel{
+  font-family:var(--f-mono); font-size:14px; font-weight:600; color:var(--blue);
+  text-decoration:none; letter-spacing:.02em;
+}
+.ask-tel:hover{text-decoration:underline; text-underline-offset:4px}
+@media (max-width:760px){
+  .ask{grid-template-columns:1fr; padding:24px 22px; gap:18px}
+  .ask-act{justify-items:stretch}
+  .ask-act .btn{justify-content:center}
+}
+
 /* ---------- footer ---------- */
 .ftr{border-top:1px solid var(--line-soft); background:var(--paper-2); padding:52px 0 44px; margin-top:0}
 .ftr-top{display:grid; grid-template-columns:1.1fr 1.4fr; gap:44px; padding-bottom:34px}

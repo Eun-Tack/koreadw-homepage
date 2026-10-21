@@ -1356,7 +1356,7 @@ def build_nav(root, active_group, active_key, href):
             continue
         first = href(gid + "/" + shown[0][0])
         cls = "nav-top is-active" if gid == active_group else "nav-top"
-        parts.append('<div class="nav-item">')
+        parts.append('<div class="nav-item" data-group="%s">' % gid)
         parts.append('<a class="%s" href="%s">%s</a>' % (cls, first, label))
         if len(shown) > 1:
             parts.append('<div class="nav-sub"><div class="nav-sub-in">')
@@ -1424,6 +1424,24 @@ def build_footer(href):
   </div>
 </footer>
 """ % "".join(links)
+
+
+ASK_CTA = """
+<div class="ask">
+  <div class="ask-copy">
+    <h3>지금 하시는 고민을 들려주세요</h3>
+    <p>조사 목적과 결과를 어디에 쓰실지만 알려주시면, 적합한 방법과 예상 일정을 정리해 드립니다.
+       문항이 정해지지 않아도 괜찮습니다.</p>
+  </div>
+  <div class="ask-act">
+    <a class="btn btn-primary" href="{root}support/contact.html">견적 · 조사 문의</a>
+    <a class="ask-tel" href="tel:{tel}">{tel}</a>
+  </div>
+</div>
+"""
+
+# 문의 동선이 없던 페이지들. 신뢰를 쌓은 바로 그 자리에서 다음 행동으로 잇는다.
+ASK_ON = {"greeting", "history", "organization", "people", "location", "notice"}
 
 
 def page_head_block(p, href):
@@ -1551,7 +1569,10 @@ def build_site():
         if p["group"]:
             body += page_head_block(p, href)
             body += build_lnb(p["group"], p["key"], href)
-            body += '<section class="sec"><div class="wrap">' + render_content(p, href, root) + "</div></section>"
+            inner = render_content(p, href, root)
+            if p["key"] in ASK_ON:
+                inner += ASK_CTA.replace("{root}", root).replace("{tel}", SITE["tel"])
+            body += '<section class="sec"><div class="wrap">' + inner + "</div></section>"
         else:
             body = render_content(p, href, root)
 
@@ -1695,6 +1716,280 @@ def make_bundle():
     print("     이 폴더의 내용을 웹호스팅 루트에 그대로 올리면 됩니다.")
 
 
+# ─────────────────────────────────────────────────────────────
+# 후이즈 홈페이지빌더 이식용 조각 (--whois)
+#
+# 후이즈는 파일 업로드형 호스팅이 아니라 템플릿 빌더다. 그래서
+# 완성된 HTML 파일을 그대로 올릴 수 없고, 관리자 화면의 각
+# textarea 에 붙여넣어야 한다. 이 함수는 붙여넣을 조각을 만든다.
+#
+#   레이아웃      디자인 관리 > 레이아웃            layout-home / layout-sub
+#   스타일시트    디자인 관리 > CSS/JS > 스타일시트   common.css
+#   자바스크립트  디자인 관리 > CSS/JS > 자바스크립트 common.js
+#   메인          디자인 관리 > 메인페이지           main.html
+#   서브 본문     디자인 관리 > 새 페이지 > 설정      page-<pcode>.html
+#   이미지        디자인 관리 > FTP(이미지관리)       images/ 목록
+# ─────────────────────────────────────────────────────────────
+
+# 웹FTP 의 이미지 경로. 기존 사이트가 /images/kor01-14-0033/ 를 쓰고 있어
+# 그 아래 kdw/ 를 새로 만들어 우리 이미지만 따로 둔다.
+WHOIS_IMG = "/images/kor01-14-0033/kdw/"
+
+# 고객이 지금 쓰는 페이지코드(company_history 등)는 건드리지 않는다.
+# kdw_ 접두사로 새로 만들어 두고, 검수가 끝난 뒤 메뉴만 갈아끼운다.
+WHOIS_PCODE = {
+    "greeting": "kdw_greeting",
+    "history": "kdw_history",
+    "organization": "kdw_org",
+    "people": "kdw_people",
+    "location": "kdw_location",
+    "fields": "kdw_fields",
+    "methods": "kdw_methods",
+    "special": "kdw_special",
+    "platform": "kdw_platform",
+    "process": "kdw_process",
+    "contact": "kdw_contact",
+}
+
+# 공지사항은 빌더 게시판에 이미 47건이 쌓여 있다. 다시 만들지 않고 그대로 쓴다.
+WHOIS_NOTICE_URL = "/?act=board&amp;bbs_code=notice"
+
+
+def whois_rewrite(html):
+    """정적 사이트용 절대경로를 빌더 URL 로 바꾼다."""
+    html = html.replace('href="/index.html"', 'href="/"')
+    # 공지사항 -> 빌더 게시판
+    for grp in ("support", "company", "business"):
+        html = html.replace('href="/%s/notice.html"' % grp,
+                            'href="%s"' % WHOIS_NOTICE_URL)
+    # 나머지 페이지 -> ?act=info.page&pcode=
+    for grp in ("company", "business", "support"):
+        for key, pcode in WHOIS_PCODE.items():
+            html = html.replace(
+                'href="/%s/%s.html"' % (grp, key),
+                'href="/?act=info.page&amp;pcode=%s"' % pcode)
+    # 이미지 -> 웹FTP 경로
+    html = html.replace('"/assets/', '"' + WHOIS_IMG)
+    html = html.replace("(/assets/", "(" + WHOIS_IMG)
+    html = html.replace("'/assets/", "'" + WHOIS_IMG)
+    return html
+
+
+def whois_body(p):
+    """build_site() 와 같은 본문을, 루트를 / 로 두고 만든다."""
+    root = "/"
+
+    def href(target, root=root):
+        if target == "home":
+            return root + "index.html"
+        return root + target + ".html"
+
+    if p["group"]:
+        body = page_head_block(p, href)
+        body += build_lnb(p["group"], p["key"], href)
+        inner = render_content(p, href, root)
+        if p["key"] in ASK_ON:
+            inner += ASK_CTA.replace("{root}", root).replace("{tel}", SITE["tel"])
+        body += '<section class="sec"><div class="wrap">' + inner + "</div></section>"
+    else:
+        body = render_content(p, href, root)
+    return body
+
+
+WHOIS_LAYOUT = """<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{_SITE.site_browser_title}</title>
+<link rel="shortcut icon" href="{_SITE.site_favicon}" />
+<!-- DEFAULT HEAD AREA : 빌더 기본 정보입니다. 해당 내용 삭제 시 문제가 발생할 수 있습니다. -->
+{_DESIGN.designp_doc_head}
+<!-- /DEFAULT HEAD AREA -->
+<meta name="theme-color" content="#24589C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;family=Noto+Sans+KR:wght@400;500;700&amp;display=swap">
+<!-- user common css -->
+<link href="/data/tpl/common.css" type="text/css" rel="stylesheet">
+<!-- /user common css -->
+</head>
+<body{BODYCLASS}>
+<!--[[AREA_TOP_START]]-->
+{HEADER}
+<!--[[AREA_TOP_END]]-->
+<!--[[AREA_BODY_START]]-->
+<main id="main">
+{{BODY}}
+</main>
+<!--[[AREA_BODY_END]]-->
+<!--[[AREA_BOTTOM_START]]-->
+{FOOTER}
+<!--[[AREA_BOTTOM_END]]-->
+<!-- user js -->
+<script type="text/javascript" src="/data/tpl/common.js"></script>
+<!-- /user js -->
+</body>
+</html>
+"""
+
+
+WHOIS_NAV_JS = """
+
+/* ── 후이즈 빌더 전용 ──────────────────────────────────────────
+   서브 페이지가 레이아웃 하나를 공유하므로, 상단 메뉴의 현재 위치
+   표시를 주소(pcode)를 보고 붙인다. 정적 사이트에서는 서버가 찍어
+   주기 때문에 이 파일에만 들어간다. */
+(function () {
+  var GROUP = {{MAP}};
+  var q = location.search || "";
+  var m = q.match(/pcode=([A-Za-z0-9_]+)/);
+  var group = null, pcode = null;
+  if (m) { pcode = m[1]; group = GROUP[pcode] || null; }
+  else if (/bbs_code=notice/.test(q)) { group = "support"; }
+  if (!group) return;
+  var top = document.querySelector('.nav .nav-item[data-group="' + group + '"] > .nav-top');
+  if (top) top.classList.add("is-active");
+  if (!pcode) return;
+  var links = document.querySelectorAll('.nav .nav-item[data-group="' + group + '"] .nav-sub a');
+  for (var i = 0; i < links.length; i++) {
+    if ((links[i].getAttribute("href") || "").indexOf("pcode=" + pcode) >= 0) {
+      links[i].classList.add("is-active");
+    }
+  }
+})();
+"""
+
+
+def build_whois():
+    out = os.path.join(HERE, "dist-whois")
+    if os.path.isdir(out):
+        shutil.rmtree(out)
+    os.makedirs(out)
+
+    def write(name, text):
+        io.open(os.path.join(out, name), "w", encoding="utf-8").write(text)
+        return len(text)
+
+    root = "/"
+
+    def href(target, root=root):
+        if target == "home":
+            return root + "index.html"
+        return root + target + ".html"
+
+    # 1) 레이아웃 (홈 / 서브) — 헤더·푸터는 공통이므로 body class 만 다르다
+    footer = build_footer(href).replace("{HOME}", "/index.html")
+    for k, v in SITE.items():
+        footer = footer.replace("{%s}" % k, v)
+
+    # 빌더는 서브 페이지 전체가 레이아웃 하나를 공유한다. 그래서 상단 메뉴의
+    # 활성 표시를 서버에서 찍을 수 없다 → 활성 표시 없이 내보내고,
+    # common.js 끝에 붙인 스크립트가 주소(pcode)를 보고 표시한다.
+    sizes = []
+    for tag, bodyclass in (("home", ' class="is-home"'), ("sub", "")):
+        nav = build_nav(root, "", "", href)
+        header = (HEADER_TPL
+                  .replace("{NAV}", nav)
+                  .replace("{HOME}", "/index.html")
+                  .replace("{CONTACT}", "/support/contact.html"))
+        layout = (WHOIS_LAYOUT
+                  .replace("{BODYCLASS}", bodyclass)
+                  .replace("{HEADER}", header)
+                  .replace("{FOOTER}", footer))
+        sizes.append(("layout-%s.html" % tag,
+                      write("layout-%s.html" % tag, whois_rewrite(layout))))
+
+    # 2) CSS / JS
+    css = io.open(os.path.join(HERE, "assets", "site.css"), encoding="utf-8").read()
+    js = io.open(os.path.join(HERE, "assets", "site.js"), encoding="utf-8").read()
+    # site.css 는 assets/ 안에 있어서 url(logo.png) 같은 상대경로를 쓴다.
+    # common.css 는 /data/tpl/ 에 놓이므로 상대경로가 깨진다 → 절대경로로 바꾼다.
+    css = re.sub(r"url\((['\"]?)(?!/|https?:|data:)([^)'\"]+)\1\)",
+                 lambda m: "url(%s%s)" % (WHOIS_IMG, m.group(2)), css)
+    sizes.append(("common.css", write("common.css", whois_rewrite(css))))
+
+    pcode_group = {}
+    for _, gid, items in MENU:
+        for k, _t in items:
+            if k in WHOIS_PCODE:
+                pcode_group[WHOIS_PCODE[k]] = gid
+    js = whois_rewrite(js) + WHOIS_NAV_JS.replace(
+        "{MAP}", ",".join('"%s":"%s"' % (pc, g) for pc, g in sorted(pcode_group.items())))
+    sizes.append(("common.js", write("common.js", js)))
+
+    # 3) 메인 + 서브 본문
+    for p in PAGES:
+        body = whois_rewrite(whois_body(p))
+        if p["key"] == "home":
+            sizes.append(("main.html", write("main.html", body)))
+        elif p["key"] == "notice":
+            continue  # 빌더 게시판을 그대로 쓴다
+        else:
+            pcode = WHOIS_PCODE.get(p["key"])
+            if not pcode:
+                continue
+            name = "page-%s.html" % pcode
+            sizes.append((name, write(name, body)))
+
+    # 4) 업로드할 이미지 목록
+    imgs = []
+    adir = os.path.join(HERE, "assets")
+    for r, _, fs in os.walk(adir):
+        for f in fs:
+            if f.lower().endswith((".png", ".jpg", ".jpeg", ".gif", ".svg", ".ico")):
+                rel = os.path.relpath(os.path.join(r, f), adir).replace("\\", "/")
+                imgs.append((rel, os.path.getsize(os.path.join(r, f))))
+    imgs.sort()
+
+    lines = ["# 후이즈 빌더 이식 체크리스트", "",
+             "`python build.py --whois` 로 만들어진 조각입니다.",
+             "관리자 화면의 각 textarea 에 **파일 내용을 그대로** 붙여넣습니다.", "",
+             "## 1. 이미지 업로드 (먼저)", "",
+             "디자인 관리 > FTP(이미지관리) > `images` 아래에 `kdw` 폴더를 만들고,",
+             "`assets/` 의 하위 폴더 구조를 그대로 올립니다.",
+             "최종 경로가 `%s...` 가 되어야 합니다." % WHOIS_IMG, "",
+             "| 올릴 파일 (assets/ 기준) | 크기 |", "|---|---|"]
+    for rel, sz in imgs:
+        lines.append("| `%s` | %.0f KB |" % (rel, sz / 1024.0))
+    lines += ["", "합계 %d개 · %.1f MB" % (len(imgs), sum(s for _, s in imgs) / 1048576.0), "",
+              "## 2. 붙여넣기", "",
+              "| 파일 | 붙여넣을 곳 | 글자수 |", "|---|---|---|",
+              "| `common.css` | 디자인 관리 > CSS/JS > 스타일시트(css) 편집 | %d |"
+              % dict(sizes)["common.css"],
+              "| `common.js` | 디자인 관리 > CSS/JS > 자바스크립트(js) 편집 | %d |"
+              % dict(sizes)["common.js"],
+              "| `layout-home.html` | 디자인 관리 > 레이아웃 > **새 이름 저장** `KDW_HOME` | %d |"
+              % dict(sizes)["layout-home.html"],
+              "| `layout-sub.html` | 디자인 관리 > 레이아웃 > **새 이름 저장** `KDW_SUB` | %d |"
+              % dict(sizes)["layout-sub.html"],
+              "| `main.html` | 디자인 관리 > 메인페이지 | %d |" % dict(sizes)["main.html"]]
+    for p in PAGES:
+        pcode = WHOIS_PCODE.get(p["key"])
+        if not pcode:
+            continue
+        name = "page-%s.html" % pcode
+        lines.append("| `%s` | 새 페이지 > 추가 > 코드 `%s` · 이름 `%s` · 레이아웃 `KDW_SUB` | %d |"
+                     % (name, pcode, p["nav_title"], dict(sizes)[name]))
+    lines += ["", "## 3. 그대로 두는 것", "",
+              "- **공지사항** — 빌더 게시판(`bbs_code=notice`)에 47건이 이미 있습니다. 새로 만들지 않고 메뉴에서 `%s` 로 연결합니다."
+              % WHOIS_NOTICE_URL.replace("&amp;", "&"),
+              "- 기존 페이지코드(`company_history`, `company_greeting`, `sub3_1` 등) — 검수 전까지 건드리지 않습니다.", "",
+              "## 4. 확인해야 하는 것", "",
+              "- `page_src` 길이 제한. 기존 페이지는 1,961자인데 우리 페이지는 아래 글자수만큼 됩니다. 가장 큰 페이지부터 시험 저장해 잘리는지 봅니다.",
+              "- 에디터가 HTML 을 변형하지 않는지. 편집기에서 **HTML 소스 모드**로 붙여넣어야 합니다.",
+              "- **HTTPS** — 현재 `https://koreadw.co.kr` 인증서가 self-signed 입니다. 문의 폼을 쓰려면 후이즈 SSL 신청이 필요합니다.",
+              "- 모바일: `모바일 디자인 관리 > 기본설정 > 모바일홈페이지 사용여부` 가 **미체크**라 모바일도 PC 레이아웃을 받습니다. 우리 반응형 CSS 가 그대로 동작하므로 이 설정은 **그대로 두어야** 합니다."]
+    write("README.md", "\n".join(lines) + "\n")
+
+    print("  -> dist-whois/")
+    for name, n in sizes:
+        print("     %-28s %7d자" % (name, n))
+    print("     %-28s %7d개 (%.1f MB)" % ("업로드할 이미지", len(imgs),
+                                          sum(s for _, s in imgs) / 1048576.0))
+    print("     README.md 에 붙여넣기 순서를 적어 두었습니다.")
+
+
 if __name__ == "__main__":
     args = sys.argv[1:]
     target = "prod" if "--prod" in args else "demo"
@@ -1713,4 +2008,7 @@ if __name__ == "__main__":
     if "--bundle" in args:
         print("packing deploy bundle...")
         make_bundle()
+    if "--whois" in args:
+        print("building whois builder fragments...")
+        build_whois()
     print("done.")
