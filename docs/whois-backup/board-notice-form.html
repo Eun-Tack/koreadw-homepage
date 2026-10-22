@@ -1,0 +1,335 @@
+<script type="text/javascript" src="/common/js/sky.form.checker.js"></script>
+<script type="text/javascript" src="/common/js/cheditor/cheditor.js"></script>
+<script type="text/javascript" src="/common/js/durian.cheditor.js"></script>
+<script type="text/javascript">
+
+	var useEditor = '{dataSetup.bbss_use_editor}';
+	var editor;
+
+	// 2. init
+	function init() {
+		// upload
+		if($id('upload')){
+			$l($id('upload'), 'click', onUploadClick);
+		}
+		
+	}
+
+	// 1. event listener
+	$load(init);
+
+	function init_dataForm_callback(fc, data) {
+		var form = fc.form;
+
+		// editor
+		if (useEditor == '1') {
+			editor = Durian.initEditor({
+				mode : 'ALL',
+				action : '{IMG_SERVER}',
+				act : 'common.upload'
+			});
+		}
+	}
+
+	// open upload
+	function onUploadClick(evt, obj) {
+		Event.stop(evt);
+		Durian.openUploadWin({
+			upload_mode : 'BBS', 
+			param : {
+				bbs_code : '{bbs_code}'
+			}
+		});
+	}
+	
+	// apply upload
+	function applyUpload(result) {
+		if (typeof result != 'object' || result.success != true) {
+			Durian.alert('파일 업로드 작업이 실패하였습니다!');
+			return false;
+		}
+
+		var list = result.list;
+		var upload_list = $id('upload_list');
+
+		// 2014-06-25
+		var _uploaded = jQuery('#upload_list input[name="bbs_file_name[]"]').size();
+		if(!_uploaded){
+			_uploaded = 0;
+		}
+
+		for (i = 0; i < list.length; i++) {
+
+			// add 2014-06-25
+			if(_uploaded > 9){
+				break;
+			}	
+
+			var name = list[i].name;
+			var ext = list[i].ext;
+			var path = list[i].path;
+			var size = list[i].size;
+			html = "<input type='hidden' name='bbs_file_name[]' value='" + name +"'>";
+			html += "<input type='hidden' name='bbs_file_ext[]' value='" + ext +"'>";
+			html += "<input type='hidden' name='bbs_file_path[]' value='" + path +"'>";
+			html += "<input type='hidden' name='bbs_file_size[]' value='" + size +"'>";
+			html += name;
+			html += "<a href='#' file_path='" + path + "' onclick='onDelFileClick(this); return false;'><img src='/images/basic_blue/board/icon_del.gif' alt='삭제' align='absmiddle'></a>";
+			var div = $c('div');
+			div.innerHTML = html;
+			upload_list.appendChild(div);
+
+			// add 2014-06-25	
+			_uploaded = _uploaded + 1;
+		}	
+
+		Element.show(upload_list);
+	}
+	
+	// 파일 삭제
+	function onDelFileClick(obj) {
+		var seq = obj.getAttribute('seq');
+		var file_path = obj.getAttribute('file_path');
+		if (confirm('파일을 삭제하시겠습니까?')) {
+			Durian.ajaxDeleteFile({
+				'upload_mode' : 'BBS',
+				'bbs_file_seq' : seq,
+				'file_path' : file_path
+			}, obj);
+		}
+	}
+
+	function applyDeleteFile(r, obj) {
+		if (typeof obj != 'undefined') {
+			var div = Durian.searchParentTag(obj, 'div', 1);
+			Element.remove(div);			
+		}
+	}
+</script>
+<link href="/images/basic_blue/board/board_new.css" type="text/css" rel="stylesheet">
+<style type="text/css">
+textarea {width:100%;}
+.site_navi { width:100%; text-align:right; font-size:11px; color:#838383; border-bottom:1px solid #ddd; padding-bottom:7px;}
+.contents_sub { width:100%; margin:0;}
+.contents_sub table {width:100%; border-collapse:collapse;}
+.board_write {border-top:1px solid #464646; }
+.board_write th, .board_write td {height:25px; text-align:left;padding:8px;border-bottom:1px solid #dadada;}
+.board_write th { color:#464646; font-weight:600; background-color:#f9f9fb; }
+.board_write td { color:#797979; }
+
+
+.board_view_area, .board_view_input, .board_view_input_mail, .board_view_input_number {border:1px solid #d1d1d1;}
+.board_view_area { height:100px; width:500px;}
+.board_view_input { height:20px; width:500px;}
+.board_view_input_mail { height:20px; width:100px;}
+.board_view_input_number { height:20px; width:30px;}
+.board_view td.tip { color:#7ab5df; }
+.coment_input { border:1px solid #c5c5c5; background-color:#f3fbff; height:20px; width:80px; }
+.coment_input_text { border:1px solid #c5c5c5; background-color:#f3fbff; height:60px; }
+
+.board_editor_area{width:100%; height:200px;}
+
+.page {text-align:right; font:11px verdana; padding:5px}
+.view_box {border:1px solid #d2d2d2; padding:10px;}
+.veiw_box_td {border-bottom:1px dotted #d2d2d2; padding:5px;}
+.veiw_box_td2 { padding:5px;}
+.coment_re {font:11px dotum; padding:5px; background-color:#fafafa;border-bottom:1px dotted #d2d2d2;word-wrap: break-word; word-break: break-all;}
+
+#upload_list div{padding:5px 0 0 0}
+#upload_list div a{padding:0 0 0 3px}
+
+/* Button */
+.btn_write { display:inline-block; background:#5f5f5f; border:1px solid #404144;padding:6px 17px 7px 17px;}
+.btn_list  { display:inline-block; background:#fcfcfc; border:1px solid #bcbcbc;padding:6px 17px 7px 17px;}
+.btn_txt01 {color:#fff; font-weight:600;}
+.btn_txt02 {color:#1f1f1f; font-weight:600;}
+
+/* Align*/
+.btn_area {overflow:hidden; margin:10px 0;}
+.align_left {float:left; }
+.align_right {float:right;}
+.align_right button {}
+.align_left button {}
+.tR {text-align:right;}
+
+/* Color */
+.txt_blue { font-weight:bold; color:#7ab5df; }
+.txt_orange { font:bold 12px verdana; color:#ff7e00; }
+</style>
+</head>
+
+<body>
+<!-- 상단 디자인 -->
+{dataSetup.bbss_header_html}
+
+<form name="dataForm" action="./" method="post" enctype="multipart/form-data">
+<input type="hidden" name="act" value="{act}">
+<input type="hidden" name="bbs_mode" value="{bbs_mode}">
+<input type="hidden" name="ch" value="{ch}">
+<input type="hidden" name="sc" value="{sc}">
+<input type="hidden" name="ss" value="{ss}">
+<input type="hidden" name="page" value="{page}">
+<input type="hidden" name="bbs_code" value="{bbs_code}">
+<input type="hidden" name="category_code" value="{category_code}">
+<input type="hidden" name="bbs_seq" value="{bbs_seq}">
+
+<div class="contents_sub">	
+	<!--게시판-->
+	<div class="board_write">
+		<table>
+			{?dataSetup.bbss_use_cate}
+			<tr>
+				<th class="top" width="17%"> 분류</th>
+				<td class="top"  colspan="3">
+					{?bbs_mode=='reply' || (bbs_mode=='modify' && data.bbs_depth>0)}
+						{cate_name}
+					{:}
+						<select name="cate_code" >
+							{@ CATE}
+							<option value="{.cate_code}" {?.cate_code==data.cate_code} selected{/}>{.cate_name}</option>
+							{/}
+						</select>
+					{/}
+				</td>
+			</tr>
+			{/}
+			<tr>
+				<th{?!dataSetup.bbss_use_cate} class="top"{/}>글쓴이</th>
+				<td{?!dataSetup.bbss_use_cate} class="top"{/} colspan="3">
+					{?bbs_mode=='write' || bbs_mode=='reply'}
+						{?!MEMBER}
+							<input type="text" name="bbs_name" value="{bbs_name}" class="board_view_input_mail" maxlength="5" />
+						{:}
+							{USER_NAME}<input type="hidden" name="bbs_name" value="{bbs_name}">
+						{/}
+					{:bbs_mode=='modify'}
+						{?!isMember(user_id)}
+							<input type="text" name="bbs_name" value="{bbs_name}" class="board_view_input_mail" maxlength="5" />
+						{:}
+							{bbs_name}<input type="hidden" name="bbs_name" value="{bbs_name}">
+						{/}
+					{/}
+				</td>
+
+			</tr>
+			<tr>
+				<th >제목</th>
+				<td colspan="3"><input name="bbs_title" value="{bbs_title}" type="text"  class="board_view_input" /></td>
+			</tr>
+			<tr>
+				{?bbs_mode=='write' || bbs_mode=='reply'}
+					{?!MEMBER}
+						<th>비밀번호</th>
+						<td colspan="3"><input type="password" name="bbs_passwd" value="{bbs_passwd}"  class="board_view_input_mail"/></td>
+					{/}
+				{:bbs_mode=='modify'}
+					{?!isMember(user_id)}
+					<th>비밀번호</th>
+					<td colspan="3"><input type="password" name="bbs_passwd" value="{bbs_passwd}"  class="board_view_input_mail"/></td>
+					{/}
+				{/}
+			</tr>
+			<tr>
+				<th >내용</th>
+				<td colspan="3">
+					<textarea name="bbs_content" class="board_editor_area">{bbs_content}</textarea>
+				</td>
+			</tr>
+			{?ADMIN || dataSetup.bbss_use_secret}
+			<tr>
+				<th >선택사항</th>
+				<td colspan="3">
+					{?ADMIN}
+					<!-- 공지글 -->
+					<input type="checkbox" name="bbs_is_notice" value="1" {?bbs_is_notice}checked{/}> 공지글
+					{/}
+
+					{?dataSetup.bbss_use_secret}
+					<!-- 비밀글 -->
+					<input type="checkbox" name="bbs_is_secret" value="1" {?bbs_is_secret}checked{/}> 비밀글
+					{/}
+				</td>
+			</tr>
+			{/}
+			{?dataSetup.bbss_use_file}
+			<tr>
+				<th >파일첨부</th>
+				<td colspan="3"><a href="#" id="upload">
+					<img src="/images/basic_blue/board/btn_file.gif" alt="파일첨부" /></a>
+					<div id="upload_list"></div>
+					<div id="upload_db_list">
+					{@FILE}
+						<div>
+							<input type="checkbox" name="bbs_file_del[]" value="{.bbs_file_seq}"> 삭제 
+							<a href="{.url_download}" target="_blank">{.bbs_file_name}</a> 다운로드[{.bbs_file_down_count}]
+						</div>
+					{/}
+					</div>
+				</td>
+			</tr>
+			{/}
+			<tr>
+				<th >이메일</th>
+				<td colspan="3"><input name="bbs_email[0]" value="{bbs_email.0}" type="text"  class="board_view_input_mail"/> @ <input name="bbs_email[1]" value="{bbs_email.1}" type="text"  class="board_view_input_mail"/></td>
+
+			</tr>
+			{?dataSetup.bbss_use_captcha}
+			{?bbs_mode=='write' || bbs_mode=='reply'}
+			<tr>
+				<th >자동등록방지</th>
+				<td>보이는 순서대로 문자를 모두 입력해 주세요<br><img src="?act=board.board_captcha" border=1><br><input type="text" name="img_auth_code" value="" class="board_view_input_mail" onkeyup="javascript:this.value=this.value.toUpperCase();"></td>
+			</tr>
+			{/}
+			{/}
+		</table>
+		
+		{?!MEMBER}
+		<table>	
+			<tr>
+				<br/>
+				<td style="text-align:left;border:1px solid #e0e0e0;background-color:f9f9f9;padding:5px">
+					<div style="padding-top:7px;padding-bottom:5px;font-weight:bold;padding-left:7px;">※ 개인정보 수집 및 이용에 관한 안내</div>
+					<div style="padding-left:10px;">
+						<div style="width:97%;height:95px;font-size:11px;letter-spacing: -0.1em;border:1px solid #c5c5c5;background-color:#fff;padding-left:14px;padding-top:7px;"> 
+							'{site_com_name}'는 제휴를 희망하는 기업 및 개인을 대상으로 아래와 같이 개인정보를 수집하고 있습니다. <br />
+							 1. 수집 개인정보 항목 : 회사명, 담당자명, 메일 주소, 전화번호, 홈페이지 주소, 팩스번호, 주소 <br />
+							 2. 개인정보의 수집 및 이용목적 : 제휴신청에 따른 본인확인 및 원활한 의사소통 경로 확보 <br />
+							 3. 개인정보의 이용기간 : 모든 검토가 완료된 후 3개월간 이용자의 조회를 위하여 보관하며, 이후 해당정보를 지체 없이 파기합니다. <br />
+							 4. 그 밖의 사항은 개인정보취급방침을 준수합니다.
+						</div>
+					</div>
+					<div style="padding-top:7px;padding-left:5px;padding-bottom:7px;">
+						<input class="input_radio" type="checkbox" name="bbs_user_infoconsent" value="1"> 개인정보 수집 및 이용에 대해 동의합니다.
+					</div>
+				</td>
+			</tr>
+		</table>
+		{/}
+	</div>
+
+	<div class="btn_area">
+		<div class="align_left">			
+			<button type="button" class="btn_list btn_txt02" style="cursor: pointer;" onclick="go_url('{url_list}')">목록</button>
+		</div>
+		<div class="align_right">			
+			{?bbs_mode=='modify'}<button type="submit" class="btn_list btn_txt02" style="cursor: pointer;">수정</button>{:}
+			<button type="submit" class="btn_write btn_txt01" style="cursor: pointer;">등록</button>{/}					
+		</div>	
+	</div>	
+	<!--//게시판-->
+</div>
+</form>
+
+
+<!-- 하단 디자인 -->
+{dataSetup.bbss_footer_html}
+{form_script}
+<script type="text/javascript">
+function go_url(url){
+
+	window.location.href = url;
+}
+</script>
+
+
+		

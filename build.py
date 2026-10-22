@@ -175,41 +175,27 @@ def load_ongoing():
 
 def timeline_html():
     """연혁 · 인증 · 협약 · 대외활동을 한 줄기로 보여 준다.
-       세 블록으로 나눠 두니 같은 사실이 두세 곳에 겹쳐 적히던 문제가 있었다."""
-    years = load_timeline()
-    used = []
-    for _y, items in years:
-        for it in items:
-            if it[1] and it[1] not in used:
-                used.append(it[1])
-    kinds = [k for k in KIND_ORDER if k in used]
 
-    out = ['<div class="tl-filter" role="group" aria-label="분류별 보기">',
-           '<button type="button" class="tl-chip is-on" data-kind="all" aria-pressed="true">전체</button>']
-    for k in kinds:
-        out.append('<button type="button" class="tl-chip" data-kind="%s" aria-pressed="false">%s</button>'
-                   % (k, esc(KIND_LABEL.get(k, k))))
-    out.append('</div>')
+       화면에 들어가는 글은 '연도 제목과 한 줄짜리 항목'뿐이다.
+       분류 배지 · 필터 버튼 · 세로 줄기는 site.js 가 이 글을 읽어 만든다.
+       고객이 관리자에서 직접 한 줄을 더하거나 고칠 수 있어야 하기 때문이다.
 
-    out.append('<div class="tl reveal-group" data-timeline>')
-    for year, items in years:
-        out.append('<section class="tl-year reveal" data-year="%s">' % esc(year))
-        out.append('<h3 class="tl-y"><b>%s</b><i>년</i></h3>' % esc(year))
-        out.append('<ul>')
+           <h4>2026</h4>
+           <p>10.12 [협약] 한국보훈진흥회 업무협약 체결 | 설명 | 사진파일</p>
+
+       설명과 사진파일은 없으면 빼면 된다."""
+    out = ['<div class="tl" data-timeline data-cert-base="{root}assets/credentials/">']
+    for year, items in load_timeline():
+        out.append("<h4>%s</h4>" % esc(year))
         for when, kind, title, desc, img in items:
             k = kind if kind in KIND_LABEL else "사내"
-            body = ('<span class="tl-title">%s</span>' % esc(title))
-            if desc:
-                body += '<span class="tl-desc">%s</span>' % esc(desc)
-            inner = ('<button type="button" class="tl-item is-link" '
-                     'data-cert="{root}assets/credentials/%s" data-cert-label="%s">%s</button>'
-                     % (img, attr(title), body)) if img else (
-                     '<span class="tl-item">%s</span>' % body)
-            out.append('<li data-kind="%s"><span class="tl-when">%s</span>'
-                       '<span class="tl-kind k-%s">%s</span>%s</li>'
-                       % (k, esc(when), k, esc(KIND_LABEL.get(k, k)), inner))
-        out.append('</ul></section>')
-    out.append('</div>')
+            line = "%s [%s] %s" % (esc(when), esc(k), esc(title))
+            if desc or img:
+                line += " | %s" % esc(desc)
+            if img:
+                line += " | %s" % esc(img)
+            out.append("<p>%s</p>" % line)
+    out.append("</div>")
 
     ong = load_ongoing()
     if ong:
@@ -238,44 +224,43 @@ def _is_future(year, when):
         return False
 
 
+# 공지 분류를 소식 카드의 색 구분에 맞춘다.
+NEWS_KIND = {"소식": "활동", "언론": "언론", "공지": "사내",
+             "안내": "사내", "조사 안내": "협약"}
+
+
 def recent_news_html(limit=3):
     """첫 화면의 '최근 소식'.
-       content/timeline.md 맨 위부터 가져오므로 한 줄만 추가하면 첫 화면이 바뀐다.
-       사내 항목(창립 · 시스템 도입)은 대외로 보여 줄 소식이 아니라 건너뛴다.
-       아직 오지 않은 날짜('인증 예정' 같은)는 소식이 아니므로 건너뛴다."""
-    picks = []
-    for year, items in load_timeline():
-        for when, kind, title, desc, img in items:
-            if kind == "사내":
-                continue
-            if _is_future(year, when):
-                continue
-            picks.append((year, when, kind, title, img))
-            if len(picks) >= limit:
-                break
-        if len(picks) >= limit:
-            break
+
+       공지사항에서 최신 글을 가져온다. 글을 누르면 그 글의 본문으로 간다.
+       고객이 공지를 올리면 첫 화면이 따라 바뀌므로 따로 손볼 것이 없다.
+
+       후이즈에서는 이 자리에 빌더의 {{게시판새글}} 치환자가 들어가
+       같은 게시판에서 같은 글을 끌어온다."""
+    picks = NOTICES[:limit]
     if not picks:
         return ""
 
     out = ['<div class="news">',
            '<div class="news-head">',
            '<span class="news-label">최근 소식</span>',
-           '<a class="news-more" href="{root}company/history.html">전체 보기</a>',
+           '<a class="news-more" href="{root}support/notice.html">전체 보기</a>',
            '</div>',
            '<div class="news-list">']
-    for year, when, kind, title, img in picks:
-        k = kind if kind in KIND_LABEL else "활동"
+    for tag, title, date, seq in picks:
+        kind = tag or "소식"
+        k = NEWS_KIND.get(kind, "활동")
+        y, _, md = date.partition("-")
         inner = ('<span class="news-kind k-%s">%s</span>'
                  '<span class="news-title">%s</span>'
                  '<span class="news-when">%s. %s</span>'
-                 % (k, esc(KIND_LABEL.get(k, k)), esc(title), esc(year), esc(when)))
-        if img:
-            out.append('<button type="button" class="news-card is-link" '
-                       'data-cert="{root}assets/credentials/%s" data-cert-label="%s">%s</button>'
-                       % (img, attr(title), inner))
+                 % (k, esc(kind), title, esc(y), esc(md.replace("-", "."))))
+        if seq and seq in NOTICE_POSTS:
+            out.append('<a class="news-card is-link" href="{root}support/notice/%s.html">%s</a>'
+                       % (seq, inner))
         else:
-            out.append('<div class="news-card">%s</div>' % inner)
+            out.append('<a class="news-card is-link" href="{root}support/notice.html">%s</a>'
+                       % inner)
     out.append('</div></div>')
     return chr(10).join(out)
 
@@ -1860,7 +1845,7 @@ def make_bundle():
 # 완성된 HTML 파일을 그대로 올릴 수 없고, 관리자 화면의 각
 # textarea 에 붙여넣어야 한다. 이 함수는 붙여넣을 조각을 만든다.
 #
-#   레이아웃      디자인 관리 > 레이아웃            layout-home / layout-sub
+#   레이아웃      디자인 관리 > 레이아웃            layout.html (하나만)
 #   스타일시트    디자인 관리 > CSS/JS > 스타일시트   common.css
 #   자바스크립트  디자인 관리 > CSS/JS > 자바스크립트 common.js
 #   메인          디자인 관리 > 메인페이지           main.html
@@ -2190,19 +2175,20 @@ def build_whois():
     # 빌더는 서브 페이지 전체가 레이아웃 하나를 공유한다. 그래서 상단 메뉴의
     # 활성 표시를 서버에서 찍을 수 없다 → 활성 표시 없이 내보내고,
     # common.js 끝에 붙인 스크립트가 주소(pcode)를 보고 표시한다.
+    # 레이아웃은 하나만 쓴다. 첫 화면과 서브가 달랐던 것은 body 의 is-home
+    # 뿐인데 그 클래스를 쓰는 규칙이 CSS 에 없다. 하나로 두면 전 페이지 공통인
+    # 머리 · 메뉴 · 푸터를 한 곳에서만 고치면 된다. 전화번호가 바뀌어도 한 번이다.
     sizes = []
-    for tag, bodyclass in (("home", ' class="is-home"'), ("sub", "")):
-        nav = build_nav(root, "", "", href)
-        header = (HEADER_TPL
-                  .replace("{NAV}", nav)
-                  .replace("{HOME}", "/index.html")
-                  .replace("{CONTACT}", "/support/contact.html"))
-        layout = (WHOIS_LAYOUT
-                  .replace("{BODYCLASS}", bodyclass)
-                  .replace("{HEADER}", header)
-                  .replace("{FOOTER}", footer))
-        sizes.append(("layout-%s.html" % tag,
-                      write("layout-%s.html" % tag, whois_rewrite(layout))))
+    nav = build_nav(root, "", "", href)
+    header = (HEADER_TPL
+              .replace("{NAV}", nav)
+              .replace("{HOME}", "/index.html")
+              .replace("{CONTACT}", "/support/contact.html"))
+    layout = (WHOIS_LAYOUT
+              .replace("{BODYCLASS}", "")
+              .replace("{HEADER}", header)
+              .replace("{FOOTER}", footer))
+    sizes.append(("layout.html", write("layout.html", whois_rewrite(layout))))
 
     # 2) CSS / JS
     css = io.open(os.path.join(HERE, "assets", "site.css"), encoding="utf-8").read()
@@ -2283,17 +2269,15 @@ def build_whois():
               % dict(sizes)["common.css"],
               "| `common.js` | 디자인 관리 > CSS/JS > 자바스크립트(js) 편집 | %d |"
               % dict(sizes)["common.js"],
-              "| `layout-home.html` | 디자인 관리 > 레이아웃 > **새 이름 저장** `KDW_HOME` | %d |"
-              % dict(sizes)["layout-home.html"],
-              "| `layout-sub.html` | 디자인 관리 > 레이아웃 > **새 이름 저장** `KDW_SUB` | %d |"
-              % dict(sizes)["layout-sub.html"],
+              "| `layout.html` | 디자인 관리 > 레이아웃 > **새 이름 저장** `KDW` | %d |"
+              % dict(sizes)["layout.html"],
               "| `main.html` | 디자인 관리 > 메인페이지 | %d |" % dict(sizes)["main.html"]]
     for p in PAGES:
         pcode = WHOIS_PCODE.get(p["key"])
         if not pcode:
             continue
         name = "page-%s.html" % pcode
-        lines.append("| `%s` | 새 페이지 > 추가 > 코드 `%s` · 이름 `%s` · 레이아웃 `KDW_SUB` | %d |"
+        lines.append("| `%s` | 새 페이지 > 추가 > 코드 `%s` · 이름 `%s` · 레이아웃 `KDW` | %d |"
                      % (name, pcode, p["nav_title"], dict(sizes)[name]))
     lines += ["", "## 3. 그대로 두는 것", "",
               "- **공지사항 글 47건** — 빌더 게시판(`bbs_code=notice`)에 이미 있습니다. 글·제목·본문·사진은 **하나도 건드리지 않습니다**.",

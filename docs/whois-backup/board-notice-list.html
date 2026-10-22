@@ -1,0 +1,189 @@
+<script type="text/javascript" src="/common/js/sky.form.checker.js"></script>
+<script type="text/javascript">
+// x
+	function init() {
+		// submit
+		$l($id('submit'), 'click', onSubmit);
+	}
+
+	$load(init);
+
+	// submit
+	function onSubmit(evt, obj) {
+		Event.stop(evt);
+		var bbs_mode = obj.getAttribute('bbs_mode');
+		var act = obj.getAttribute('act');
+		$vset('page', 1);
+		submitForm(bbs_mode, act);
+	}
+
+	function submitForm(bbs_mode, act) {
+		var form = document.forms['dataForm'];
+		if (act != null && typeof act != 'undefined') {
+			form.elements['act'].value = act;
+		}
+		if (bbs_mode != null && typeof bbs_mode != 'undefined') {
+			form.elements['bbs_mode'].value = bbs_mode;
+		}
+
+		form.submit();
+	}
+
+</script>
+<link href="/images/basic_blue/board/board_new.css" type="text/css" rel="stylesheet">
+<style type="text/css">
+.site_navi { width:100%; text-align:right; font-size:11px; color:#838383; border-bottom:1px solid #ddd; padding-bottom:7px;}
+.contents_sub { width:100%; margin:0; }
+.contents_sub table {width:100%;}
+.contents_sub table img {padding-top:2px;}
+
+.board_top {width:100%; overflow:hidden;}
+.board_top .f_search {float:right; width:380px; text-align:right;}
+.board_top .bold {float:left; width:200px; margin:10px 0;}
+
+.board_title { font-size:14px; font-weight:bold; color:#000; }
+.coment_number { font:bold 10px verdana; color:#6fa800; }
+.board { width:100%; }
+.board th { height:41px; border-bottom:1px solid #dadada; background-color:#f9f9fb; color:#464646; font-weight:600; word-wrap: break-word; border-top:1px solid #464646; word-break: break-all; }
+.board td { height:30px; border-bottom:1px solid #dadada; color:#797979; text-align:center; padding:5px; word-wrap: break-word; word-break: break-all; }
+.board td.left {text-align:left;}
+.board td.category{ font-weight:bold; }
+
+.board_input { border:1px solid #cecece; height:24px; width:160px;}
+
+/* Paging */
+.paginate_regular {padding:10px 0;text-align:center;line-height:normal;}
+.paginate_regular a,
+.paginate_regular strong{display:inline-block;position:relative;margin:0 -2px;padding:2px 8px;font-weight:600;line-height:normal;text-decoration:none;vertical-align:middle;}
+.paginate_regular a:hover,
+.paginate_regular a:active,
+.paginate_regular a:focus {background-color:#f8f8f8;}
+
+.paginate_regular strong{color:#f60;}
+.paginate_regular .direction{font-weight:normal;color:#767676;white-space:nowrap;}
+.paginate_regular .direction span{font-weight:bold;font-size:14px;}
+
+.paginate_regular .direction:hover,
+.paginate_regular .direction:active,
+.paginate_regular .direction:focus {background-color:#fff;color:#333;}
+
+/* Button */
+.btn_write { display:inline-block; background:#5f5f5f; border:1px solid #404144;padding:6px 17px 7px 17px;}
+.btn_txt01 {color:#fff; font-weight:600;}
+.btn_search { display:inline-block; color:#333; padding:4px 16px 6px 26px; background:url(/images/basic_blue/board/btn_search_bg.gif) no-repeat 0 0;}
+
+/* Align*/
+.align_right {text-align:right; margin:10px 0; overflow:hidden;}
+.align_right button {float:right;}
+.tR {text-align:right;}
+
+/* Color */
+.txt_blue { font-weight:bold; color:#7ab5df; }
+.txt_orange { font:bold 12px verdana; color:#ff7e00; }
+
+</style>
+
+<!-- 상단 디자인 -->
+{dataSetup.bbss_header_html}
+
+<div class="contents_sub">
+<form name="dataForm" action="./" method="post">
+	<input type="hidden" id="act"  name="act"  value="{act}">
+	<input type="hidden" id="ch"   name="ch"   value="{ch}">
+	<input type="hidden" id="bbs_code" name="bbs_code" value="{bbs_code}">
+	<input type="hidden" id="bbs_mode" name="bbs_mode" value="{bbs_mode}">
+	<input type="hidden" id="seq"  name="seq"  value="">
+	<input type="hidden" id="oc"   name="oc"   value="{oc}">
+	<input type="hidden" id="os"   name="os"   value="{os}">
+	<input type="hidden" id="page" name="page" value="{page}">
+
+	<div class="board_top">
+		<div class="bold">
+			<p>총 <span class="txt_orange">{totalNum}</span>건</p>
+		</div>
+		<!--검색-->
+		<div class="f_search">
+            {?dataSetup.bbss_use_cate}
+            <li>
+                <select name="category_code" onchange="this.form.submit();">
+                    <option value="" {?category_code == ''}selected{/}>--- 전체 ---</option>
+                    {@CATE}
+                    <option value="{.cate_code}" {?category_code == .cate_code}selected{/}>{.cate_name}</option>
+                    {/}
+                </select>
+            </li>
+            {/}
+			<select name="sc">
+				<option value="bbs_title">제목</option>
+				<option value="bbs_content">내용</option>
+				<option value="bbs_name">이름</option>
+			</select>
+			<input name="ss" value="{ss}" type="text" class="board_input" />
+			<a id="submit"><button type='submit' class="btn_search btn_txt">검색</button></a>
+		</div>
+		<!--//검색-->
+	</div>
+</form>
+
+	<!--게시판-->
+	<div class="board">
+		<table>
+			<tr>
+				<th width="3%">&nbsp;</th>
+				<th width="5%">번호</th>
+				{?dataSetup.bbss_use_cate}<th width="10%">카테고리</th>{/}
+				<th>제목</th>
+				<th width="10%">글쓴이</th>
+				<th width="17%">등록일</th>
+				<th width="5%">조회{?dataSetup.bbss_use_good}/추천{/}</th>
+				<th width="3%">&nbsp;</th>
+			</tr>
+			{@LIST}
+			<tr>
+				<td>&nbsp;</td>
+				<td >{?.bbs_is_notice}공지{:}{.__ord}{/}</td>
+				{?dataSetup.bbss_use_cate}<td class="category">{.cate_name}</td>{/}
+				<td class="left">
+					{?.bbs_depth}{.reply_space}<img src="/images/basic_blue/board/icon_re.gif" alt="Re" align="absmiddle">{/}
+					<a href="{.url_view}">{.bbs_title}</a>
+					{?.bbs_cmt}<span class="coment_number">({.bbs_cmt})</span>{/}
+					{?.bbs_file}<img src="/images/basic_blue/board/icon_file.gif" alt="FILE" />{/}
+					{?.bbs_is_best}<img src="/images/basic_blue/board/icon_best.gif" alt="BEST" />{/}
+					{?.bbs_is_secret}<img src="/images/basic_blue/board/icon_s.gif" alt="비밀" />{/}
+					{?.new}<img src="/images/basic_blue/board/icon_new.gif" alt="NEW" />{/}
+					{?.hot}<img src="/images/basic_blue/board/icon_hot.gif" alt="HOT" />{/}
+				</td>
+				<td >{.bbs_name}</td>
+				<td >{.bbs_reg_date}</td>
+				<td >{.bbs_hit}{?dataSetup.bbss_use_good} / {.bbs_good}{/}</td>
+				<td>&nbsp;</td>
+			</tr>
+			{:}
+			<tr>
+				<td colspan="{?dataSetup.bbss_use_cate}8{:}7{/}">데이터가 없습니다.</td>
+			</tr>
+			{/}
+		</table>
+	</div>
+
+	<!--페이지넘버-->
+	<div class="align_right">
+		{?auth_write}<button type="button" class="btn_write btn_txt01" style="cursor: pointer;" onclick="go_url('{url_write}')">쓰기</button>{/}
+	</div>
+
+	<div class="paginate_regular">{pagebar}</div>
+	<!--//페이지넘버-->
+	<!--//게시판-->
+</div>
+<!-- 하단 디자인 -->
+{dataSetup.bbss_footer_html}
+
+<script type="text/javascript">
+function go_url(url){
+
+	window.location.href = url;
+}
+</script>
+
+
+		

@@ -1,0 +1,257 @@
+<section class="phead">
+  <div class="wrap">
+    <p class="ph-crumb">홈 <i>/</i> 사업소개 <i>/</i> 특수 설문 유형</p>
+    <h1>특수 설문 유형</h1>
+    <p class="ph-sub">연구 방법론이 요구하는 화면과 출력 형식을 그대로 구현합니다.</p>
+  </div>
+</section>
+<nav class="lnb" aria-label="사업소개 하위 메뉴"><div class="wrap lnb-shell">
+<button class="lnb-scroll" type="button" data-direction="-1" aria-label="이전 메뉴 보기">‹</button>
+<div class="lnb-in">
+<a href="/?act=info.page&pcode=kdw_fields">조사분야</a>
+<a href="/?act=info.page&pcode=kdw_methods">조사방법</a>
+<a href="/?act=info.page&pcode=kdw_special" class="is-active" aria-current="page">특수 설문 유형</a>
+<a href="/?act=info.page&pcode=kdw_process">진행 절차</a>
+</div><button class="lnb-scroll" type="button" data-direction="1" aria-label="다음 메뉴 보기">›</button></div></nav><section class="sec"><div class="wrap">
+<p class="deck-intro">
+  방법론마다 <b>응답자가 보는 화면</b>과 <b>분석에 넘겨야 할 데이터 형식</b>이 다릅니다.
+  CE는 더미변수 Long Format, AHP는 응답 중 실시간 CR 확인, CVM은 응답자별 제시금액 배분이 필요합니다.
+  저희는 이 네 가지를 자체 플랫폼에 직접 구현해 두었으며, 목록에 없는 유형도 설계서만 주시면 구현해 드립니다.
+</p>
+<h2 class="minor-h">응답 화면 예시</h2>
+<div class="chips" role="group" aria-label="특수 설문 유형 선택">
+  <button class="chip" type="button" data-target="ce" aria-pressed="true">CE 선택실험법</button>
+  <button class="chip" type="button" data-target="ahp" aria-pressed="false">AHP 쌍대비교</button>
+  <button class="chip" type="button" data-target="cvm" aria-pressed="false">CVM 조건부가치측정</button>
+  <button class="chip" type="button" data-target="delphi" aria-pressed="false">Delphi 전문가 합의</button>
+  <button class="chip" type="button" data-target="custom" aria-pressed="false">맞춤형 설문</button>
+</div>
+
+<div class="deck">
+
+  <div class="dcard is-active" data-key="ce">
+    <div class="dcard-top"><span class="dcard-code">CE</span><span class="dcard-step">선택 세트 3 / 8</span></div>
+    <h3>선택실험법</h3>
+    <p class="dcard-sub">속성과 수준을 조합한 대안 중 하나를 고르게 하여, 지불의사와 속성별 중요도를 추정합니다.</p>
+    <div class="dcard-screen">
+      <p class="mq">다음 두 대안 중 어느 쪽을 선택하시겠습니까?</p>
+      <div class="mrow">
+        <div class="mopt sel"><b>대안 A</b><u>연회비 30,000원</u><u>대기 15분</u><u>대면 상담</u></div>
+        <div class="mopt"><b>대안 B</b><u>연회비 12,000원</u><u>대기 40분</u><u>비대면 상담</u></div>
+      </div>
+      <div class="mopt">둘 다 선택하지 않겠습니다</div>
+    </div>
+    <p class="dcard-foot">출력 · 더미변수 Long Format</p>
+  </div>
+
+  <div class="dcard" data-key="ahp">
+    <div class="dcard-top"><span class="dcard-code">AHP</span><span class="dcard-step">쌍대비교 6 / 15</span></div>
+    <h3>쌍대비교법</h3>
+    <p class="dcard-sub">두 항목을 9점 척도로 비교해 가중치를 산출하고, 응답 도중 일관성 비율을 바로 확인합니다.</p>
+    <div class="dcard-screen">
+      <p class="mq">두 평가기준 중 어느 쪽이, 얼마나 더 중요합니까?</p>
+      <div class="mline"><span>접근성</span><span>전문성</span></div>
+      <div class="mslider"><i></i></div>
+      <div class="mticks"><span>9</span><span>5</span><span>1</span><span>5</span><span>9</span></div>
+      <span class="mpill">CR 0.043 · 일관성 확보</span>
+    </div>
+    <p class="dcard-foot">산출 · 기준별 가중치 & 우선순위</p>
+  </div>
+
+  <div class="dcard" data-key="cvm">
+    <div class="dcard-top"><span class="dcard-code">CVM</span><span class="dcard-step">DBDC 1차 제시</span></div>
+    <h3>조건부가치측정법</h3>
+    <p class="dcard-sub">제시금액을 응답자별로 균등 배분하고, 응답에 따라 2차 금액으로 분기합니다.</p>
+    <div class="dcard-screen">
+      <p class="mq">이 사업의 시행을 위해 가구당 연간 15,000원을 추가 부담할 의향이 있습니까?</p>
+      <div class="mrow">
+        <div class="mopt sel"><u>예, 부담하겠다</u></div>
+        <div class="mopt"><u>아니오</u></div>
+      </div>
+      <div class="mline"><span>예 → 2차 제시</span><span>30,000원</span></div>
+      <div class="mline"><span>아니오 → 2차 제시</span><span>7,500원</span></div>
+    </div>
+    <p class="dcard-foot">출력 · 이중양분선택형 Long Format</p>
+  </div>
+
+  <div class="dcard" data-key="delphi">
+    <div class="dcard-top"><span class="dcard-code">DELPHI</span><span class="dcard-step">2라운드 진행 중</span></div>
+    <h3>전문가 합의법</h3>
+    <p class="dcard-sub">라운드별 통계 요약을 응답 화면에 함께 보여 주어, 전문가가 의견을 조정할 근거를 제공합니다.</p>
+    <div class="dcard-screen">
+      <p class="mq">1라운드 결과입니다. 귀하의 응답을 유지하시겠습니까?</p>
+      <dl class="mstat">
+        <div><dt>평균</dt><dd>4.2</dd></div>
+        <div><dt>IQR</dt><dd>0.8</dd></div>
+        <div><dt>내 응답</dt><dd>3.0</dd></div>
+      </dl>
+      <span class="mpill warn">사분위 범위 밖 · 사유 기입 필요</span>
+    </div>
+    <p class="dcard-foot">추적 · 라운드별 의견 변화 이력</p>
+  </div>
+
+  <div class="dcard custom" data-key="custom">
+    <div class="dcard-top"><span class="dcard-code">CUSTOM</span><span class="dcard-step">설계서 → 화면</span></div>
+    <h3>맞춤형 설문</h3>
+    <p class="dcard-sub">문항 구조와 출력 형식을 검토해 과제에 맞는 구현 방법을 제안합니다.</p>
+    <div class="dcard-screen">
+      <p class="custom-kicker">연구계획서에 있는 그 문항,<br>화면으로 만들어 드립니다.</p>
+      <ul class="custom-list">
+        <li>컨조인트 · BWS · 순위형 배분</li>
+        <li>조건부 분기가 여러 겹인 스크리너</li>
+        <li>실험 처치군 무작위 배정 설계</li>
+        <li>기관 고유 양식의 응답 화면</li>
+      </ul>
+    </div>
+    <p class="dcard-foot">자문 · 방법론 검토부터 함께</p>
+  </div>
+
+</div>
+
+
+<h2 class="minor-h story-h">방법론별 활용 분야와 결과물</h2>
+<div class="specs reveal-group">
+  <article class="spec reveal">
+    <div class="spec-head">
+      <span class="spec-code">CE</span>
+      <div>
+        <h3>선택실험법<small>Choice Experiment</small></h3>
+      </div>
+    </div>
+    <div class="spec-body">
+      <div>
+        <h4>활용 분야</h4>
+        <ul>
+          <li>신제품·신규 서비스의 속성 조합을 설계할 때</li>
+          <li>가격을 바꾸면 선택이 얼마나 달라지는지 알아야 할 때</li>
+          <li>정책·제도의 여러 대안 중 선호를 비교할 때</li>
+        </ul>
+      </div>
+      <div>
+        <h4>주요 결과물</h4>
+        <ul>
+          <li>속성별 중요도 (효용 가중치)</li>
+          <li>가장 선호되는 최적 조합</li>
+          <li>조합별 선택확률 시뮬레이션</li>
+          <li>가격 민감도 구간</li>
+        </ul>
+      </div>
+    </div>
+    <p class="spec-tags"><span>신제품 컨셉테스트</span><span>요금제 설계</span><span>정책 대안 비교</span></p>
+  </article>
+
+  <article class="spec reveal">
+    <div class="spec-head">
+      <span class="spec-code">AHP</span>
+      <div>
+        <h3>쌍대비교법<small>Analytic Hierarchy Process</small></h3>
+      </div>
+    </div>
+    <div class="spec-body">
+      <div>
+        <h4>활용 분야</h4>
+        <ul>
+          <li>여러 사업·정책 대안의 우선순위를 정해야 할 때</li>
+          <li>성격이 다른 평가 기준을 함께 비교해야 할 때</li>
+          <li>이해관계자들의 판단을 정량적 근거로 남기고 싶을 때</li>
+        </ul>
+      </div>
+      <div>
+        <h4>주요 결과물</h4>
+        <ul>
+          <li>기준별 상대적 중요도 (가중치)</li>
+          <li>대안별 최종 우선순위표</li>
+          <li>응답 일관성 지표(CR)로 신뢰도 확인</li>
+        </ul>
+      </div>
+    </div>
+    <p class="spec-tags"><span>투자·사업 우선순위</span><span>평가지표 설계</span><span>입지 선정</span></p>
+  </article>
+
+  <article class="spec reveal">
+    <div class="spec-head">
+      <span class="spec-code">CVM</span>
+      <div>
+        <h3>조건부가치측정법<small>Contingent Valuation Method</small></h3>
+      </div>
+    </div>
+    <div class="spec-body">
+      <div>
+        <h4>활용 분야</h4>
+        <ul>
+          <li>환경·문화재 등 무형가치를 화폐가치로 보여줘야 할 때</li>
+          <li>공공사업의 경제적 타당성 근거가 필요할 때</li>
+          <li>요금 인상에 대한 이용자 지불의사를 확인할 때</li>
+        </ul>
+      </div>
+      <div>
+        <h4>주요 결과물</h4>
+        <ul>
+          <li>평균 지불의사금액 (WTP)</li>
+          <li>총 사회적 가치 (WTP × 대상인구)</li>
+          <li>지불의사에 영향을 주는 요인 분석</li>
+        </ul>
+      </div>
+    </div>
+    <p class="spec-tags"><span>예비타당성조사</span><span>환경가치 평가</span><span>공공요금 타당성</span></p>
+  </article>
+
+  <article class="spec reveal">
+    <div class="spec-head">
+      <span class="spec-code">Delphi</span>
+      <div>
+        <h3>전문가 합의법<small>Delphi Method</small></h3>
+      </div>
+    </div>
+    <div class="spec-body">
+      <div>
+        <h4>활용 분야</h4>
+        <ul>
+          <li>데이터가 부족한 미래 예측 주제를 다룰 때</li>
+          <li>그 분야를 잘 아는 전문가의 판단이 꼭 필요할 때</li>
+          <li>소수 의견에 좌우되지 않는 결론이 필요할 때</li>
+        </ul>
+      </div>
+      <div>
+        <h4>주요 결과물</h4>
+        <ul>
+          <li>최종 합의된 전망·판단치</li>
+          <li>전문가 간 의견 일치도</li>
+          <li>라운드별 의견 변화와 근거</li>
+        </ul>
+      </div>
+    </div>
+    <p class="spec-tags"><span>기술·산업 전망</span><span>정책 방향 설정</span><span>리스크 우선순위</span></p>
+  </article>
+</div>
+
+<h3 class="minor-h story-h">구현 범위 한눈에 보기</h3>
+<div class="spec-table-wrap">
+  <table class="spec-table">
+    <caption>방법론별 구현 범위</caption>
+    <thead>
+      <tr><th>방법론</th><th>응답 화면</th><th>실시간 처리</th><th>분석 출력</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><b>CE</b> 선택실험법</td><td>속성-수준 프로파일 선택 세트</td><td>세트 순서 무작위화</td><td>더미변수 Long Format</td></tr>
+      <tr><td><b>AHP</b> 쌍대비교법</td><td>9점 척도 쌍대비교</td><td>응답 중 CR 피드백</td><td>기준별 가중치 · 우선순위</td></tr>
+      <tr><td><b>CVM</b> 조건부가치측정</td><td>제시금액 수락 여부</td><td>응답자별 금액 균등 배분</td><td>DBDC 분기 Long Format</td></tr>
+      <tr><td><b>Delphi</b> 전문가 합의</td><td>라운드별 재응답 화면</td><td>통계 요약 자동 표시</td><td>라운드별 의견 수렴 추적</td></tr>
+      <tr><td><b>Custom</b> 그 외</td><td colspan="3">설계서 기준으로 협의 후 구현 — 컨조인트, BWS, 순위형 배분, 실험 처치군 무작위 배정, 기관 고유 양식 등</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="callout reveal">
+  <h3>연구계획서 단계에서 먼저 상의해 주세요</h3>
+  <p>
+    문항 설계를 마친 뒤보다 방법론을 정하는 단계에서 함께 검토할 때, 필요한 표본 수와 설계 효율이 크게 달라집니다.
+    설계서 초안만 보내주셔도 구현 가능 여부와 적정 표본 규모를 정리해 회신드립니다.
+  </p>
+  <a class="btn btn-primary" href="/?act=info.page&pcode=kdw_contact">방법론 자문 요청</a>
+</div>
+</div></section>
+
+
+
+						

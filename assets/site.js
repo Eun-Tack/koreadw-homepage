@@ -215,9 +215,94 @@
     });
   }
 
-  /* ---------- 연혁 분류 필터 ----------
-     분류 버튼을 누르면 해당 항목만 남긴다. 항목이 하나도 없는 연도는 통째로 감춘다. */
+  /* ---------- 연혁 ----------
+     화면에 들어 있는 글은 '연도'와 '한 줄짜리 항목'뿐이다.
+
+         <h4>2026</h4>
+         <p>10.12 [협약] 한국보훈진흥회 업무협약 체결 | 설명 | 사진파일</p>
+
+     고객이 관리자에서 이 한 줄만 더하면 되도록, 배지 · 세로 줄기 · 분류
+     버튼은 여기서 만든다. 분류 머리표는 공지사항 제목에 쓰는 [소식] 과
+     같은 방식이라 따로 익힐 것이 없다. */
+  var TL_LABEL = {
+    "인증": "인증 · 선정", "협약": "협약 · 위촉",
+    "언론": "언론 보도", "활동": "대외 활동", "사내": "사내"
+  };
+  var TL_ORDER = ["인증", "협약", "언론", "활동", "사내"];
+
+  function buildTimeline(tl) {
+    if (tl.dataset.built === "1") return;
+    var base = tl.dataset.certBase || "";
+    var kids = Array.prototype.slice.call(tl.children);
+    if (!kids.length || kids[0].tagName !== "H4") return;
+
+    var years = [], cur = null, seen = {};
+    kids.forEach(function (el) {
+      if (el.tagName === "H4") {
+        cur = { year: el.textContent.trim(), items: [] };
+        years.push(cur);
+        return;
+      }
+      if (!cur || el.tagName !== "P") return;
+      var raw = el.textContent.trim();
+      if (!raw) return;
+      var parts = raw.split("|");
+      var head = parts[0].trim();
+      var m = head.match(/^(\S+)\s*(?:\[\s*([^\]]+?)\s*\])?\s*([\s\S]*)$/);
+      if (!m) return;
+      var kind = (m[2] || "사내").trim();
+      if (!TL_LABEL[kind]) kind = "사내";
+      cur.items.push({
+        when: m[1], kind: kind, title: (m[3] || "").trim(),
+        desc: (parts[1] || "").trim(), img: (parts[2] || "").trim()
+      });
+      seen[kind] = 1;
+    });
+    if (!years.length) return;
+
+    function esc(s) {
+      return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+    var html = "";
+    years.forEach(function (y) {
+      html += '<section class="tl-year reveal" data-year="' + esc(y.year) + '">'
+            + '<h3 class="tl-y"><b>' + esc(y.year) + "</b><i>년</i></h3><ul>";
+      y.items.forEach(function (it) {
+        var body = '<span class="tl-title">' + esc(it.title) + "</span>"
+                 + (it.desc ? '<span class="tl-desc">' + esc(it.desc) + "</span>" : "");
+        var inner = it.img
+          ? '<button type="button" class="tl-item is-link" data-cert="'
+            + esc(base + it.img) + '" data-cert-label="' + esc(it.title) + '">' + body + "</button>"
+          : '<span class="tl-item">' + body + "</span>";
+        html += '<li data-kind="' + esc(it.kind) + '">'
+              + '<span class="tl-when">' + esc(it.when) + "</span>"
+              + '<span class="tl-kind k-' + esc(it.kind) + '">' + esc(TL_LABEL[it.kind]) + "</span>"
+              + inner + "</li>";
+      });
+      html += "</ul></section>";
+    });
+    tl.innerHTML = html;
+    tl.classList.add("reveal-group");
+    tl.dataset.built = "1";
+
+    var bar = document.createElement("div");
+    bar.className = "tl-filter";
+    bar.setAttribute("role", "group");
+    bar.setAttribute("aria-label", "분류별 보기");
+    var chips = '<button type="button" class="tl-chip is-on" data-kind="all" aria-pressed="true">전체</button>';
+    TL_ORDER.forEach(function (k) {
+      if (seen[k]) {
+        chips += '<button type="button" class="tl-chip" data-kind="' + k
+               + '" aria-pressed="false">' + TL_LABEL[k] + "</button>";
+      }
+    });
+    bar.innerHTML = chips;
+    tl.parentNode.insertBefore(bar, tl);
+  }
+
+  /* 분류 버튼을 누르면 해당 항목만 남긴다. 항목이 없는 연도는 통째로 감춘다. */
   function initTimeline(scope) {
+    Array.prototype.forEach.call(scope.querySelectorAll("[data-timeline]"), buildTimeline);
     Array.prototype.forEach.call(scope.querySelectorAll("[data-timeline]"), function (tl) {
       var bar = tl.parentElement.querySelector(".tl-filter");
       if (!bar || bar.dataset.bound === "1") return;
@@ -250,10 +335,12 @@
     scope = scope || document;
     initNav(scope);
     initDeck(scope);
+    // 연혁은 글줄에서 화면을 먼저 만들어 둔다.
+    // 그래야 리빌 관찰과 자격증 팝업이 새로 생긴 요소까지 집는다.
+    initTimeline(scope);
     initReveal(scope);
     initHeader();
     initCert(scope);
-    initTimeline(scope);
     // Keep the current subsection visible without moving the vertical scroll.
     Array.prototype.forEach.call(scope.querySelectorAll(".lnb-in"), function (nav) {
       if (!nav.offsetWidth) return;

@@ -1,0 +1,319 @@
+<script type="text/javascript" src="/common/js/sky.form.checker.js"></script>
+<script type="text/javascript">
+	// 2. init
+	function init() {
+		if($id('submit1')){
+			$l($id('submit1'), 'click', onSubmit);
+		}
+		if($id('btn_good')){
+			$l($id('btn_good'), 'click', onGoodClick);
+		}
+	}
+
+	// 1. event listener
+	$load(init);
+	
+	// submit
+	function onSubmit(evt, obj) {
+		Event.stop(evt);
+		var bbs_mode = obj.getAttribute('bbs_mode');
+		var act = obj.getAttribute('act');
+		submitForm(bbs_mode, act);
+	}
+
+	function submitForm(bbs_mode, act) {
+		var form = document.forms['dataForm'];			
+
+		if (act != null && typeof act != 'undefined') {
+			form.elements['act'].value = act;
+		}
+		if (bbs_mode != null && typeof bbs_mode != 'undefined') {
+			form.elements['bbs_mode'].value = bbs_mode;
+		}
+
+		if (typeof form.Checker != 'undefined') {
+			form.Checker.doSubmit();
+		} else {
+			form.submit();
+		}
+	}
+
+	function onGoodClick(evt, obj){
+		Event.stop(evt);
+		if(confirm('해당 글을 추천하시겠습니까?')){
+			location.href="{url_good}";
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * SNS 스크랩
+	 * 2013.01.31 철형
+	 */
+	function sendYozmDaum(prefix, link) {
+		var url = 'http://yozm.daum.net/api/popup/prePost?link=' + encodeURIComponent(link) + '&prefix=' + encodeURIComponent(prefix);
+		var yozm = window.open(url, 'yozm', 'width=466, height=356');
+		yozm.focus();
+	}
+	
+	function sendFaceBook(message, url) {
+		var url = 'http://www.facebook.com/sharer.php?u=' + url + '&t=' + encodeURIComponent(message);
+		var facebook = window.open(url, 'facebook', '');
+		facebook.focus();
+	}
+	
+	function sendMe2Day(message, url, tag) {
+		var url = 'http://me2day.net/posts/new?new_post[body]=' + encodeURIComponent(message) + ' ' + encodeURIComponent(url) + '&new_post[tags]=' + encodeURIComponent(tag);
+		var me2day = window.open(url, 'me2Day', '');
+		me2day.focus();
+	}
+	
+	function sendTwitter(text, url) {
+		var url = 'http://twitter.com/share?url=' + encodeURIComponent(url)  + '&text=' + encodeURIComponent(text);
+		var twitter = window.open(url, 'twitter', '');
+		twitter.focus();
+	}		
+
+</script>
+<link href="/images/basic_blue/board/board_new.css" type="text/css" rel="stylesheet">
+<style type="text/css">
+.site_navi { width:100%; text-align:right; font-size:11px; color:#838383; border-bottom:1px solid #ddd; padding-bottom:7px;}
+.contents_sub { width:100%; margin:0; }
+.contents_sub table {width:100%;}
+
+.board_view {border-top:1px solid #464646; }
+.board_title { font:bold 14px dotum; color:#000; }
+.bold_blue { font:bold 12px dotum; color:#7ab5df; }
+.board_view table { border-collapse:collapse; }
+.board_view th, .board_view td {height:25px; text-align:left;padding:8px;}
+.board_view th { border-bottom:1px solid #dadada; color:#464646; font-weight:600; background-color:#f2f2f2; }
+.board_view td { border-bottom:1px solid #dadada; color:#797979; }
+
+.board_view_area { border:1px solid #dadada; background-color:#f2f2f2; height:100px; width:500px; }
+.board_view_input { border:1px solid #dadada; background-color:#f2f2f2; height:12px; width:500px; }
+.board_view_input_mail { border:1px solid #dadada; background-color:#f2f2f2; height:12px; width:100px; }
+.board_view_input_number { border:1px solid #dadada; background-color:#f2f2f2; height:12px; width:30px; }
+.board_view td.tip { color:#7ab5df; }
+
+.coment_input { border:1px solid #bbb; height:20px; width:80px; }
+.coment_input_text { border:1px solid #bbb; width:100%; height:60px; }
+
+.page {text-align:right; font:11px verdana; padding:5px}
+.view_box {border:1px solid #d2d2d2; padding:10px;}
+.veiw_box_td {border-bottom:1px dotted #d2d2d2; padding:5px;}
+.veiw_box_td2 { padding:5px;}
+.coment_re {font:11px dotum; padding:5px; background-color:#fafafa;border-bottom:1px dotted #d2d2d2;word-wrap: break-word; word-break: break-all;}
+.coment_re_txt {background-color:#fafafa;line-height:15px; padding:5px 0 0 0}
+.coment_re_txt img {padding-top:2px;}
+
+.upload_db_wrap td {border-bottom:0}
+.upload_db_wrap div {padding:3px 0 0 0}
+
+/* Button */
+.btn_write { display:inline-block; background:#5f5f5f; border:1px solid #404144;padding:6px 17px 7px 17px;}
+.btn_list  { display:inline-block; background:#fcfcfc; border:1px solid #bcbcbc;padding:6px 17px 7px 17px;}
+.btn_re {display:inline-block; width:100px; height:62px; text-align:center; background:url( /images/basic_blue/board/btn_comment_bg.gif) no-repeat;}
+.btn_txt01 {color:#fff; font-weight:600;}
+.btn_txt02 {color:#1f1f1f; font-weight:600;}
+
+/* Align*/
+.btn_area {overflow:hidden; margin:10px 0;}
+.align_left {float:left; }
+.align_right {float:right;}
+.align_right button {}
+.align_left button {}
+.tR {text-align:right;}
+.pR10 {padding-right:10px;}
+
+.next_data_area{margin-top: 20px; padding-top: 5px; padding-left: 8px; text-align: left;border-top: 1px solid #dadada;}
+.prev_data_area{margin-top: 10px;margin-bottom: 10px; padding-top: 5px;padding-bottom: 5px; padding-left: 8px; text-align: left;border-bottom: 1px solid #dadada;}
+.next_data_area .b{font-weight: bold;}
+.prev_data_area .b{font-weight: bold;}
+
+.txt_blue { font-weight:bold; color:#7ab5df;}
+.txt_orange { font:bold 12px verdana; color:#ff7e00;}
+.bg01 {background-color:#fafafa;}
+
+.board-view-table { table-layout: fixed; }
+.board-view-table img.autosize { max-width: 100% !important; max-height: 100%; width: auto; height: auto; }
+</style>
+
+<!-- 상단 디자인 -->
+{dataSetup.bbss_header_html}
+
+<form name="dataForm" action="./" method="post">
+<input type="hidden" name="act" value="{act}">
+<input type="hidden" name="bbs_mode" value="comment_write">
+<input type="hidden" name="ch" value="{ch}">
+<input type="hidden" name="sc" value="{sc}">
+<input type="hidden" name="ss" value="{ss}">
+<input type="hidden" name="page" value="{page}">
+<input type="hidden" name="bbs_code" value="{bbs_code}">
+<input type="hidden" name="bbs_seq" value="{bbs_seq}">
+<input type="hidden" name="category_code" value="{category_code}">
+
+<div class="contents_sub">	
+	<!--게시판-->
+	<div class="board_view">
+		<table class="board-view-table">
+			<tr>
+				<th width="10%">제목</th>
+				<td width="60%">{?dataSetup.bbss_use_cate}<strong>[{cate_name}]</strong>{/} {bbs_title}</td>
+				<th width="10%">등록일</th>
+				<td width="20%">{bbs_reg_date}</td>
+			</tr>
+			<tr>
+				<th >글쓴이</th>
+				<td >{bbs_name}</td>
+				<th >조회{?dataSetup.bbss_use_good}/추천{/}</th>
+				<td >{bbs_hit}{?dataSetup.bbss_use_good}/{bbs_good}{/}</td>
+			</tr>
+			<tr>
+				<td colspan="4" height="200" valign="top" style="padding:20px; line-height:160%" class="content">
+					{bbs_content}
+					{?dataSetup.bbss_use_sns_icon}
+					<div style="margin-top:50px;text-align:right;">
+						<a href="javascript:;" onclick="sendTwitter('{=addslashes(htmlspecialchars(bbs_title))}', '{shorten_url_result.id}');" title="트위터"><img src="/images/default/common/icon_twitter.gif" title="트위터" /></a>
+						<a href="javascript:;" onclick="sendFaceBook('{=addslashes(htmlspecialchars(bbs_title))}', '{shorten_url_result.id}');" title="페이스북"><img src="/images/default/common/icon_facebook.gif" title="페이스북" /></a>						
+					</div>
+					{/}					
+				</td>
+			</tr>
+			{?dataFileList}
+			<!-- 파일첨부 -->
+			<tr>
+				<td colspan="4" style="padding:5px;" class="line_bottom">
+					<table class="upload_db_wrap">
+						<tr>
+							<td width="12%" class="fs_11 fc_black b">파일첨부 : </td>
+							<td width="*">
+								<div id="upload_db_list">
+								{@FILE}
+								<div>
+									{_number}. <a href="{.url_download}" target="download"><font class="fs_11 b">{.bbs_file_name}</font> <img src="/images/basic_blue/board/btn_file_down.png" alt="다운받기" align="absmiddle"></a> <font class="fs_11">다운로드횟수[{.bbs_file_down_count}]</font>
+								</div>
+								{/}
+								</div>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			{/}
+		</table>
+		{?dataSetup.bbss_use_cmt}
+		<table>
+			{@CMT}
+			<tr>
+				<td class="coment_re" width="20%">
+					<strong>{.bbs_cmt_name}</strong> ({.bbs_cmt_reg_date})
+					<div class="coment_re_txt">
+					{.bbs_cmt_content} {?.auth_cmt_delete}<a href="{.url_cmt_delete}"><img src="/images/basic_blue/board/icon_del.gif" alt="삭제" /></a>{/}
+					</div>					
+				</td>
+			</tr>
+			{/}
+		</table>
+		{?auth_cmt}
+		<table>
+			<tr>
+				<td width="94%" class="coment_re">
+					{?!MEMBER}
+					글쓴이 <input name="bbs_cmt_name" type="text" class="coment_input" maxlength="5" />&nbsp;&nbsp;
+					비밀번호 <input name="bbs_cmt_passwd" type="password" class="coment_input pR10"/>&nbsp;&nbsp;
+					{:}
+					글쓴이 <input name="bbs_cmt_name" value="{USER_NAME}" type="text" class="coment_input" readonly/>
+					{/}
+					{?dataSetup.bbss_use_captcha_cmt}
+					<table>
+						<tr>
+							<td><img src="?act=board.board_captcha" border=1></td>
+							<td>
+								보이는 순서대로 문자를 모두 입력해 주세요<br>
+								<input type="text" name="img_auth_code" value="" class="coment_input" onkeyup="javascript:this.value=this.value.toUpperCase();">
+							</td>
+						</tr>
+					</table>
+					{/}
+				</td>
+				<td width="6%" class="bg01"></td>
+			</tr>
+			<tr>
+				<td class="bg01">
+					<textarea name="bbs_cmt_content" cols="" rows="" class="coment_input_text"></textarea>
+					{?bbss_cmt_length>0}* {bbss_cmt_length}자 제한입니다.{/}
+				</td>
+				<td align="right" class="bg01"><a id="submit1"><button type="submit" class="btn_re btn_txt01">댓글등록</button></a></td>
+			</tr>
+		</table>
+			{/}
+		{/}
+	</div>
+
+	<div class="btn_area">
+		<div class="align_left">			
+			<button type="button" class="btn_list btn_txt02" style="cursor: pointer;" onclick="go_url('{url_list}')">목록</button>
+		</div>
+		<div class="align_right">
+			{?dataSetup.bbss_use_good && MEMBER}<a id="btn_good"><button type="button" class="btn_list btn_txt02">추천</button></a>{/}
+			{?auth_reply}				
+				<button type="button" class="btn_list btn_txt02" style="cursor: pointer;" onclick="go_url('{url_reply}')">답변</button>
+			{/}
+			{?auth_write}				
+				<button type="button" class="btn_list btn_txt02" style="cursor: pointer;" onclick="go_url('{url_modify}')">수정</button>
+				<button type="button" class="btn_list btn_txt02" style="cursor: pointer;" onclick="go_url('{url_delete}')">삭제</button>
+				<button type="button" class="btn_write btn_txt01" style="cursor: pointer;" onclick="go_url('{url_write}')">쓰기</button>
+			{/}			
+		</div>	
+	</div>
+
+	<!--//게시판-->
+	<div class="next_data_area">
+			<span class="b">다음글 | </span>
+			{?next_data.bbs_seq}
+			<a href="{next_data.url_view}">{next_data.bbs_title}</a>
+			{?next_data.bbs_cmt}<span class="coment_number">({next_data.bbs_cmt})</span>{/}
+			{?next_data.bbs_file}<img src="/images/basic_blue/board/icon_file.gif" alt="FILE" />{/}
+			{?next_data.bbs_is_secret}<img src="/images/basic_blue/board/icon_s.gif" alt="비밀" />{/}				
+			{:}
+			다음글이 없습니다.
+			{/}
+	</div>
+	<div class="prev_data_area">
+			<span class="b">이전글 | </span>
+			{?prev_data.bbs_seq}
+				<a href="{prev_data.url_view}">{prev_data.bbs_title}</a>
+				{?prev_data.bbs_cmt}<span class="coment_number">({prev_data.bbs_cmt})</span>{/}
+				{?prev_data.bbs_file}<img src="/images/basic_blue/board/icon_file.gif" alt="FILE" />{/}
+				{?prev_data.bbs_is_secret}<img src="/images/basic_blue/board/icon_s.gif" alt="비밀" />{/}
+			{:}
+				이전글이 없습니다.
+			{/}
+	</div>
+</div>
+</form>
+<iframe name="download" style="display:none;"></iframe>
+<!-- 하단 디자인 -->
+{dataSetup.bbss_footer_html}
+{form_script}
+<script type="text/javascript">
+	function go_url(url){
+		window.location.href = url;
+	}
+	
+	// 이미지 사이즈 처리 ( 최대 )
+	jQuery(function() {
+		var $_table = jQuery('.board-view-table .content');
+		var tableWidth = $_table.width();
+		$_table.find('img').each(function() {
+			var $_this = jQuery(this);
+			if ( $_this.width() > tableWidth ) {
+				$_this.addClass('autosize');
+			}
+		});
+	});
+</script>
+
+
+		

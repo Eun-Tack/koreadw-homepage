@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="ko">
+<head>
+<title>{_SITE.site_browser_title}</title>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<link rel="shortcut icon" href="{_SITE.site_favicon}" />
+<!-- DEFAULT HEAD AREA : 빌더 기본 정보입니다. 해당 내용 삭제 시 문제가 발생할 수 있습니다. -->
+{_DESIGN.designp_doc_head}
+<!-- /DEFAULT HEAD AREA -->
+<!-- user common css -->
+<link href="/data/tpl/common.css" type="text/css" rel="stylesheet">
+<!-- /user common css -->
+<!-- user js -->
+<script type="text/javascript" src="/data/tpl/common.js"></script>
+<!-- /user js --> 
+<style type="text/css">
+#visual {width:100%; background:url(/images/kor01-14-0033/main/main_bg.jpg) no-repeat top center;}
+.visual_main {width:980px;height:356px; margin:0 auto;}
+#container {width:980px;margin:0 auto;}
+</style>
+</head>
+    
+<body style="{_DESIGN.designp_base_bg_style};">
+<div id="wrapper">
+	<!--[[AREA_TOP_START]]-->
+	<div id="header">
+		<div id="logo">{{L_SITE_LOGO}}</div>		
+		<div id="topmenu">{{L_TOP_MENU}}</div>
+		<div id="login">{{L_TOP_GNB}}</div>
+	</div>
+	<div id="visual">
+		{{L_MAIN_IMAGE}}
+	</div>
+	<!--[[AREA_TOP_END]]-->
+	<!--[[AREA_BODY_START]]-->
+	<div id="container">
+		{{BODY}}
+	</div>
+	<!--[[AREA_BODY_END]]-->
+	<!--[[AREA_BOTTOM_START]]-->
+	<div id="footer">
+		{{L_FOOTER}}
+	</div>
+	<!--[[AREA_BOTTOM_END]]-->
+</div>
+</body>
+</html>
+
+
+
+

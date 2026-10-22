@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="ko">
+<head>
+<title>{_SITE.site_browser_title}</title>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<link rel="shortcut icon" href="{_SITE.site_favicon}" />
+<!-- DEFAULT HEAD AREA : 빌더 기본 정보입니다. 해당 내용 삭제 시 문제가 발생할 수 있습니다. -->
+{_DESIGN.designp_doc_head}
+<!-- /DEFAULT HEAD AREA -->
+<!-- user common css -->
+<link href="/data/tpl/common.css" type="text/css" rel="stylesheet">
+<!-- /user common css -->
+<!-- user js -->
+<script type="text/javascript" src="/data/tpl/common.js"></script>
+<!-- /user js --> 
+<style type="text/css">
+#s_visual {width:100%; background:url(/images/kor01-14-0033/sub/sub_bg.jpg) no-repeat top center;}
+#container{width:980px; margin:27px auto 40px; *zoom:1px;}
+#container:after {content:'';display:block;clear:both;}
+#leftmenu {float:left; width:160px; margin-top:15px;}
+#contents {float:right; width:770px;}
+
+.visual_sub {width:980px;height:217px; margin:0 auto;}
+.sub {width:100%;}
+.left_banner {margin-top:42px;}
+#contents .content {width:100%;}
+#contents .con_title{margin-bottom:40px;}
+#contents .con_title p {text-align:right;font-size:11px;}
+#contents .con_title p img {vertical-align:middle;}
+#contents .con_txt {width:100%;}
+/*sub*/
+#contents .map {margin-bottom:35px;}
+</style>
+</head>
+    
+<body style="{_DESIGN.designp_base_bg_style};">
+<div id="wrapper">
+	<!--[[AREA_TOP_START]]-->
+	<div id="header">
+		<div id="logo">{{L_SITE_LOGO}}</div>		
+		<div id="topmenu">{{L_TOP_MENU}}</div>
+		<div id="login">{{L_TOP_GNB}}</div>
+	</div>
+	<div id="s_visual">
+		{{L_SUB_IMAGE}}
+	</div>
+	<!--[[AREA_TOP_END]]-->	
+	<div id="container">
+		<!--[[AREA_LEFT_START]]-->
+		<div id="leftmenu">
+			{{L_LEFT_MENU}}
+			{{L_LEFT_BANNER}}
+		</div>
+		<!--[[AREA_LEFT_END]]--> 
+		<!--[[AREA_BODY_START]]-->
+		<div id="contents">{{BODY}}</div>
+		<!--[[AREA_BODY_END]]-->
+	</div>
+	<!--[[AREA_BOTTOM_START]]-->
+	<div id="footer">
+		{{L_FOOTER}}
+	</div>
+	<!--[[AREA_BOTTOM_END]]-->
+</div>
+</body>
+</html>
+
+
+
+

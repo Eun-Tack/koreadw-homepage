@@ -1,0 +1,49 @@
+@charset "utf-8";
+
+/* Font */
+@font-face {
+    font-family:'NanumGothic';
+    src: url('/tpl/webfont/NanumGothic.eot');
+    src: url('/tpl/webfont/NanumGothic.eot?#iefix') format('embedded-opentype'),
+         url('/tpl/webfont/NanumGothic.woff') format('woff'),
+         url('/tpl/webfont/NanumGothic.ttf') format('truetype');   
+}
+
+/*Defalut */
+* {margin:0; padding:0}
+body, td, th, div, span, input, select, textarea { font-family: 'NanumGothic','나눔고딕'; font-size: 12px;color:#7c7b7b; line-height:16px; }
+body { height:100%; overflow-y:scroll; *overflow-y:; -webkit-text-size-adjust:none;}
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,form,fieldset,p,button,span,table,th,td,textarea {margin:0;padding:0;}
+h1,h2,h3,h4,h5,h6 {font-weight:normal;}
+ul,ol,dl,dd,dt,li {list-style-type:none;}
+img,th,td,fieldset,iframe { border:0; }
+img {border:0;vertical-align:top;outline:none}
+table,tbody,tfoot,thead,tr,th,td {border-collapse:collapse;}
+textarea { border:1px solid #d1d1d1; height:120px; }
+input,select,label { vertical-align:middle; }
+
+/* Link */
+a:link    { color:#7d7d7d; text-decoration: none; }
+a:visited { text-decoration: none; }
+a:hover   { color:#0b96d4; text-decoration: underline;  }
+a:active  { color:#0b96d4; text-decoration: none;}
+
+/* Layout */
+#wrapper{width:100%; background:url(/images/kor01-14-0033/common/top_bg.gif) repeat-x 0 0;}
+#header {position:relative; width:980px; height:103px; margin:0 auto;*zoom:1px;}
+#header:after {content:'';display:block;clear:both;}
+#footer {width:100%; border-top:1px solid #dcdcdc; background-color:#f6f6f6;}
+
+#logo {float:left;width:121px;height:39px; margin-top:10px;}
+#topmenu {float:right; margin-top:48px;}
+#login {position:absolute;right:0; top:14px; height:7px;}
+#login a {padding:0 7px; background:url(/images/kor01-14-0033/common/topgnb_line.gif) no-repeat 0 0;}
+#login a:first-child {background:none;}
+#login a:last-child {padding-right:0;}
+.tt{
+color: #222;
+    font-size: 24px;
+    font-weight: bold;}
+
+
+		
