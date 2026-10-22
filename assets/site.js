@@ -215,6 +215,17 @@
     });
   }
 
+  /* ---------- 주요 클라이언트 ----------
+     그룹 제목 옆의 기관 수를 직접 센다. 한 곳을 더하거나 뺐을 때
+     숫자를 같이 고치지 않아 어긋나는 일이 없도록. */
+  function initClients(scope) {
+    Array.prototype.forEach.call(scope.querySelectorAll(".client-group"), function (g) {
+      var n = g.querySelectorAll(".client-grid > li").length;
+      var slot = g.querySelector(".client-group-title span");
+      if (slot && n) slot.textContent = String(n);
+    });
+  }
+
   /* ---------- 연혁 ----------
      화면에 들어 있는 글은 '연도'와 '한 줄짜리 항목'뿐이다.
 
@@ -338,6 +349,7 @@
     // 연혁은 글줄에서 화면을 먼저 만들어 둔다.
     // 그래야 리빌 관찰과 자격증 팝업이 새로 생긴 요소까지 집는다.
     initTimeline(scope);
+    initClients(scope);
     initReveal(scope);
     initHeader();
     initCert(scope);

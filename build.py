@@ -127,7 +127,9 @@ def clients_html():
     out = ['<div class="clients">']
     for title, items in load_clients():
         out.append('<div class="client-group reveal">')
-        out.append('<h3 class="client-group-title">%s<span>%d</span></h3>' % (esc(title), len(items)))
+        # 기관 수는 site.js 가 직접 센다. 고객이 한 곳을 더했는데 숫자를
+        # 같이 고치지 않아 어긋나는 일을 막는다.
+        out.append('<h3 class="client-group-title">%s<span></span></h3>' % esc(title))
         out.append('<ul class="client-grid">')
         for num, name in items:
             out.append(
