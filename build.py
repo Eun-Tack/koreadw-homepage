@@ -1041,26 +1041,36 @@ page("people", "company/people.html", "company", "주요 연구진 프로필",
      sub="조사와 분석을 수행하는 연구진을 소개합니다.")
 
 def office_maps():
+    """오시는 길.
+
+       지도를 화면에 심지 않는다. 이유가 셋이다.
+       · 구글 지도 틀을 넣었더니 페이지가 뜨는 데 6.3초가 걸렸다.
+       · 후이즈는 HTTP 로만 열리고 지도 API 키도 없다.
+       · 대구 지점의 건물 좌표를 확인할 수 없었다(지도 데이터에 번지가
+         없어 검색 결과가 5km 넘게 흩어진다). 잘못 찍힌 핀은 없느니만 못하다.
+
+       대신 네이버 지도 · 카카오맵으로 바로 여는 단추를 둔다. 주소로
+       찾는 일은 그쪽이 정확하고, 길찾기도 앱 안에서 바로 된다."""
     offices = (
-        ("서울 본사", SITE["addr_seoul"], SITE["tel"]),
-        ("대구 지점", SITE["addr_daegu"], SITE["tel_daegu"]),
+        ("서울 본사", "SEOUL", SITE["addr_seoul"], SITE["tel"]),
+        ("대구 지점", "DAEGU", SITE["addr_daegu"], SITE["tel_daegu"]),
     )
     parts = ['<div class="office-maps">']
-    for name, address, phone in offices:
+    for name, roman, address, phone in offices:
         query = quote(address.split(",")[0])
         parts.append("""
 <article class="office-map">
-  <div class="office-map-info">
-    <h2>%s</h2>
-    <p class="office-map-address">%s</p>
-    <a class="office-map-phone" href="tel:%s">%s</a>
-    <div class="map-actions">
-      <a class="btn btn-primary" href="https://map.naver.com/p/search/%s" target="_blank" rel="noopener noreferrer">네이버 지도<span class="sr-only"> (새 창)</span></a>
-      <a class="btn btn-ghost" href="https://www.google.com/maps/dir/?api=1&amp;destination=%s" target="_blank" rel="noopener noreferrer">길찾기<span class="sr-only"> (새 창)</span></a>
-    </div>
+  <h2>%s<span>%s</span></h2>
+  <p class="office-map-address">%s</p>
+  <dl class="office-map-lines">
+    <div><dt>전화</dt><dd><a href="tel:%s">%s</a></dd></div>
+    <div><dt>팩스</dt><dd>%s</dd></div>
+  </dl>
+  <div class="map-actions">
+    <a class="btn btn-primary" href="https://map.naver.com/p/search/%s" target="_blank" rel="noopener noreferrer">네이버 지도<span class="sr-only"> (새 창)</span></a>
+    <a class="btn btn-ghost" href="https://map.kakao.com/?q=%s" target="_blank" rel="noopener noreferrer">카카오맵<span class="sr-only"> (새 창)</span></a>
   </div>
-  <iframe class="office-map-frame" title="%s 위치 지도" src="https://www.google.com/maps?q=%s&amp;z=16&amp;output=embed&amp;hl=ko" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
-</article>""" % (name, address, phone, phone, query, query, name, query))
+</article>""" % (name, roman, address, phone, phone, SITE["fax"], query, query))
     parts.append("</div>")
     return "".join(parts)
 
