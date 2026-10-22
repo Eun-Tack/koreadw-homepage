@@ -241,6 +241,18 @@
   };
   var TL_ORDER = ["인증", "협약", "언론", "활동", "사내"];
 
+  /* 고객이 '10.12' '10월 12일' '2026.10.12' 어떻게 쓰든 화면에는 '10.12' 로
+     보이게 맞춘다. 날짜칸이 좁아 긴 표기는 두 줄로 접히기 때문이다.
+     숫자가 없으면(예: '상시') 쓴 그대로 둔다. */
+  function tlDate(s) {
+    var n = s.match(/\d+/g);
+    if (!n || !n.length) return s.trim();
+    if (n.length >= 3 && n[0].length === 4) n = n.slice(1);   // 연도는 버린다
+    function p(x) { return x.length < 2 ? "0" + x : x; }
+    if (n.length >= 2) return p(n[0]) + "." + p(n[1]);
+    return p(n[0]);
+  }
+
   function buildTimeline(tl) {
     if (tl.dataset.built === "1") return;
     var base = tl.dataset.certBase || "";
@@ -259,12 +271,25 @@
       if (!raw) return;
       var parts = raw.split("|");
       var head = parts[0].trim();
-      var m = head.match(/^(\S+)\s*(?:\[\s*([^\]]+?)\s*\])?\s*([\s\S]*)$/);
-      if (!m) return;
-      var kind = (m[2] || "사내").trim();
-      if (!TL_LABEL[kind]) kind = "사내";
+
+      /* 날짜는 분류 대괄호 앞의 전부로 본다. 고객이 기존 홈페이지에서
+         '06월 01일' 처럼 써 왔기 때문에 '10.12' 만 받으면 깨진다. */
+      var when, kind, title;
+      var m = head.match(/^\s*([\s\S]*?)\s*\[\s*([^\]]+?)\s*\]\s*([\s\S]*)$/);
+      if (m) {
+        when = m[1]; kind = m[2]; title = m[3];
+        if (!TL_LABEL[kind]) {          // 모르는 분류면 글자를 버리지 않는다
+          title = "[" + kind + "] " + title;
+          kind = "사내";
+        }
+      } else {
+        var m2 = head.match(/^\s*(\S+)\s+([\s\S]*)$/);
+        when = m2 ? m2[1] : "";
+        title = m2 ? m2[2] : head;
+        kind = "사내";
+      }
       cur.items.push({
-        when: m[1], kind: kind, title: (m[3] || "").trim(),
+        when: tlDate(when), kind: kind, title: title.trim(),
         desc: (parts[1] || "").trim(), img: (parts[2] || "").trim()
       });
       seen[kind] = 1;
