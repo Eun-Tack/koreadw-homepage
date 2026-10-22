@@ -215,6 +215,121 @@
     });
   }
 
+  /* ---------- 첫 화면 '최근 소식' ----------
+     화면에 박혀 있는 목록은 빌드할 때의 사본이다. 공지 목록을 다시 읽어
+     최신으로 갈아끼우므로 고객이 글을 올리면 첫 화면이 바로 따라간다.
+     읽어오지 못하면 사본이 그대로 남는다(자바스크립트가 막혀도 같다).
+
+     '상단 노출'(후이즈 게시판의 '공지글 여부')로 표시한 글이 먼저 온다.
+     공지 목록에서는 번호 자리에 '공지' 라고 나오므로 그것으로 가려낸다. */
+  var NEWS_KIND = {
+    "소식": "활동", "언론": "언론", "공지": "사내", "안내": "사내", "조사 안내": "협약"
+  };
+  var NEWS_MAX = 8;
+
+  function newsCard(it, base) {
+    var k = NEWS_KIND[it.kind] || "활동";
+    var a = document.createElement("a");
+    a.className = "news-card is-link";
+    a.href = it.href;
+    a.innerHTML = '<span class="news-kind k-' + k + '"></span>'
+                + '<span class="news-title"></span>'
+                + '<span class="news-when"></span>';
+    a.children[0].textContent = it.kind;
+    a.children[1].textContent = it.title;
+    a.children[2].textContent = it.when;
+    return a;
+  }
+
+  function parseNotices(doc, base) {
+    var out = [];
+    var links = doc.querySelectorAll("a[href*='bbs_seq'], .notice-list a");
+    for (var i = 0; i < links.length; i++) {
+      var a = links[i];
+      var row = a.closest("tr") || a.closest("li");
+      if (!row) continue;
+      /* 분류는 두 가지 모양으로 온다.
+         시연 사이트 - 제목 앞에 <span class="notice-tag">소식</span>
+         후이즈 게시판 - 제목 글자 안에 '[소식] ' */
+      var kind = "소식", title = "";
+      var tagEl = a.querySelector(".notice-tag");
+      if (tagEl) {
+        kind = tagEl.textContent.trim();
+        title = a.textContent.slice(tagEl.textContent.length);
+      } else {
+        title = a.textContent;
+      }
+      title = title.replace(/\s+/g, " ").trim();
+      if (!tagEl) {
+        var m = title.match(/^\[\s*([^\]]{1,8})\s*\]\s*([\s\S]+)$/);
+        if (m) { kind = m[1].trim(); title = m[2].trim(); }
+      }
+      if (title.length < 4) continue;
+      /* 날짜: 표 칸이나 <time> 에서 찾는다 */
+      var when = "";
+      var t = row.querySelector("time");
+      if (t) when = t.textContent.trim();
+      if (!when) {
+        var mm = row.textContent.match(/(20\d\d)[.\-](\d\d)[.\-](\d\d)/);
+        if (mm) when = mm[1] + ". " + mm[2] + "." + mm[3];
+      } else {
+        when = when.replace(/^(20\d\d)[.\-]/, "$1. ").replace(/-/g, ".");
+      }
+      /* 상단 노출: 우리 목록은 data-pin, 빌더 기본 목록은 번호칸에 '공지' */
+      var pin = row.getAttribute("data-pin") === "1"
+        || /(^|\s)공지(\s|$)/.test((row.querySelector("td") || {}).textContent || "");
+      var href = a.getAttribute("href") || "";
+      try { href = new URL(href, new URL(base, location.href)).href; } catch (e) {}
+      out.push({ kind: kind, title: title, when: when, href: href, pin: pin });
+    }
+    out.sort(function (x, y) { return (y.pin ? 1 : 0) - (x.pin ? 1 : 0); });
+    return out.slice(0, NEWS_MAX);
+  }
+
+  function initNews(scope) {
+    var box = scope.querySelector("[data-news]");
+    if (!box || box.dataset.done === "1") return;
+    box.dataset.done = "1";
+    var track = box.querySelector(".news-track") || box;
+    rollNews(box, track);                     // 사본만으로도 먼저 흐르게
+    var src = box.dataset.newsSrc;
+    if (!src || !window.fetch) return;
+    fetch(src, { credentials: "same-origin" })
+      .then(function (r) { return r.ok ? r.text() : null; })
+      .then(function (html) {
+        if (!html) return;
+        var doc = new DOMParser().parseFromString(html, "text/html");
+        var items = parseNotices(doc, src);
+        if (items.length < 2) return;
+        track.innerHTML = "";
+        items.forEach(function (it) { track.appendChild(newsCard(it, src)); });
+        rollNews(box, track, true);
+      })
+      .catch(function () { /* 못 읽으면 사본을 그대로 둔다 */ });
+  }
+
+  /* 소식이 천천히 흘러가게 한다. 손을 올리거나 글쇠로 짚으면 멈춘다.
+     '동작 줄이기' 를 켠 분에게는 움직이지 않고 그대로 보인다. */
+  function rollNews(box, track, again) {
+    var reduce = window.matchMedia
+      && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var cards = track.querySelectorAll(".news-card");
+    track.querySelectorAll(".is-copy").forEach(function (e) { e.remove(); });
+    box.classList.remove("is-rolling");
+    if (reduce || cards.length < 3) return;
+
+    /* 끊김 없이 이어지도록 한 벌을 더 붙인다 */
+    for (var i = 0; i < cards.length; i++) {
+      var c = cards[i].cloneNode(true);
+      c.classList.add("is-copy");
+      c.setAttribute("aria-hidden", "true");
+      c.setAttribute("tabindex", "-1");
+      track.appendChild(c);
+    }
+    box.classList.add("is-rolling");
+    track.style.setProperty("--news-dur", (cards.length * 6) + "s");
+  }
+
   /* ---------- 주요 클라이언트 ----------
      그룹 제목 옆의 기관 수를 직접 센다. 한 곳을 더하거나 뺐을 때
      숫자를 같이 고치지 않아 어긋나는 일이 없도록. */
@@ -374,6 +489,7 @@
     // 연혁은 글줄에서 화면을 먼저 만들어 둔다.
     // 그래야 리빌 관찰과 자격증 팝업이 새로 생긴 요소까지 집는다.
     initTimeline(scope);
+    initNews(scope);
     initClients(scope);
     initReveal(scope);
     initHeader();

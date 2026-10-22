@@ -78,10 +78,12 @@ def _cells(line, count):
 def load_notices():
     rows = []
     for line in _lines("notices.md"):
-        date, tag, title, seq = _cells(line, 4)
+        date, tag, title, seq, pin = _cells(line, 5)
         if not date or not title:
             continue
-        rows.append((tag or None, esc(title), date, seq.strip()))
+        rows.append((tag or None, esc(title), date, seq.strip(), bool(pin.strip())))
+    # 상단 노출(후이즈 게시판의 '공지글 여부')을 맨 위로. 빌더 게시판도 같게 동작한다.
+    rows.sort(key=lambda r: (0 if r[4] else 1,))
     return rows
 
 
@@ -237,8 +239,13 @@ def recent_news_html(limit=3):
        공지사항에서 최신 글을 가져온다. 글을 누르면 그 글의 본문으로 간다.
        고객이 공지를 올리면 첫 화면이 따라 바뀌므로 따로 손볼 것이 없다.
 
-       후이즈에서는 이 자리에 빌더의 {{게시판새글}} 치환자가 들어가
-       같은 게시판에서 같은 글을 끌어온다."""
+       글은 '상단 노출'로 표시한 것이 먼저 오고, 모자라면 최신 글로 채운다.
+       후이즈 게시판의 '공지글 여부' 체크와 같은 뜻이다.
+
+       화면에 박아 넣은 이 목록은 빌드할 때의 사본이다. site.js 가 공지
+       목록을 다시 읽어 최신으로 갈아끼우므로(data-news-src), 고객이 글을
+       올리면 첫 화면이 바로 따라간다. 자바스크립트가 막혀 있어도 이
+       사본이 그대로 보인다."""
     picks = NOTICES[:limit]
     if not picks:
         return ""
@@ -248,8 +255,9 @@ def recent_news_html(limit=3):
            '<span class="news-label">최근 소식</span>',
            '<a class="news-more" href="{root}support/notice.html">전체 보기</a>',
            '</div>',
-           '<div class="news-list">']
-    for tag, title, date, seq in picks:
+           '<div class="news-list" data-news{NEWSSRC}>',
+           '<div class="news-track">']
+    for tag, title, date, seq, _pin in picks:
         kind = tag or "소식"
         k = NEWS_KIND.get(kind, "활동")
         y, _, md = date.partition("-")
@@ -263,7 +271,7 @@ def recent_news_html(limit=3):
         else:
             out.append('<a class="news-card is-link" href="{root}support/notice.html">%s</a>'
                        % inner)
-    out.append('</div></div>')
+    out.append('</div></div></div>')
     return chr(10).join(out)
 
 
@@ -591,7 +599,7 @@ def notice_rows(limit=None, rows=None):
     if rows is None:
         rows = NOTICES[:limit] if limit else NOTICES
     out = []
-    for tag, title, date, seq in rows:
+    for tag, title, date, seq, pin in rows:
         badge = '<span class="notice-tag">%s</span>' % (tag or "소식")
         if limit:
             title_html = '<a href="{href}">%s%s</a>' % (badge, title)
@@ -600,8 +608,9 @@ def notice_rows(limit=None, rows=None):
                           % (seq, badge, title))
         else:
             title_html = '<span class="notice-title">%s%s</span>' % (badge, title)
-        out.append('<li>%s<time datetime="%s">%s</time></li>'
-                   % (title_html, date, date.replace("-", ".")))
+        out.append('<li%s>%s<time datetime="%s">%s</time></li>'
+                   % (' data-pin="1"' if pin else "", title_html,
+                      date, date.replace("-", ".")))
     return "\n".join(out)
 
 
@@ -1409,7 +1418,7 @@ def register_notice_posts():
 
        후이즈에서는 이 페이지들이 필요 없다. 거기서는 게시판의 읽기화면이
        같은 일을 한다. 시연 사이트에서 최종 화면을 그대로 보여 주려고 만든다."""
-    listed = [(tag, title, date, seq) for tag, title, date, seq in NOTICES
+    listed = [(tag, title, date, seq) for tag, title, date, seq, _pin in NOTICES
               if seq and seq in NOTICE_POSTS]
     for i, (tag, title, date, seq) in enumerate(listed):
         post = NOTICE_POSTS[seq]
@@ -1597,6 +1606,7 @@ def render_content(p, href, root):
     c = c.replace("{CLIENTS}", clients_html())
     c = c.replace("{HEROVIS}", HERO_VIS)
     c = c.replace("{RECENT}", recent_news_html())
+    c = c.replace("{NEWSSRC}", ' data-news-src="%ssupport/notice.html"' % root)
     c = c.replace("{CTA}", CTA)
     c = c.replace("{OFFICES}", OFFICES)
     c = c.replace("{NOTICES5}", notice_rows(5))
@@ -1893,6 +1903,8 @@ def whois_rewrite(html):
                 'href="/%s/%s.html"' % (grp, key),
                 'href="/?act=info.page&amp;pcode=%s"' % pcode)
     # 이미지 -> 웹FTP 경로
+    html = html.replace('data-news-src="/support/notice.html"',
+                        'data-news-src="/?act=board&amp;bbs_code=notice"')
     html = html.replace('"/assets/', '"' + WHOIS_IMG)
     html = html.replace("(/assets/", "(" + WHOIS_IMG)
     html = html.replace("'/assets/", "'" + WHOIS_IMG)
@@ -2069,7 +2081,7 @@ WHOIS_BOARD_LIST = """{PHEAD}
 
     <ul class="notice-list full">
       {@LIST}
-      <li>
+      <li{?.bbs_is_notice} data-pin="1"{/}>
         <a href="{.url_view}">{.bbs_title}</a>
         <time>{.bbs_reg_date}</time>
       </li>
